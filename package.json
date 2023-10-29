@@ -1,5 +1,5 @@
 {
-  "name": "SEKOLAH ISLAM TERPADU MANAGEMEN SYSTEM",
+  "name": "sekolah-islam-terpadu-management-system",
   "version": "1.2.0",
   "private": true,
   "scripts": {
@@ -116,3 +116,4 @@
     }
   }
 }
+
