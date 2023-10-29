@@ -158,7 +158,7 @@ const LoginPage = () => {
           }}>
             <img src="https://i0.wp.com/darulmaza.sch.id/wp-content/uploads/2019/08/logo-smp-1280.png?fit=300%2C300&ssl=1"
               style={{
-                'width': '100%',
+                'width': '40%',
               }}
             />
             <Box sx={{ my: 6 }} style={{
