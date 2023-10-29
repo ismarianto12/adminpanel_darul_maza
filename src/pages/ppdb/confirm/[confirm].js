@@ -148,7 +148,8 @@ const Index = props => {
       if (result.isConfirmed) {
         prosesPpdb({
           status,
-          idpdb
+          idpdb,
+          route
         })
       } else if (result.isDenied) {
         Swal.fire('Changes are not saved', '', 'info')
@@ -193,183 +194,223 @@ const Index = props => {
             </IconButton>
           </Header>
           <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
+            <table style={{ width: '100%' }}>
+              <tbody>
+                <tr>
+                  <td className="header" style={{ textAlign: 'center' }}>
+                    <img
+                      className="logo"
+                      src="https://darulmaza.sch.id/wp-content/uploads/2019/08/Header-SIT-512-1030x258.png"
+                      alt="Logo Surat"
+                      style={{ width: '200px', height: 'auto', marginBottom: '20px' }}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td className="alamat" style={{ textAlign: 'center' }}>
+                    <b> Jl. Gapin, Jatisari, Jatiasih, Kota Bekasi, Jawa Barat 17426</b>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <hr />
 
-            <Table>
-              <TableBody>
-                <TableRow>
-                  <TableCell
-                    style={{
-                      verticalAlign: 'top',
-                    }}
-                  >
-                    <TableRow>
-                      <TableCell>Kelas:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>{ppdbdata.id_kelas}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Img Siswa:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>/Applications/XAMPP/xamppfiles/temp/phpritjcl</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Img KK:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>/Applications/XAMPP/xamppfiles/temp/phppPHyzI</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>No Pendaftaran:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>{ppdbdata.no_daftar}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>NIK:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>{ppdbdata.nik}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>NIS:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>{ppdbdata.nis}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Nama:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>{ppdbdata.nama}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Email:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>{ppdbdata.email}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>No HP:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>{ppdbdata.no_hp}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Jenis Kelamin:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>{ppdbdata.jk === 'P' ? 'Perempuan' : 'Laki - laki'}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>TTL:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>{ppdbdata.ttl}</TableCell>
-                    </TableRow>
-                  </TableCell>
-                  <TableCell>
-                    <TableRow>
-                      <TableCell>Provinsi:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>15</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Kabupaten:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>1502</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Kecamatan:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>1502021</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Kelurahan:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>1502021005</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Alamat:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>{ppdbdata.alamat}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Nama Ayah:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>{ppdbdata.nama_ayah}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Nama Ibu:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>{ppdbdata.nama_ibu}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Pekerjaan Ayah:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>{ppdbdata.pek_ayah}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Pekerjaan Ibu:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>{ppdbdata.pek_ibu}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Nama Wali:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>{ppdbdata.pek_ayah}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Pekerjaan Wali:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>{ppdbdata.pek_wali}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Penghasilan Orang Tua:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>{ppdbdata.peng_ortu}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>No Telp:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>{ppdbdata.no_telp}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Tahun Masuk:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>2</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Sekolah Asal:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>13123</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Tahun Lulus:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>21313</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>Kelas:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>Blum Set</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>ID Pendidikan:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>1</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>ID Majors:</TableCell>
-                      <TableCell>:</TableCell>
-                      <TableCell>1</TableCell>
-                    </TableRow>
-                  </TableCell>
-
-                </TableRow>
-              </TableBody>
-            </Table>
-            <img
-              src={`${process.env.APP_API}/detail/${ppdbdata?.ppdbdata}`}
-              className='img-responsive'
-              onError={(e) => {
-                e.target.src = 'https://jia.stialanbandung.ac.id/plugins/themes/pajardevr/image/no-image-available.jpg';
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6} style={{
+                'marginLeft': '-14px'
               }}
+              >
+                <Table>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell
+                        style={{
+                          verticalAlign: 'top',
+                        }}
+                      >
+                        <TableRow>
+                          <TableCell>Kelas:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>{ppdbdata.id_kelas}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Img Siswa:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>/Applications/XAMPP/xamppfiles/temp/phpritjcl</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Img KK:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>/Applications/XAMPP/xamppfiles/temp/phppPHyzI</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>No Pendaftaran:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>{ppdbdata.no_daftar}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>NIK:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>{ppdbdata.nik}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>NIS:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>{ppdbdata.nis}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Nama:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>{ppdbdata.nama}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Email:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>{ppdbdata.email}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>No HP:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>{ppdbdata.no_hp}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Jenis Kelamin:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>{ppdbdata.jk === 'P' ? 'Perempuan' : 'Laki - laki'}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>TTL:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>{ppdbdata.ttl}</TableCell>
+                        </TableRow>
+                      </TableCell>
+
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </Grid>
+              <Grid item xs={12} sm={6} style={{
+                'marginLeft': '-14px'
+              }}>
+                <Table>
+                  <TableBody>
+                    <TableRow>
+
+                      <TableCell>
+                        <TableRow>
+                          <TableCell>Provinsi:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>15</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Kabupaten:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>1502</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Kecamatan:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>1502021</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Kelurahan:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>1502021005</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Alamat:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>{ppdbdata.alamat}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Nama Ayah:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>{ppdbdata.nama_ayah}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Nama Ibu:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>{ppdbdata.nama_ibu}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Pekerjaan Ayah:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>{ppdbdata.pek_ayah}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Pekerjaan Ibu:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>{ppdbdata.pek_ibu}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Nama Wali:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>{ppdbdata.pek_ayah}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Pekerjaan Wali:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>{ppdbdata.pek_wali}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Penghasilan Orang Tua:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>{ppdbdata.peng_ortu}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>No Telp:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>{ppdbdata.no_telp}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Tahun Masuk:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>2</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Sekolah Asal:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>13123</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Tahun Lulus:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>21313</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>Kelas:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>Blum Set</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>ID Pendidikan:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>1</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell>ID Majors:</TableCell>
+                          <TableCell>:</TableCell>
+                          <TableCell>1</TableCell>
+                        </TableRow>
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+
+              </Grid>
+            </Grid>
+            <h4>Bukti bayar</h4>
+            <img
+              src={`${process.env.ASSETS_API}/konfirmasi/${ppdbdata?.bukti_bayar}`}
+              className='img-responsive'
+            // onError={(e) => {
+            //   e.target.src = 'https://jia.stialanbandung.ac.id/plugins/themes/pajardevr/image/no-image-available.jpg';
+            // }}
             />
 
             <Grid container spacing={5}>
               <Grid item xs={12} sm={5}>
-                <CustomTextField select fullWidth label='Status Berita :' id='form-layouts-tabs-select'
+                <CustomTextField select fullWidth label='Status Konfirmasi :' id='form-layouts-tabs-select'
                   onChange={(e) => konfirmasi(e)}
                   error={Boolean(errors.protect)}
                   placeholder='Pilih Status Approval :'

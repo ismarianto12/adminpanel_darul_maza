@@ -21,9 +21,8 @@ import Comheader from './Comheader'
 import Headtitle from 'src/@core/components/Headtitle'
 import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchData } from 'src/store/apps/download'
 
-const Download = () => {
+const Tahunakademik = () => {
   const [total, setTotal] = useState(0)
   const [sort, setSort] = useState('asc')
   const [rows, setRows] = useState([])
@@ -44,7 +43,7 @@ const Download = () => {
     async (sort, q, column) => {
       setLoading(true)
       await axios
-        .get(`${process.env.APP_API}download/list`, {
+        .get(`${process.env.APP_API}tahunakademik/list`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`
           }
@@ -67,7 +66,7 @@ const Download = () => {
     [paginationModel]
   )
   const dispatch = useDispatch()
-  const store = useSelector(state => state.download)
+  const store = useSelector(state => state.Tahunakademik)
 
   useEffect(() => {
     fetchTableData(sort, searchValue, sortColumn)
@@ -102,7 +101,7 @@ const Download = () => {
 
     const DeleteCat = (id) => {
       setLoading(true)
-      axios.delete(`${process.env.APP_API}download/destroy/${id}`, {
+      axios.delete(`${process.env.APP_API}Tahunakademik/destroy/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
         }
@@ -110,7 +109,7 @@ const Download = () => {
         .then((response) => {
           fetchTableData()
           setLoading(false)
-          toast.success('Data Download Berhasil di hapus')
+          toast.success('Data Tahunakademik Berhasil di hapus')
         })
         .catch(error => {
           toast.error(`gagal di hapus ${error}`)
@@ -148,7 +147,7 @@ const Download = () => {
           <MenuItem
             component={Link}
             sx={{ '& svg': { mr: 2 } }}
-            href={`/download/edit/${id}`}
+            href={`/Tahunakademik/edit/${id}`}
             onClick={handleRowOptionsClose}
           >
             <Icon icon='tabler:eye' fontSize={20} />
@@ -157,7 +156,7 @@ const Download = () => {
           <MenuItem
             component={Link}
             onClick={handleRowOptionsClose}
-            href={`/download/edit/${id}`}
+            href={`/Tahunakademik/edit/${id}`}
             sx={{ '& svg': { mr: 2 } }}>
             <Icon icon='tabler:edit' fontSize={20} />
             {`Edit`}
@@ -172,16 +171,13 @@ const Download = () => {
     )
   }
 
-  const sequentialData = store.data
-    ? store.data.map((item, index) => ({ ...item, id: sequentialId + index }))
-    : [];
   return (
     <Card>
-      <Headtitle title="Master Download" />
+      <Headtitle title="Master Tahun akademik" />
       <CardHeader title={
         (<>
-          <Icon fontSize='1.25rem' icon='tabler:download' />
-          {`Master Download`}
+          <Icon fontSize='1.25rem' icon='tabler:Tahunakademik' />
+          {`Master Tahunakademik`}
         </>)
       } />
 
@@ -203,40 +199,28 @@ const Download = () => {
             {
               flex: 0.25,
               minWidth: 290,
-              field: 'judul',
-              headerName: 'Judul',
+              field: 'id',
+              headerName: 'No',
               renderCell: ({ row }) => {
-                if (row.judul === null) {
+                if (row.id === null) {
                   return (<b>Kosong</b>)
                 } else {
-                  return row.judul
+                  return row.id
                 }
               }
             },
             {
               flex: 0.25,
               minWidth: 290,
-              field: 'category',
-              headerName: 'Category',
+              field: 'tahun',
+              headerName: 'Tahun',
               renderCell: ({ row }) => {
-                if (row.category === '') {
-                  return (<b>Kosong</b>)
-                } else {
-                  return row.category
-                }
-              }
-            },
-            {
-              flex: 0.25,
-              minWidth: 290,
-              field: 'gambar',
-              headerName: 'File',
-              renderCell: ({ row }) => {
-                if (row.gambar === null) {
+                if (row.tahun === null) {
                   return (<b>Kosong</b>)
                 } else {
                   return (<IconButton size='small'>
-                    <Icon icon='tabler:download' />
+                    {row.tahun}
+                    <Icon icon='tabler:year' />
                   </IconButton>)
                 }
               }
@@ -256,32 +240,21 @@ const Download = () => {
             },
             {
               flex: 0.25,
-              minWidth: 290,
-              field: 'updated_at',
-              headerName: 'Updated at',
+              field: 'active',
+              headerName: 'active',
               renderCell: ({ row }) => {
-                if (row?.updated_at === null || row?.update_at === undefined) {
-                  return (<b>Kosong</b>)
+                if (row?.active === null || row?.active === undefined) {
+                  return (<b>Unactive</b>)
                 } else {
-                  return row.updated_at
+                  return row.active === '1' ? 'Active' : 'Unactive'
                 }
               }
             },
             {
               flex: 0.25,
-              // minWidth: 290,
-              field: 'created_by',
-              headerName: 'Created By',
-              renderCell: ({ row }) => {
-                if (row?.created_by === null || row?.created_by === undefined) {
-                  return (<b>Kosong</b>)
-                } else {
-                  return row.created_by
-                }
-              }
+              field: 'Semester',
+              headerName: 'Semester'
             },
-
-
             {
               flex: 0.1,
               minWidth: 100,
@@ -316,4 +289,4 @@ const Download = () => {
   )
 }
 
-export default Download
+export default Tahunakademik

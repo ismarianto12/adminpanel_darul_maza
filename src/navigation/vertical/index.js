@@ -29,12 +29,12 @@ const navigation = () => {
         children: [
           {
             title: 'SET UP PPDB',
-            path: '/download/list',
+            path: '/takademik/list',
             auth: false,
           },
           {
             title: 'PARAMATER BIAYA',
-            path: '/video/list',
+            path: '/parameterbiaya/list',
             auth: false,
           },
           {
@@ -42,11 +42,11 @@ const navigation = () => {
             path: '/ppdb/list',
             auth: false,
           },
-          {
-            title: 'KONFIRMASI BAYAR',
-            path: '/jadwal/list',
-            auth: false,
-          }
+          // {
+          //   title: 'KONFIRMASI BAYAR',
+          //   path: '/confirmbayar/list',
+          //   auth: false,
+          // }
         ]
       },
 

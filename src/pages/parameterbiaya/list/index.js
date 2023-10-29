@@ -63,7 +63,7 @@ const Category = () => {
   const fetchTableData = useCallback(
     async (sort, q, column) => {
       await axios
-        .get(`${process.env.APP_API}video/list`, {
+        .get(`${process.env.APP_API}parameterbiaya/list`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
@@ -105,7 +105,7 @@ const Category = () => {
     }
 
     const DeleteCat = (id) => {
-      axios.delete(`${process.env.APP_API}video/destroy/${id}`, {
+      axios.delete(`${process.env.APP_API}parameterbiaya/destroy/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         }
@@ -149,7 +149,7 @@ const Category = () => {
           <MenuItem
             component={Link}
             sx={{ '& svg': { mr: 2 } }}
-            href={`/video/edit/${id}`}
+            href={`/parameterbiaya/edit/${id}`}
             onClick={handleRowOptionsClose}
           >
             <Icon icon='tabler:eye' fontSize={20} />
@@ -158,7 +158,7 @@ const Category = () => {
           <MenuItem
             component={Link}
             sx={{ '& svg': { mr: 2 } }}
-            href={`/video/edit/${id}`}
+            href={`/parameterbiaya/edit/${id}`}
             onClick={handleRowOptionsClose}
           >
             <Icon icon='tabler:edit' fontSize={20} />
@@ -192,16 +192,16 @@ const Category = () => {
   return (
     <Card>
       <div style={{ 'display': 'inline' }}>
-        <Headtitle title="Master Video" />
+        <Headtitle title="Master parameterbiaya" />
         <CardHeader title={
           (<>
             <Grid container alignItems="center" spacing={1}>
               <Grid item>
-                <Icon fontSize='3.25rem' icon='tabler:video' />
+                <Icon fontSize='3.25rem' icon='tabler:list' />
 
               </Grid>
               <Grid item>
-                <Typography variant="h6">Master Video</Typography>
+                <Typography variant="h6">Master parameterbiaya</Typography>
               </Grid>
             </Grid>
 

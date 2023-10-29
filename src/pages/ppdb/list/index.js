@@ -69,11 +69,12 @@ const Jenjang = [
   },
 ]
 
-const RowOptions = ({ id }) => {
+const RowOptions = ({ id, status }) => {
   // ** Hooks
   // const dispatch = useDispatch()
 
   // ** State
+  console.log(status, 'status ppdb')
   const [anchorEl, setAnchorEl] = useState(null)
   const rowOptionsOpen = Boolean(anchorEl)
 
@@ -104,10 +105,6 @@ const RowOptions = ({ id }) => {
     handleRowOptionsClose(id, 'delete')
   }
 
-
-
-
-
   return (
     <>
       <IconButton size='small' onClick={handleRowOptionsClick}>
@@ -136,19 +133,24 @@ const RowOptions = ({ id }) => {
           <Icon icon='tabler:eye' fontSize={20} />
           View
         </MenuItem>
-        <MenuItem onClick={() => handleRowOptionsClose(id, 'confirm')} sx={{ '& svg': { mr: 2 } }}>
-          <Icon icon='tabler:check' fontSize={20} />
-          Verifikasi
-        </MenuItem>
-        <MenuItem href={`/ppdb/edit/${id}`} onClick={handleDelete} sx={{ '& svg': { mr: 2 } }}>
-          <Icon icon='tabler:trash' fontSize={20} />
-          Delete
-        </MenuItem>
+        {status === 1 ? '' :
+          (
+            <>
+              <MenuItem onClick={() => handleRowOptionsClose(id, 'confirm')} sx={{ '& svg': { mr: 2 } }}>
+                <Icon icon='tabler:check' fontSize={20} />
+                Verifikasi
+              </MenuItem>
+              <MenuItem href={`/ppdb/edit/${id}`} onClick={handleDelete} sx={{ '& svg': { mr: 2 } }}>
+                <Icon icon='tabler:trash' fontSize={20} />
+                Delete
+              </MenuItem>
+            </>
+          )
+        }
       </Menu>
     </>
   )
 }
-
 
 const columns = [
   {
@@ -194,7 +196,7 @@ const columns = [
     headerName: 'Status',
     renderCell: ({ row }) => {
 
-      if (row.staus === 1) {
+      if (row.status === 1) {
         return <CustomChip
           rounded
           skin='light'
@@ -203,7 +205,7 @@ const columns = [
           color={'success'}
           sx={{ textTransform: 'capitalize' }}
         />
-      } else if (row.status === 2) {
+      } else if (row.status === 1) {
         return <CustomChip
           rounded
           skin='light'
@@ -229,17 +231,26 @@ const columns = [
   {
     flex: 0.25,
     minWidth: 290,
-    field: 'user id',
+    field: 'username',
     headerName: 'User id'
   },
-
   {
     flex: 0.1,
     minWidth: 100,
     sortable: false,
     field: 'staff_konfirmasi',
     headerName: 'Actions',
-    renderCell: ({ row }) => <RowOptions id={row.id} />
+    renderCell: ({ row }) => <RowOptions id={row.id} status={row.status} />
+  }
+]
+
+const datastatus = [
+  {
+    'id': '1', 'status': 'Diterima',
+
+  },
+  {
+    'id': '2', 'status': 'Di tolak',
   }
 ]
 
@@ -252,6 +263,7 @@ const List = () => {
   const [plan, setPlan] = useState('')
   const [value, setValue] = useState('')
   const [status, setStatus] = useState('')
+  const [tahunakademik, setTahunakademik] = useState([])
 
   const [searchValue, setSearchValue] = useState('')
   const [sortColumn, setSortColumn] = useState('full_name')
@@ -282,6 +294,22 @@ const List = () => {
     },
     [paginationModel]
   )
+
+  useEffect(() => {
+    const calltahun = async () => {
+      await axios.post(`${process.env.APP_API}tahunakademik/list`, {}, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        },
+      }).then((res) => {
+        setTahunakademik(res.data)
+      }).catch((err) => {
+        console.log('gagal mengabil data tahun akademik', err)
+      })
+    }
+    calltahun()
+  }, [])
+
   useEffect(() => {
     fetchTableData(sort, searchValue, sortColumn)
   }, [fetchTableData, searchValue, sort, sortColumn])
@@ -404,9 +432,9 @@ const List = () => {
                   <MenuItem key={0} value={null}>
                     --Semua data--
                   </MenuItem>
-                  {Jenjang.map((level) => (
-                    <MenuItem key={level.value} value={level.value}>
-                      {level.value.toUpperCase()}
+                  {tahunakademik.map((takademik) => (
+                    <MenuItem key={takademik.id} value={takademik.id}>
+                      {takademik.tahun} - {takademik.Semester}
                     </MenuItem>
                   ))}
                 </CustomTextField>
@@ -427,9 +455,9 @@ const List = () => {
                   <MenuItem key={0} value={null}>
                     --Tahun Akademik--
                   </MenuItem>
-                  {Jenjang.map((level) => (
-                    <MenuItem key={level.value} value={level.value}>
-                      {level.value.toUpperCase()}
+                  {datastatus.map((level) => (
+                    <MenuItem key={level.id} value={level.status}>
+                      {level.status.toUpperCase()}
                     </MenuItem>
                   ))}
                 </CustomTextField>

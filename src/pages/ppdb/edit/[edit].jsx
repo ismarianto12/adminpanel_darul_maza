@@ -47,7 +47,7 @@ const Header = styled(Box)(({ theme }) => ({
 
 const schema = yup.object().shape({
   id_provinsi: yup.string().required(),
-  nama_cabang: yup.string().required(),
+  nama_ppdb: yup.string().required(),
   alamat1: yup.string().required(),
   alamat2: yup.string().required(),
   no_telp: yup.string().required(),
@@ -61,7 +61,7 @@ const Index = props => {
   // ** Props
   const route = useRouter();
   const { open, toggle } = props
-  const [cabangdata, setCabangdata] = useState([])
+  const [ppdbdata, setppdbdata] = useState([])
   // ** State
   const [plan, setPlan] = useState('basic')
   const [role, setRole] = useState('subscriber')
@@ -81,15 +81,15 @@ const Index = props => {
     formState: { errors }
   } = useForm({
     defaultValues: {
-      id_provinsi: cabangdata.id_provinsi,
-      nama_cabang: cabangdata.nama_cabang,
-      alamat1: cabangdata?.alamat1,
-      alamat2: cabangdata?.alamat2,
-      no_telp: cabangdata?.no_telp,
-      email: cabangdata?.email,
-      latitude: cabangdata?.latitude,
-      longitude: cabangdata?.longitude,
-      tipe: cabangdata?.tipe
+      id_provinsi: ppdbdata.id_provinsi,
+      nama_ppdb: ppdbdata.nama_ppdb,
+      alamat1: ppdbdata?.alamat1,
+      alamat2: ppdbdata?.alamat2,
+      no_telp: ppdbdata?.no_telp,
+      email: ppdbdata?.email,
+      latitude: ppdbdata?.latitude,
+      longitude: ppdbdata?.longitude,
+      tipe: ppdbdata?.tipe
     },
     mode: 'onChange',
     resolver: yupResolver(schema)
@@ -100,7 +100,7 @@ const Index = props => {
   const calledit = () => {
     const config = {
       method: 'get',
-      url: '/admin/api/cabang/' + props.id,
+      url: '/admin/api/ppdb/' + props.id,
       headers: {
         'Content-Type': 'application/json',
         'token': '123'
@@ -108,8 +108,8 @@ const Index = props => {
     }
     axios(config)
       .then((res) => {
-        console.log(res.data[0].id_cabang, 's')
-        setCabangdata(res.data[0])
+        console.log(res.data[0].id_ppdb, 's')
+        setppdbdata(res.data[0])
         reset(res.data[0])
       })
       .catch((err) => {
@@ -121,7 +121,7 @@ const Index = props => {
   const onSubmit = data => {
     const config = {
       method: 'put',
-      url: '/admin/api/cabang/' + props.id,
+      url: '/admin/api/ppdb/' + props.id,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -129,8 +129,8 @@ const Index = props => {
     }
     axios(config)
       .then((res) => {
-        toast.success("Data cabang berhasil di edit")
-        route.push('/cabang/list');
+        toast.success("Data ppdb berhasil di edit")
+        route.push('/ppdb/list');
       })
       .catch((err) => {
         console.error(err);
@@ -139,18 +139,18 @@ const Index = props => {
   }
   const handleClose = () => {
     reset()
-    route.push('/cabang/list');
+    route.push('/ppdb/list');
   }
 
   return (
     <>
-      <Headtitle title="Edit data cabang" />
+      <Headtitle title="Edit data ppdb" />
       <Card>
         <CardContent>
           <Header>
             <Typography variant='h5'>
               <Icon icon='tabler:edit' fontSize='1.125rem' />
-              {`Edit Data Cabang`}</Typography>
+              {`Edit Data ppdb`}</Typography>
             <IconButton
               size='small'
               onClick={handleClose}
@@ -170,7 +170,7 @@ const Index = props => {
           <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Controller
-                name='nama_cabang'
+                name='nama_ppdb'
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange } }) => (
@@ -178,11 +178,11 @@ const Index = props => {
                     fullWidth
                     value={value}
                     sx={{ mb: 4 }}
-                    label='Nama Cabang'
+                    label='Nama ppdb'
                     onChange={onChange}
-                    placeholder='Nama cabang'
-                    error={Boolean(errors.nama_cabang)}
-                    {...(errors.nama_cabang && { helperText: errors.nama_cabang.message })}
+                    placeholder='Nama ppdb'
+                    error={Boolean(errors.nama_ppdb)}
+                    {...(errors.nama_ppdb && { helperText: errors.nama_ppdb.message })}
                   />
                 )}
               />
@@ -234,9 +234,9 @@ const Index = props => {
                     value={value}
                     sx={{ mb: 4 }}
 
-                    label='Telepone cabang'
+                    label='Telepone ppdb'
                     onChange={onChange}
-                    placeholder='Telepon cabang'
+                    placeholder='Telepon ppdb'
                     error={Boolean(errors.no_telp)}
                     {...(errors.no_telp && { helperText: errors.no_telp.message })}
                   />
@@ -251,9 +251,9 @@ const Index = props => {
                     fullWidth
                     value={value}
                     sx={{ mb: 4 }}
-                    label='Email cabang'
+                    label='Email ppdb'
                     onChange={onChange}
-                    placeholder='Email cabang'
+                    placeholder='Email ppdb'
                     error={Boolean(errors.email)}
                     {...(errors.email && { helperText: errors.email.message })}
                   />

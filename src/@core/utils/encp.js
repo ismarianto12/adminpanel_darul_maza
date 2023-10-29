@@ -1,5 +1,6 @@
 import axios from 'axios';
 import crypto from 'crypto'
+import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
 
@@ -77,6 +78,7 @@ const calluserEdit = async (props) => {
 // bagian pppdb online
 
 const prosesPpdb = async (props) => {
+
   await axios.post(`${process.env.APP_API}ppdb/insertsiswa/${props.idpdb}`, {
     status: props.status
   }, {
@@ -91,10 +93,12 @@ const prosesPpdb = async (props) => {
     });
     Swal.showLoading()
     setTimeout(() => {
-      Swal.close();
-    }, 3000);
+      Swal.close()
+    }, 3000)
+
+    props.route.push('/ppdb/list')
   }).catch((err) => {
-    toast.error('Gagal Mengambil data  user ...' + err)
+    toast.error(`data saudah terdaftar sebelumnya`)
   })
 }
 
