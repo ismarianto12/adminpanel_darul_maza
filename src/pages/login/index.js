@@ -156,9 +156,9 @@ const LoginPage = () => {
           <Box sx={{ width: '100%', maxWidth: 400 }} style={{
             'text-align': 'center'
           }}>
-            <img src="https://w1.pngwing.com/pngs/735/156/png-transparent-green-leaf-logo-ministry-of-religious-affairs-religion-organization-religious-organization-hajj-symbol-islam.png"
+            <img src="https://i0.wp.com/darulmaza.sch.id/wp-content/uploads/2019/08/logo-smp-1280.png?fit=300%2C300&ssl=1"
               style={{
-                'width': '70%',
+                'width': '100%',
               }}
             />
             <Box sx={{ my: 6 }} style={{
