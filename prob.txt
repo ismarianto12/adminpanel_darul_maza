@@ -1,0 +1,45 @@
+if id_column tabl rename to id
+that right
+
+tambahin aplikasi :
+tambahin di panel admin create at update at  dan user update
+
+
+
+  710  11/10/23 14:05:27 jslddd --version
+  711  11/10/23 14:05:34 su nvm install 16
+  712  11/10/23 14:05:35 nvm install 16
+  713  11/10/23 14:05:46 nvm use 16
+  714  11/10/23 14:05:53 nvm ls
+  715  11/10/23 14:06:03 node --version
+  716  11/10/23 14:06:09 nvm restart
+  717  11/10/23 14:06:12 ls
+  718  11/10/23 14:06:15 node -v
+
+
+
+
+pm2 start npm --name "app name" -- start
+  813  +2023-04-21 12:49:54 pm2 status
+  814  +2023-04-21 12:50:06 pm2 add liveness
+  815  +2023-04-21 12:50:33 pm2 start npm --name "app name" -- start
+  816  +2023-04-21 12:50:50 pm2 remove app name
+  817  +2023-04-21 12:51:00 pm2 remove "app name" && pm2 sasve
+  818  +2023-04-21 12:51:02 pm2 remove "app name" && pm2 save
+  819  +2023-04-21 12:51:10 pm2 delete "app name" && pm2 save
+  820  +2023-04-21 12:51:26 pm2 start npm --name "liveness" -- start
+  821  +2023-04-21 12:51:41 npm run build && pm2 start liveness --watch && pm2 reload liveness --watch && pm2 save
+  pm2 start npm --name liveness -- run start -- -p 3001
+
+  npm run build && pm2 start adminpanel --watch && pm2 reload adminpanel --watch && pm2 save
+
+  pm2 start npm --name adminpanel -- run start -- -p 3001
+
+
+=====Accest get data=====
+chown -R nginx:nginx ../home/apps/backendwebrevamp/public
+chmod -R 777 ../home/apps/backendwebrevamp/public
+semanage fcontext -a -t httpd_sys_content_t "/home/apps/backendwebrevamp/public(/.*)?"
+restorecon -R -v /home/apps/backendwebrevamp/public
+semanage fcontext -a -t httpd_sys_rw_content_t "/home/apps/backendwebrevamp/public(/.*)?"
+restorecon -R -v /home/apps/backendwebrevamp/public

@@ -1,0 +1,4 @@
+copy file access in folder 
+
+copy folder command in linux
+cp -r soruce destination
