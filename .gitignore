@@ -34,7 +34,6 @@ yarn-error.log*
 *.tsbuildinfo
 
 /src/config/database.js
-/next.config.js
 .next
 .next
 package.json
