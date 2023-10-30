@@ -22,6 +22,7 @@ import Link from 'next/link'
 import Comheader from './Comheader'
 import Headtitle from 'src/@core/components/Headtitle'
 import toast from 'react-hot-toast'
+import { getparamPend } from 'src/@core/utils/encp'
 const renderClient = params => {
   const { row } = params
   const stateNum = Math.floor(Math.random() * 6)
@@ -236,70 +237,29 @@ const Category = () => {
             {
               flex: 0.25,
               minWidth: 290,
-              field: 'title',
-              headerName: 'Title'
+              field: 'nama_biaya',
+              headerName: 'Nama Biaya'
             },
             {
               flex: 0.25,
               minWidth: 290,
-              field: 'url',
-              headerName: 'Url',
-              renderCell: ({ row }) => {
-                if (row.url === '') {
-                  return (<b>Kosong</b>)
-                } else {
-                  return row.url
-                }
-              }
-
-            },
-
-            {
-              flex: 0.25,
-              minWidth: 290,
-              field: 'created_at',
-              headerName: 'Created At',
-              renderCell: ({ row }) => {
-                if (row.url === '') {
-                  return (<b>Kosong</b>)
-                } else {
-                  return row.created_at
-                }
-              }
-
-            },
-
-            {
-              flex: 0.25,
-              minWidth: 290,
-              field: 'update_at',
-              headerName: 'Updated At',
-              renderCell: ({ row }) => {
-                if (row.updated_at === '') {
-                  return (<b>Kosong</b>)
-                } else {
-                  return row.created_at
-                }
-              }
+              field: 'nominal',
+              headerName: 'Nominal'
             },
             {
               flex: 0.25,
               minWidth: 290,
-              field: 'user_id',
-              headerName: 'Created By',
+              field: 'tingkat',
+              headerName: 'Tingkat',
               renderCell: ({ row }) => {
-                if (row.user_id === '') {
-                  return (<b>Kosong</b>)
-                } else {
-                  return row.user_id
-                }
+                return getparamPend(row.tingkat)
               }
             },
             {
               flex: 0.1,
               minWidth: 100,
               sortable: false,
-              field: 'actions',
+              // field: 'actions',
               headerName: 'Actions',
               renderCell: ({ row }) => <RowOptions id={row.id} setLoading={setLoading} />
             }

@@ -54,17 +54,16 @@ const statusObj = {
 
 const Jenjang = [
   {
-    'value': 'PAUD',
+    'value': 'TKA',
 
   },
   {
-    'value': 'TK',
-
+    'value': 'TKB',
   }, {
     'value': 'SD',
 
   }, {
-    'value': 'SMP',
+    'value': 'MTSI',
 
   },
 ]

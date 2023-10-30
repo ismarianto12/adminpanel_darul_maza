@@ -102,7 +102,21 @@ const prosesPpdb = async (props) => {
   })
 }
 
+const getparamPend = (params) => {
+  const listdata = {
+    '1': 'TKA',
+    '2': 'TKB',
+    '3': 'SD',
+    '4': 'MTS IT',
+    '5': 'TKA',
+  };
+
+  return listdata[params] || 'Nilai tidak ditemukan';
+};
+
+
 export {
+  getparamPend,
   generateMD5Hash,
   getUserlogin,
   setCookie,
@@ -112,6 +126,8 @@ export {
   calluserEdit,
   prosesPpdb
 }
+
+
 
 
 

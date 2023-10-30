@@ -3,7 +3,7 @@ module.exports = {
   trailingSlash: true,
   reactStrictMode: false,
   env: {
-    APP_API: 'https://api.darulmaza.sch.id/api/v1/', //another action
+    APP_API: 'http://localhost/siakad_sdit/public/api/v1/',  //https://api.darulmaza.sch.id
     ASSETS_API: 'http://localhost/siakad_sdit/public',
     DEV_USER_WEB: 'http://localhost:3001',
     DEV_USER_PROD: '',

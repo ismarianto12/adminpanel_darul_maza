@@ -163,6 +163,27 @@ const Index = props => {
   }
 
   console.log(ppdbdata, 'detail')
+  const cetakPdf = () => {
+    const token = localStorage.getItem('accessToken');
+    fetch(`${process.env.APP_API}ppdb/report/${props.id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+        // Add any necessary headers
+      },
+      body: JSON.stringify({ /* Add any request body if required */ }),
+    })
+      .then(response => response.blob())
+      .then(blob => {
+        const fileURL = URL.createObjectURL(blob);
+        window.open(fileURL, '_blank');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+  }
   return (
     <>
       <Headtitle title="Konfirmasi Pendaftaran"
@@ -428,7 +449,7 @@ const Index = props => {
                 </CustomTextField>
 
               </Grid>
-              <Grid item xs={12} sm={5}>
+              <Grid item xs={12} sm={3}>
                 <Button variant='contained'
                   sx={{
                     width: '100%',
@@ -441,6 +462,22 @@ const Index = props => {
                   <Icon fontSize='1.125rem' icon='tabler:edit' />
                   Edit
                 </Button>
+
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <Button variant='contained'
+                  sx={{
+                    width: '100%',
+                    mt: 5,
+                  }}
+                  onClick={() =>
+                    cetakPdf()
+                  }
+                >
+                  <Icon fontSize='1.125rem' icon='tabler:print' />
+                  Print
+                </Button>
+
               </Grid>
             </Grid>
           </Box >
