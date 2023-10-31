@@ -27,6 +27,7 @@ import CardStatsVertical from 'src/@core/components/card-statistics/card-stats-v
 import CardContent from '@mui/material/CardContent';
 import CustomTextField from 'src/@core/components/mui/text-field';
 import Comheader from 'src/@core/components/Comheader';
+import { getparamPend } from 'src/@core/utils/encp';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -164,16 +165,28 @@ const columns = [
   {
     flex: 0.25,
     minWidth: 290,
+    field: 'date_inv',
+    headerName: 'Tgl & Jam'
+  },
+  {
+    flex: 0.25,
+    minWidth: 290,
     field: 'nama',
     headerName: 'Nama'
   },
   {
     flex: 0.25,
     minWidth: 290,
+    field: 'no_telp',
+    headerName: 'Handphone'
+  },
+  {
+    flex: 0.25,
+    minWidth: 290,
     field: 'nis',
     headerName: 'Nis',
-
   },
+
   {
     flex: 0.25,
     minWidth: 290,
@@ -187,14 +200,21 @@ const columns = [
       }
     }
   },
-
+  {
+    flex: 0.25,
+    minWidth: 290,
+    field: 'id_majors',
+    headerName: 'Majors',
+    renderCell: ({ row }) => {
+      return getparamPend(row.id_majors)
+    }
+  },
   {
     flex: 0.25,
     minWidth: 290,
     field: 'status',
     headerName: 'Status',
     renderCell: ({ row }) => {
-
       if (row.status === 1) {
         return <CustomChip
           rounded

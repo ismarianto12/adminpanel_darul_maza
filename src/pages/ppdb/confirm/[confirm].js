@@ -29,7 +29,8 @@ import { Card, CardContent } from '@mui/material'
 import Headtitle from 'src/@core/components/Headtitle'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import { prosesPpdb } from 'src/@core/utils/encp'
+import { getparamPend, prosesPpdb } from 'src/@core/utils/encp'
+import { indexKabupaten, indexKecamatan, indexKelurahan, indexProvince } from 'src/@core/utils/masteralamat'
 
 const showErrors = (field, valueLen, min) => {
   if (valueLen === 0) {
@@ -265,7 +266,7 @@ const Index = props => {
                           <TableCell>/Applications/XAMPP/xamppfiles/temp/phppPHyzI</TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell>No Pendaftaran:</TableCell>
+                          <TableCell>No :</TableCell>
                           <TableCell>:</TableCell>
                           <TableCell>{ppdbdata.no_daftar}</TableCell>
                         </TableRow>
@@ -316,27 +317,26 @@ const Index = props => {
                 <Table>
                   <TableBody>
                     <TableRow>
-
                       <TableCell>
                         <TableRow>
                           <TableCell>Provinsi:</TableCell>
                           <TableCell>:</TableCell>
-                          <TableCell>15</TableCell>
+                          <TableCell>{indexProvince(ppdbdata.prov)}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Kabupaten:</TableCell>
                           <TableCell>:</TableCell>
-                          <TableCell>1502</TableCell>
+                          <TableCell>{indexKabupaten(ppdbdata.prov, ppdbdata.kab)}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Kecamatan:</TableCell>
                           <TableCell>:</TableCell>
-                          <TableCell>1502021</TableCell>
+                          <TableCell>{indexKecamatan(ppdbdata.kab, ppdbdata.kec)}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Kelurahan:</TableCell>
                           <TableCell>:</TableCell>
-                          <TableCell>1502021005</TableCell>
+                          <TableCell>{indexKelurahan(ppdbdata.kec, ppdbdata.kel)}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Alamat:</TableCell>
@@ -386,32 +386,32 @@ const Index = props => {
                         <TableRow>
                           <TableCell>Tahun Masuk:</TableCell>
                           <TableCell>:</TableCell>
-                          <TableCell>2</TableCell>
+                          <TableCell>{ppdbdata.thn_msk}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Sekolah Asal:</TableCell>
                           <TableCell>:</TableCell>
-                          <TableCell>13123</TableCell>
+                          <TableCell>{ppdbdata.sekolah_asal}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Tahun Lulus:</TableCell>
                           <TableCell>:</TableCell>
-                          <TableCell>21313</TableCell>
+                          <TableCell>{ppdbdata.thn_lls}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Kelas:</TableCell>
                           <TableCell>:</TableCell>
-                          <TableCell>Blum Set</TableCell>
+                          <TableCell>{ppdbdata.kelas} </TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>ID Pendidikan:</TableCell>
                           <TableCell>:</TableCell>
-                          <TableCell>1</TableCell>
+                          <TableCell>{getparamPend(ppdbdata.id_pend)}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>ID Majors:</TableCell>
                           <TableCell>:</TableCell>
-                          <TableCell>1</TableCell>
+                          <TableCell>{getparamPend(ppdbdata.id_majors)}</TableCell>
                         </TableRow>
                       </TableCell>
                     </TableRow>
@@ -424,9 +424,6 @@ const Index = props => {
             <img
               src={`${process.env.ASSETS_API}/konfirmasi/${ppdbdata?.bukti_bayar}`}
               className='img-responsive'
-            // onError={(e) => {
-            //   e.target.src = 'https://jia.stialanbandung.ac.id/plugins/themes/pajardevr/image/no-image-available.jpg';
-            // }}
             />
 
             <Grid container spacing={5}>
