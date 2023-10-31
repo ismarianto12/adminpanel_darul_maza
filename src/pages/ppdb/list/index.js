@@ -138,7 +138,16 @@ const RowOptions = ({ id, status }) => {
           <Icon icon='tabler:eye' fontSize={20} />
           View
         </MenuItem>
-        {status === 1 ? '' :
+        {parseInt(status) === 1 ?
+          (<>
+            <MenuItem onClick={() => handleRowOptionsClose(id, 'confirm')} sx={{ '& svg': { mr: 2 } }}>
+              <Icon icon='tabler:list' fontSize={20} />
+              Detail Siswa
+            </MenuItem>
+          </>
+          )
+
+          :
           (
             <>
               <MenuItem onClick={() => handleRowOptionsClose(id, 'confirm')} sx={{ '& svg': { mr: 2 } }}>
@@ -220,7 +229,7 @@ const columns = [
     field: 'status',
     headerName: 'Status',
     renderCell: ({ row }) => {
-      if (row.status === '1') {
+      if (parseInt(row.status) === 1) {
         return <CustomChip
           rounded
           skin='light'
@@ -229,7 +238,7 @@ const columns = [
           color={'success'}
           sx={{ textTransform: 'capitalize' }}
         />
-      } else if (row.status === '2') {
+      } else if (parseInt(row.status) === 2) {
         return <CustomChip
           rounded
           skin='light'
@@ -248,8 +257,6 @@ const columns = [
           sx={{ textTransform: 'capitalize' }}
         />
       }
-
-
     }
   },
   {
@@ -346,7 +353,7 @@ const List = () => {
 
   useEffect(() => {
     const calltahun = async () => {
-      await axios.post(`${process.env.APP_API}tahunakademik/list`, {}, {
+      await axios.get(`${process.env.APP_API}tahunakademik/list`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
         },
