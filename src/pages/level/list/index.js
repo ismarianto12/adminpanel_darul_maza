@@ -55,16 +55,12 @@ const Category = () => {
 
   const fetchTableData = useCallback(
     async (sort, q, column) => {
-      await axios
-        .get('/admin/api/level/all', {
-          params: {
-            q,
-            sort,
-            column
-          }
-        })
+      await axios.post(`${process.env.APP_API}level/list`, {}, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        }
+      })
         .then(res => {
-          // setTotal(res.data.length)
           const search = q
           const filteredData = res.data.filter(tags => (
             tags.level?.toLowerCase().includes(search)

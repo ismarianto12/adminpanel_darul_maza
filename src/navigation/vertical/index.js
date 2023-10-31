@@ -119,17 +119,17 @@ const navigation = () => {
         children: [
           {
             title: 'User',
-            path: '/struktur',
+            path: '/user/list',
             auth: false,
           },
           {
             title: 'Level Akses',
-            path: '/category/list',
+            path: '/level/list',
             auth: false,
           },
           {
             title: 'Identitas Aplikasi',
-            path: '/tag/list',
+            path: '/identit/list',
             auth: false,
           },
 

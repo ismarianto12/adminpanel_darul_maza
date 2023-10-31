@@ -6,14 +6,17 @@ import axios from 'axios'
 // ** Fetch Users
 export const fetchData = createAsyncThunk('appUsers/fetchData', async params => {
   try {
-    const response = await axios.get('/admin/api/users/all')
-
+    const response = await axios.get(`${process.env.APP_API}user/list`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+      }
+    })
     const { q = '', role = null } = params ?? ''
     const queryLowered = q.toLowerCase()
     // const role
     console.log(role, 'roel thnunk')
     if (role !== null) {
-      const filteredData = response.data.filter((user) => user.level.toLowerCase().includes(role))
+      const filteredData = response.data.filter((user) => user.role.toLowerCase().includes(role))
       return filteredData
     } else {
       const filteredData = response.data.filter(
