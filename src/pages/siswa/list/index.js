@@ -75,6 +75,7 @@ const statusObj = {
 
 const Comheader = props => {
   // ** Props
+  // const [use]
   const route = useRouter()
   const { handleFilter, value,
     addUserOpen,
@@ -82,8 +83,8 @@ const Comheader = props => {
   const updateAction = () => {
 
     Swal.fire('Info', 'Untuk menambahkan siswa silahkan prose data dari ppdb yang aktif', 'success')
-    setAddUserOpen(true)
-    setAction('tambah')
+    // setAddUserOpen(true)
+    // setAction('tambah')
   }
   return (
     <Box

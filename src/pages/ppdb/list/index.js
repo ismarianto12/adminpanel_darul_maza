@@ -55,15 +55,20 @@ const statusObj = {
 
 const Jenjang = [
   {
+    'id': 1,
     'value': 'TKA',
 
   },
   {
+    'id': 2,
     'value': 'TKB',
-  }, {
+  },
+  {
+    'id': 3,
     'value': 'SD',
 
   }, {
+    'id': 4,
     'value': 'MTSI',
 
   },
@@ -281,7 +286,11 @@ const List = () => {
   const [role, setRole] = useState('')
   const [plan, setPlan] = useState('')
   const [value, setValue] = useState('')
+
+  const [takademik, setTakademik] = useState('')
   const [status, setStatus] = useState('')
+  const [jenjang, setJenjang] = useState('')
+
   const [tahunakademik, setTahunakademik] = useState([])
 
   const [searchValue, setSearchValue] = useState('')
@@ -308,7 +317,28 @@ const List = () => {
         .then(res => {
           console.log(res.data[0], 'response server')
           setTotal(res.data.length)
-          setRows(loadServerRows(paginationModel.page, res.data))
+
+          // const filteredData = res.data.filter((item) => {
+          //   if (
+          //     (status || item.status === status) &&
+          //     (jenjang || item.id_majors.includes(jenjang))
+          //   ) {
+          //     return true;
+          //   }
+          //   return false;
+          // })
+          // setRows(loadServerRows(paginationModel.page, filteredData))
+
+          if (status === '' || jenjang === '') {
+            const filteredData = res.data
+            setRows(loadServerRows(paginationModel.page, filteredData))
+
+          } else {
+            const filteredData = res?.data?.filter(posts => (
+              posts.status?.toLowerCase().includes(status) || posts.jenjang?.toLowerCase().includes(jenjang)
+            ))
+            setRows(loadServerRows(paginationModel.page, filteredData))
+          }
         })
     },
     [paginationModel]
@@ -335,6 +365,17 @@ const List = () => {
   const handleFilter = useCallback(val => {
     setValue(val)
   }, [])
+
+  const filterByjenjang = (e) => {
+    console.log('filter bya je' + e.target.value)
+    setJenjang(e.target.value)
+    fetchTableData(sort, searchValue, sortColumn)
+  }
+
+  const filterByStatus = (e) => {
+    setStatus(e.target.value)
+    fetchTableData(sort, searchValue, sortColumn)
+  }
 
   const handleSortModel = newModel => {
     if (newModel.length) {
@@ -421,17 +462,16 @@ const List = () => {
                 <CustomTextField
                   select
                   fullWidth
-                  // value={role} // Ganti defaultValue dengan value
                   SelectProps={{
                     displayEmpty: true,
-                    onChange: e => fhandleRoleChange(e)
+                    onChange: e => filterByjenjang(e)
                   }}
                 >
-                  <MenuItem key={0} value={null}>
+                  <MenuItem key={0} value={''}>
                     --Semua data--
                   </MenuItem>
                   {Jenjang.map((level) => (
-                    <MenuItem key={level.value} value={level.value}>
+                    <MenuItem key={level.value} value={level.id}>
                       {level.value.toUpperCase()}
                     </MenuItem>
                   ))}
@@ -445,7 +485,7 @@ const List = () => {
                   fullWidth
                   SelectProps={{
                     displayEmpty: true,
-                    onChange: e => fhandleRoleChange(e)
+                    onChange: e => setTakademik(e.target.value)
                   }}
                 >
                   <MenuItem key={0} value={null}>
@@ -460,7 +500,7 @@ const List = () => {
               </Grid>
               <Grid item xs={12} sm={4}>
 
-                <FormLabel>Statu : </FormLabel>
+                <FormLabel>Status : </FormLabel>
 
                 <CustomTextField
                   select
@@ -468,11 +508,11 @@ const List = () => {
                   // value={role} // Ganti defaultValue dengan value
                   SelectProps={{
                     displayEmpty: true,
-                    onChange: e => fhandleRoleChange(e)
+                    onChange: e => filterByStatus(e)
                   }}
                 >
-                  <MenuItem key={0} value={null}>
-                    --Tahun Akademik--
+                  <MenuItem key={0} value={''}>
+                    --Status--
                   </MenuItem>
                   {datastatus.map((level) => (
                     <MenuItem key={level.id} value={level.status}>

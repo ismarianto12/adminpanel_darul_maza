@@ -73,6 +73,28 @@ const navigation = () => {
         ]
       },
       {
+        title: 'Keuangan',
+        icon: 'tabler:list',
+        auth: false,
+        children: [
+          {
+            title: 'Pembayaran',
+            path: '/keuangan/list',
+            auth: false,
+          },
+          {
+            title: 'Tagihan Siswa',
+            path: '/keuangan/tagihan/list',
+            auth: false,
+          },
+          {
+            title: 'Laporan',
+            path: '/keuangan/laporan/list',
+            auth: false,
+          }
+        ]
+      },
+      {
         title: 'MASTER',
         icon: 'tabler:news',
         auth: false,
