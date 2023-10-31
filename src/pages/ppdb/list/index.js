@@ -220,7 +220,7 @@ const columns = [
     field: 'status',
     headerName: 'Status',
     renderCell: ({ row }) => {
-      if (row.status === 1) {
+      if (row.status === '1') {
         return <CustomChip
           rounded
           skin='light'
@@ -229,7 +229,7 @@ const columns = [
           color={'success'}
           sx={{ textTransform: 'capitalize' }}
         />
-      } else if (row.status === 1) {
+      } else if (row.status === '2') {
         return <CustomChip
           rounded
           skin='light'
