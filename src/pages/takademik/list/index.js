@@ -43,7 +43,7 @@ const Tahunakademik = () => {
     async (sort, q, column) => {
       setLoading(true)
       await axios
-        .get(`${process.env.APP_API}tahunakademik/list`, {
+        .get(`${process.env.APP_API}takademik/list`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`
           }
@@ -147,7 +147,7 @@ const Tahunakademik = () => {
           <MenuItem
             component={Link}
             sx={{ '& svg': { mr: 2 } }}
-            href={`/Tahunakademik/edit/${id}`}
+            href={`/tahunakademik/edit/${id}`}
             onClick={handleRowOptionsClose}
           >
             <Icon icon='tabler:eye' fontSize={20} />
@@ -156,7 +156,7 @@ const Tahunakademik = () => {
           <MenuItem
             component={Link}
             onClick={handleRowOptionsClose}
-            href={`/Tahunakademik/edit/${id}`}
+            href={`/tahunakademik/edit/${id}`}
             sx={{ '& svg': { mr: 2 } }}>
             <Icon icon='tabler:edit' fontSize={20} />
             {`Edit`}

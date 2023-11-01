@@ -114,6 +114,7 @@ const Category = () => {
       })
         .then(succes => {
           // onDeleteSuccess()
+          // fetchTableData()
           fetchTableData(sort, searchValue, sortColumn)
           setLoading(true)
           toast.success('Berhasil hapus data')

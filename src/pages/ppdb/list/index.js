@@ -377,7 +377,7 @@ const List = () => {
 
   useEffect(() => {
     const calltahun = async () => {
-      await axios.get(`${process.env.APP_API}tahunakademik/list`, {
+      await axios.get(`${process.env.APP_API}takademik/list`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
         },

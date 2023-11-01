@@ -63,13 +63,15 @@ const defaultValues = {
   tingkat: '',
   catatan: ''
 }
-const calledit = async (props) => {
-  const { id, setData, reset } = props
-  await axios.get(`${process.env.APP_API}/biaya_ppdb/edit/${id}`).then((data) => {
-    props.setData(data.data)
+const calledit = async (
+  id, setData, reset
+) => {
+
+  axios.get(`${process.env.APP_API}/biaya_ppdb/edit/${id}`).then((data) => {
+    setData(data.data)
   }).catch((err) => {
     Swal.fire('error', 'gagal mengambil', 'error')
-    props.setData([])
+    setData([])
   })
 }
 

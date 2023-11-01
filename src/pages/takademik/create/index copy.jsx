@@ -50,15 +50,20 @@ const Header = styled(Box)(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  tahun: yup.string().required(),
-  Semester: yup.string().required(),
-  active: yup.string().required()
+  judulin: yup.string().required(),
+  judulEn: yup.string().required(),
+  // isi: yup.string().required(),
+  // isiEng: yup.string().required(),
+  category_donwload_id: yup.string().required()
 })
 
 const defaultValues = {
-  tahun: '',
-  Semester: '',
-  active: ''
+  judulin: '',
+  judulEn: '',
+  isi: '',
+  isiEng: '',
+  file: '',
+  category_donwload_id: '',
 }
 
 
@@ -98,16 +103,21 @@ const Index = props => {
       const formData = new FormData()
       const user_id = getUserlogin('id')
       const level = getUserlogin('role')
-      formData.append('tahun', user_id)
-      formData.append('Semester', data.Semester)
-      formData.append('active', data.active)
-      await axios.post(`${process.env.APP_API}tahunakademik/update/${props.id}`, formData, {
+      formData.append('user_id', user_id)
+      formData.append('level', level)
+      formData.append('judulin', data.judulin)
+      formData.append('judulEn', data.judulEn)
+      formData.append('isi', deskripsiIn)
+      formData.append('isiEng', deskripsiEn)
+      formData.append('category_donwload_id', data.category_donwload_id)
+      formData.append('file', fileupload)
+      await axios.post(`${process.env.APP_API}download/insert`, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
       }).then(() => {
-        toast.success('Data akademik berhasil ditambahkan')
-        route.push('/takademik/list')
+        toast.success('Data Galery berhasil ditambahkan')
+        route.push('/download/list')
       })
     } catch (error) {
       if (error.response) {
@@ -131,7 +141,7 @@ const Index = props => {
     }
   }
   const handleClose = () => {
-    route.push('/takademik/list')
+    route.push('/download/list')
   }
 
   return (
@@ -142,7 +152,7 @@ const Index = props => {
           <Header>
             <Typography variant='h5'>
               <Icon icon='tabler:list' />
-              Edit tahun akademik</Typography>
+              Tambah Download</Typography>
             <IconButton
               size='small'
               onClick={handleClose}
@@ -166,7 +176,7 @@ const Index = props => {
                 <Grid item xs={12} sm={6}>
 
                   <Controller
-                    name='tahun'
+                    name='judulin'
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
@@ -174,66 +184,147 @@ const Index = props => {
                         fullWidth
                         value={value}
                         sx={{ mb: 4 }}
-                        label='Tahun'
+                        label='Judul Indonesia'
                         onChange={onChange}
-                        placeholder='Tahun'
-                        error={Boolean(errors.tahun)}
-                        {...(errors.tahun && { helperText: errors.tahun.message })}
+                        placeholder='Judul Indonesia'
+                        error={Boolean(errors.judulin)}
+                        {...(errors.judulin && { helperText: errors.judulin.message })}
                       />
                     )}
                   />
 
                 </Grid>
                 <Grid item xs={12} sm={6}>
+
+
                   <Controller
-                    name='semester'
+                    name='judulEn'
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
-                      <CustomTextField select fullWidth label='Semester :' id='form-layouts-tabs-select'
+                      <CustomTextField
+                        fullWidth
                         value={value}
+                        sx={{ mb: 4 }}
+                        label='Judul'
                         onChange={onChange}
-                        error={Boolean(errors.active)}
-                        placeholder='Semester'
-                        {...(errors.active && { helperText: errors.active.message })}
-                      >
-                        {['Genap', 'Ganjil'].map((albums) => (
-                          <MenuItem key={albums} value={albums}>
-                            {albums.toUpperCase()}
-                          </MenuItem>
-                        ))}
-                      </CustomTextField>
+                        placeholder='Judul English'
+                        error={Boolean(errors.judulEn)}
+                        {...(errors.judulEn && { helperText: errors.judulEn.message })}
+                      />
                     )}
                   />
 
                 </Grid>
               </Grid>
 
+
+
+              <br /> <br />
+              <Divider variant="middle" />
+              <br /> <br />
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
+
                   <Controller
-                    name='active'
+                    name='isi'
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
-                      <CustomTextField select fullWidth label='Status :' id='form-layouts-tabs-select'
+                      // <CustomTextField
+                      //   fullWidth
+                      //   multiline
+                      //   minRows={3}
+                      //   label='Deskripsi Indonesia'
+                      //   onChange={onChange}
+                      //   value={value}
+                      //   placeholder='Deskripsi Indonesia'
+                      //   sx={{ '& .MuiInputBase-root.MuiFilledInput-root': { alignItems: 'baseline' } }}
+                      //   InputProps={{
+                      //     startAdornment: (
+                      //       <InputAdornment position='start'>
+                      //         <Icon fontSize='1.25rem' icon='tabler:message' />
+                      //       </InputAdornment>
+                      //     )
+                      //   }}
+                      //   error={Boolean(errors.isi)}
+                      //   {...(errors.isi && { helperText: errors.isi.message })}
+                      // />
+                      <>
+                        <span>Deskripsi Indonesia</span>
+                        <Editordata content={deskripsiIn} setContent={setDeskripsiIn} />
+                      </>
+                    )}
+                  />
+
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='isiEng'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <>
+                        <span>Deskripsi English</span>
+                        <Editordata content={deskripsiEn} setContent={setDeskripsiEn} />
+                      </>
+                    )}
+                  />
+                </Grid>
+              </Grid>
+              <Grid container spacing={2}>
+
+                <Grid item xs={12} sm={6}>
+
+                  <Controller
+                    name='category_donwload_id'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField select fullWidth label='Pilih Album :' id='form-layouts-tabs-select'
                         value={value}
                         onChange={onChange}
-                        error={Boolean(errors.active)}
+                        error={Boolean(errors.category_donwload_id)}
                         placeholder='Kategory Donwload'
-                        {...(errors.active && { helperText: errors.active.message })}
+                        {...(errors.category_donwload_id && { helperText: errors.category_donwload_id.message })}
                       >
-                        {['active', 'nonactive'].map((albums) => (
-                          <MenuItem key={albums} value={albums}>
-                            {albums.toUpperCase()}
+                        {album.map((albums) => (
+                          <MenuItem key={albums.id} value={albums.title}>
+                            {albums.title}
                           </MenuItem>
                         ))}
                       </CustomTextField>
                     )}
                   />
 
-                </Grid>
 
+                </Grid>
+                <Grid item xs={12} sm={6}>
+
+
+
+                  <Controller
+                    name='gambar'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        type='file'
+                        label='File Extensi yang bisa di terima  (xls,pdf,jpg,bmp)'
+                        value={value}
+                        sx={{ mb: 4 }}
+                        onChange={(e) => {
+                          onChange(e)
+                          uploadFile(e)
+                        }}
+                        error={Boolean(errors.gambar)}
+                        placeholder='Gambar'
+                        {...(errors.gambar && { helperText: errors.gambar.message })}
+                      />
+                    )}
+                  />
+                </Grid>
               </Grid>
 
               <br /><br />
@@ -257,17 +348,6 @@ const Index = props => {
       </Card>
     </>
   )
-}
-
-export default Index
-
-export async function getServerSideProps(context) {
-  const id = context.query.index;
-  return {
-    props: {
-      id
-    },
-  };
 }
 
 export default Index
