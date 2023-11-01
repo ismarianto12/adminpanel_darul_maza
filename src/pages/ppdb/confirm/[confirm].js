@@ -258,12 +258,12 @@ const Index = props => {
                         <TableRow>
                           <TableCell>Img Siswa:</TableCell>
                           <TableCell>:</TableCell>
-                          <TableCell>/Applications/XAMPP/xamppfiles/temp/phpritjcl</TableCell>
+                          <TableCell><img src={`${process.env.ASSETS_API}/gambar/${ppdbdata.img_siswa}`} style={{ width: '50%' }} /></TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Img KK:</TableCell>
                           <TableCell>:</TableCell>
-                          <TableCell>/Applications/XAMPP/xamppfiles/temp/phppPHyzI</TableCell>
+                          <TableCell><img src={`${process.env.ASSETS_API}/kk/${ppdbdata.img_kk}`} style={{ width: '50%' }} /></TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>No :</TableCell>
@@ -321,22 +321,22 @@ const Index = props => {
                         <TableRow>
                           <TableCell>Provinsi:</TableCell>
                           <TableCell>:</TableCell>
-                          <TableCell>{indexProvince(ppdbdata.prov)}</TableCell>
+                          <TableCell>{ppdbdata.prov}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Kabupaten:</TableCell>
                           <TableCell>:</TableCell>
-                          <TableCell>{indexKabupaten(ppdbdata.prov, ppdbdata.kab)}</TableCell>
+                          <TableCell>{ppdbdata.kab}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Kecamatan:</TableCell>
                           <TableCell>:</TableCell>
-                          <TableCell>{indexKecamatan(ppdbdata.kab, ppdbdata.kec)}</TableCell>
+                          <TableCell>{ppdbdata.kec}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Kelurahan:</TableCell>
                           <TableCell>:</TableCell>
-                          <TableCell>{indexKelurahan(ppdbdata.kec, ppdbdata.kel)}</TableCell>
+                          <TableCell>{ppdbdata.kel}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell>Alamat:</TableCell>

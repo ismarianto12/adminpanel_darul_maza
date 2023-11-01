@@ -74,6 +74,216 @@ const Jenjang = [
   },
 ]
 
+const RowOptions = ({ id, status }) => {
+  // ** Hooks
+  // const dispatch = useDispatch()
+
+  // ** State
+  console.log(status, 'status ppdb')
+  const [anchorEl, setAnchorEl] = useState(null)
+  const rowOptionsOpen = Boolean(anchorEl)
+
+
+
+  const handleRowOptionsClick = event => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const router = useRouter()
+
+  const handleRowOptionsClose = (id, params) => {
+    if (params === 'edit') {
+      router.push(`/ppdb/edit/${id}`)
+    } else if (params === 'view') {
+      router.push(`/ppdb/edit/${id}`)
+    } else if (params === 'confirm') {
+      router.push(`/ppdb/confirm/${id}`)
+    } else if (params === 'delete') {
+      router.push(`/ppdb/edit/${id}`)
+
+    }
+    setAnchorEl(null)
+  }
+
+  const handleDelete = () => {
+    // dispatch(deleteUser(id))
+    handleRowOptionsClose(id, 'delete')
+  }
+
+  return (
+    <>
+      <IconButton size='small' onClick={handleRowOptionsClick}>
+        <Icon icon='tabler:dots-vertical' />
+      </IconButton>
+      <Menu
+        keepMounted
+        anchorEl={anchorEl}
+        open={rowOptionsOpen}
+        onClose={handleRowOptionsClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right'
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right'
+        }}
+        PaperProps={{ style: { minWidth: '8rem' } }}
+      >
+        <MenuItem
+          // component={Link}
+          sx={{ '& svg': { mr: 2 } }}
+          onClick={() => handleRowOptionsClose(id, 'view')}
+        >
+          <Icon icon='tabler:eye' fontSize={20} />
+          View
+        </MenuItem>
+        {parseInt(status) === 1 ?
+          (<>
+            <MenuItem onClick={() => handleRowOptionsClose(id, 'confirm')} sx={{ '& svg': { mr: 2 } }}>
+              <Icon icon='tabler:list' fontSize={20} />
+              Detail Siswa
+            </MenuItem>
+          </>
+          )
+
+          :
+          (
+            <>
+              <MenuItem onClick={() => handleRowOptionsClose(id, 'confirm')} sx={{ '& svg': { mr: 2 } }}>
+                <Icon icon='tabler:check' fontSize={20} />
+                Verifikasi
+              </MenuItem>
+              <MenuItem href={`/ppdb/edit/${id}`} onClick={handleDelete} sx={{ '& svg': { mr: 2 } }}>
+                <Icon icon='tabler:trash' fontSize={20} />
+                Delete
+              </MenuItem>
+            </>
+          )
+        }
+      </Menu>
+    </>
+  )
+}
+
+const columns = [
+  {
+    flex: 0.2,
+    field: 'id',
+    minWidth: 100,
+    headerName: 'ID',
+    renderCell: ({ row }) => (
+      <Typography href={`/apps/invoice/preview/${row.id}`}>{`#${row.id}`}</Typography>
+    )
+  },
+  {
+    flex: 0.25,
+    minWidth: 290,
+    field: 'date_inv',
+    headerName: 'Tgl & Jam'
+  },
+  {
+    flex: 0.25,
+    minWidth: 290,
+    field: 'nama',
+    headerName: 'Nama'
+  },
+  {
+    flex: 0.25,
+    minWidth: 290,
+    field: 'no_telp',
+    headerName: 'Handphone'
+  },
+  {
+    flex: 0.25,
+    minWidth: 290,
+    field: 'nis',
+    headerName: 'Nis',
+  },
+
+  {
+    flex: 0.25,
+    minWidth: 290,
+    field: 'jk',
+    headerName: 'JK',
+    renderCell: ({ row }) => {
+      if (row.jk === 'P') {
+        return (<b>Perempuan</b>)
+      } else {
+        return 'Laki - Laki'
+      }
+    }
+  },
+  {
+    flex: 0.25,
+    minWidth: 290,
+    field: 'id_majors',
+    headerName: 'Majors',
+    renderCell: ({ row }) => {
+      return getparamPend(row.id_majors)
+    }
+  },
+  {
+    flex: 0.25,
+    minWidth: 290,
+    field: 'status',
+    headerName: 'Status',
+    renderCell: ({ row }) => {
+      if (parseInt(row.status) === 1) {
+        return <CustomChip
+          rounded
+          skin='light'
+          size='small'
+          label={'Approved'}
+          color={'success'}
+          sx={{ textTransform: 'capitalize' }}
+        />
+      } else if (parseInt(row.status) === 2) {
+        return <CustomChip
+          rounded
+          skin='light'
+          size='small'
+          label={'Tolak'}
+          color={'error'}
+          sx={{ textTransform: 'capitalize' }}
+        />
+      } else {
+        return <CustomChip
+          rounded
+          skin='light'
+          size='small'
+          label={'Baru'}
+          color={'error'}
+          sx={{ textTransform: 'capitalize' }}
+        />
+      }
+    }
+  },
+  {
+    flex: 0.25,
+    minWidth: 290,
+    field: 'username',
+    headerName: 'User id'
+  },
+  {
+    flex: 0.1,
+    minWidth: 100,
+    sortable: false,
+    field: 'staff_konfirmasi',
+    headerName: 'Actions',
+    renderCell: ({ row }) => <RowOptions id={row.id} status={row.status} />
+  }
+]
+
+const datastatus = [
+  {
+    'id': '1', 'status': 'Diterima',
+
+  },
+  {
+    'id': '2', 'status': 'Di tolak',
+  }
+]
 
 const List = () => {
   // ** States
@@ -96,240 +306,6 @@ const List = () => {
   function loadServerRows(currentPage, data) {
     return data.slice(currentPage * paginationModel.pageSize, (currentPage + 1) * paginationModel.pageSize)
   }
-
-  const RowOptions = ({ id, status }) => {
-    // ** Hooks
-    // const dispatch = useDispatch()
-
-    // ** State
-    console.log(status, 'status ppdb')
-    const [anchorEl, setAnchorEl] = useState(null)
-    const rowOptionsOpen = Boolean(anchorEl)
-
-
-    const cetakPdf = () => {
-      const token = localStorage.getItem('accessToken');
-      fetch(`${process.env.APP_API}ppdb/report/${props.id}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-          // Add any necessary headers
-        },
-        body: JSON.stringify({ /* Add any request body if required */ }),
-      })
-        .then(response => response.blob())
-        .then(blob => {
-          const fileURL = URL.createObjectURL(blob);
-          window.open(fileURL, '_blank');
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-
-    }
-
-
-    const handleRowOptionsClick = event => {
-      setAnchorEl(event.currentTarget)
-    }
-
-    const router = useRouter()
-
-    const handleRowOptionsClose = (id, params) => {
-      if (params === 'edit') {
-        router.push(`/ppdb/edit/${id}`)
-      } else if (params === 'view') {
-        router.push(`/ppdb/edit/${id}`)
-      } else if (params === 'confirm') {
-        router.push(`/ppdb/confirm/${id}`)
-      } else if (params === 'delete') {
-        router.push(`/ppdb/edit/${id}`)
-
-      }
-      setAnchorEl(null)
-    }
-
-    const handleDelete = () => {
-      // dispatch(deleteUser(id))
-      handleRowOptionsClose(id, 'delete')
-    }
-
-    return (
-      <>
-        <IconButton size='small' onClick={handleRowOptionsClick}>
-          <Icon icon='tabler:dots-vertical' />
-        </IconButton>
-        <Menu
-          keepMounted
-          anchorEl={anchorEl}
-          open={rowOptionsOpen}
-          onClose={handleRowOptionsClose}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right'
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right'
-          }}
-          PaperProps={{ style: { minWidth: '8rem' } }}
-        >
-          <MenuItem
-            // component={Link}
-            sx={{ '& svg': { mr: 2 } }}
-            onClick={() => handleRowOptionsClose(id, 'view')}
-          >
-            <Icon icon='tabler:eye' fontSize={20} />
-            View
-          </MenuItem>
-          {parseInt(status) === 1 ?
-            (<>
-              <MenuItem onClick={() => cetakPdf(id)} sx={{ '& svg': { mr: 2 } }}>
-                <Icon icon='tabler:list' fontSize={20} />
-                Print
-              </MenuItem>
-            </>
-            )
-
-            :
-            (
-              <>
-                <MenuItem onClick={() => handleRowOptionsClose(id, 'confirm')} sx={{ '& svg': { mr: 2 } }}>
-                  <Icon icon='tabler:check' fontSize={20} />
-                  Verifikasi
-                </MenuItem>
-                <MenuItem href={`/ppdb/edit/${id}`} onClick={handleDelete} sx={{ '& svg': { mr: 2 } }}>
-                  <Icon icon='tabler:trash' fontSize={20} />
-                  Delete
-                </MenuItem>
-              </>
-            )
-          }
-        </Menu>
-      </>
-    )
-  }
-
-  const columns = [
-    {
-      flex: 0.2,
-      field: 'id',
-      minWidth: 100,
-      headerName: 'ID',
-      renderCell: ({ row }) => (
-        <Typography href={`/apps/invoice/preview/${row.id}`}>{`#${row.id}`}</Typography>
-      )
-    },
-    {
-      flex: 0.25,
-      minWidth: 290,
-      field: 'date_inv',
-      headerName: 'Tgl & Jam'
-    },
-    {
-      flex: 0.25,
-      minWidth: 290,
-      field: 'nama',
-      headerName: 'Nama'
-    },
-    {
-      flex: 0.25,
-      minWidth: 290,
-      field: 'no_telp',
-      headerName: 'Handphone'
-    },
-    {
-      flex: 0.25,
-      minWidth: 290,
-      field: 'nis',
-      headerName: 'Nis',
-    },
-
-    {
-      flex: 0.25,
-      minWidth: 290,
-      field: 'jk',
-      headerName: 'JK',
-      renderCell: ({ row }) => {
-        if (row.jk === 'P') {
-          return (<b>Perempuan</b>)
-        } else {
-          return 'Laki - Laki'
-        }
-      }
-    },
-    {
-      flex: 0.25,
-      minWidth: 290,
-      field: 'id_majors',
-      headerName: 'Majors',
-      renderCell: ({ row }) => {
-        return getparamPend(row.id_majors)
-      }
-    },
-    {
-      flex: 0.25,
-      minWidth: 290,
-      field: 'status',
-      headerName: 'Status',
-      renderCell: ({ row }) => {
-        if (parseInt(row.status) === 1) {
-          return <CustomChip
-            rounded
-            skin='light'
-            size='small'
-            label={'Approved'}
-            color={'success'}
-            sx={{ textTransform: 'capitalize' }}
-          />
-        } else if (parseInt(row.status) === 2) {
-          return <CustomChip
-            rounded
-            skin='light'
-            size='small'
-            label={'Tolak'}
-            color={'error'}
-            sx={{ textTransform: 'capitalize' }}
-          />
-        } else {
-          return <CustomChip
-            rounded
-            skin='light'
-            size='small'
-            label={'Baru'}
-            color={'error'}
-            sx={{ textTransform: 'capitalize' }}
-          />
-        }
-      }
-    },
-    {
-      flex: 0.25,
-      minWidth: 290,
-      field: 'username',
-      headerName: 'User id'
-    },
-    {
-      flex: 0.1,
-      minWidth: 100,
-      sortable: false,
-      field: 'id',
-      headerName: 'Actions',
-      renderCell: ({ row }) => <RowOptions id={row.id} status={row.status} />
-    }
-  ]
-
-  const datastatus = [
-    {
-      'id': '1', 'status': 'Diterima',
-
-    },
-    {
-      'id': '2', 'status': 'Di tolak',
-    }
-  ]
-
 
   const fetchTableData = useCallback(
     async (sort, q, column) => {
@@ -377,7 +353,7 @@ const List = () => {
 
   useEffect(() => {
     const calltahun = async () => {
-      await axios.get(`${process.env.APP_API}takademik/list`, {
+      await axios.get(`${process.env.APP_API}tahunakademik/list`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
         },
