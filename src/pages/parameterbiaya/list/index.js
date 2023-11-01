@@ -231,7 +231,7 @@ const Category = () => {
               minWidth: 100,
               headerName: 'ID',
               renderCell: ({ row }) => (
-                <Typography href={`/apps/invoice/preview/${row.id}`}>{`#${row.id}`}</Typography>
+                <Typography href={`/parameterbiaya/edit/${row.id}`}>{`#${row.id}`}</Typography>
               )
             },
             {

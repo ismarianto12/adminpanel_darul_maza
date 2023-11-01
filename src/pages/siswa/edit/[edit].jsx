@@ -144,7 +144,7 @@ const Index = props => {
 
   return (
     <>
-      <Headtitle title="Edit data cabang" />
+      <Headtitle title={`Edit Data Nomor : ${props.id}`} />
       <Card>
         <CardContent>
           <Header>
@@ -170,7 +170,7 @@ const Index = props => {
           <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Controller
-                name='nama_cabang'
+                name='nama'
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange } }) => (
@@ -178,16 +178,16 @@ const Index = props => {
                     fullWidth
                     value={value}
                     sx={{ mb: 4 }}
-                    label='Nama Cabang'
+                    label='Nomor Pendaftaran'
                     onChange={onChange}
-                    placeholder='Nama cabang'
+                    placeholder='Nama Pendaftaran'
                     error={Boolean(errors.nama_cabang)}
                     {...(errors.nama_cabang && { helperText: errors.nama_cabang.message })}
                   />
                 )}
               />
               <Controller
-                name='alamat1'
+                name='no_pendaftar'
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange } }) => (

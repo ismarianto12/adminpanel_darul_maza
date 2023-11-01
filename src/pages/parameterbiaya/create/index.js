@@ -13,6 +13,7 @@ import Box from '@mui/material/Box'
 import { useRouter } from 'next/router'
 // ** Custom Component Import
 import toast from 'react-hot-toast'
+import FormLabel from '@mui/material/FormLabel'
 
 import CustomTextField from 'src/@core/components/mui/text-field'
 import InputAdornment from '@mui/material/InputAdornment'
@@ -56,11 +57,10 @@ const schema = yup.object().shape({
   headline: yup.string().required()
 })
 const defaultValues = {
-  title: '',
-  url: '',
-  desc: '',
-  description: '',
-  headline: '',
+  nama_biaya: '',
+  nominal: '',
+  tingkat: '',
+  catatan: ''
 }
 const Index = props => {
   const route = useRouter();
@@ -82,31 +82,57 @@ const Index = props => {
   })
 
   const onSubmit = async (data) => {
-    await axios.post(`${process.env.APP_API}video/insert`, data, {
+    await axios.post(`${process.env.APP_API}biaya_ppdb/insert`, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
     }).then(() => {
       toast.success('Data berita berhasil ditambahkan')
-      route.push('/video/list')
+      route.push('/parameterbiaya/list')
     })
     reset()
   }
   const handleClose = () => {
     reset()
-    route.push('/video/list');
+    route.push('/parameterbiaya/list')
   }
 
 
+
+  const Jenjang = [
+    {
+      'id': 1,
+      'value': 'TKA',
+
+    },
+    {
+      'id': 2,
+      'value': 'TKB',
+    },
+    {
+      'id': 3,
+      'value': 'SD',
+
+    }, {
+      'id': 4,
+      'value': 'MTSI',
+
+    },
+  ]
+
+  const filterByjenjang = () => {
+
+  }
+
   return (
     <>
-      <Headtitle title={`Tambah Video`} />
+      <Headtitle title={`Tambah Biaya`} />
       <Card>
         <CardContent>
           <Header>
             <Typography variant='h5'>
-              <Icon icon='tabler:video' />
-              Create Video</Typography>
+              <Icon icon='tabler:money' />
+              Parameter Biaya</Typography>
             <IconButton
               size='small'
               onClick={handleClose}
@@ -128,7 +154,7 @@ const Index = props => {
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <Controller
-                    name='title'
+                    name='nama_biaya'
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
@@ -138,7 +164,7 @@ const Index = props => {
                         sx={{ mb: 4 }}
                         label=''
                         onChange={onChange}
-                        placeholder='Judul'
+                        placeholder='Nama Biaya'
                         error={Boolean(errors.title)}
                         {...(errors.title && { helperText: errors.title.message })}
                       />
@@ -147,7 +173,7 @@ const Index = props => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Controller
-                    name='url'
+                    name='nominal'
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
@@ -157,7 +183,7 @@ const Index = props => {
                         sx={{ mb: 4 }}
                         label=''
                         onChange={onChange}
-                        placeholder='Example : https://www.youtube.com/?wathc=aldamdklaUx'
+                        placeholder='Example : Nama Catatan'
                         error={Boolean(errors.url)}
                         {...(errors.url && { helperText: errors.url.message })}
                       />
@@ -169,29 +195,30 @@ const Index = props => {
               <Grid container spacing={2}>
 
                 <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='headline'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label=''
-                        onChange={onChange}
-                        placeholder='Headline'
-                        error={Boolean(errors.headline)}
-                        {...(errors.headline && { helperText: errors.headline.message })}
-                      />
-                    )}
-                  />
+                  <FormLabel>Jenjang : </FormLabel>
+                  <CustomTextField
+                    select
+                    fullWidth
+                    SelectProps={{
+                      displayEmpty: true,
+                      onChange: e => filterByjenjang(e)
+                    }}
+                  >
+                    <MenuItem key={0} value={''}>
+                      --Semua data--
+                    </MenuItem>
+                    {Jenjang.map((level) => (
+                      <MenuItem key={level.value} value={level.id}>
+                        {level.value.toUpperCase()}
+                      </MenuItem>
+                    ))}
+                  </CustomTextField>
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
 
                   <Controller
-                    name='description'
+                    name='catatan'
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
@@ -199,7 +226,7 @@ const Index = props => {
                         fullWidth
                         multiline
                         minRows={4}
-                        placeholder='deskripsi ...'
+                        placeholder='Catatan Tambahan ...'
                         sx={{ '& .MuiInputBase-root.MuiFilledInput-root': { alignItems: 'baseline' } }}
                         error={Boolean(errors.description)}
                         {...(errors.description && { helperText: errors.description.message })}

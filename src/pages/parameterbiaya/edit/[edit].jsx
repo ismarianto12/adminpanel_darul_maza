@@ -12,14 +12,20 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import { useRouter } from 'next/router'
 // ** Custom Component Import
+import FormLabel from '@mui/material/FormLabel'
+import toast from 'react-hot-toast'
+
 import CustomTextField from 'src/@core/components/mui/text-field'
 import InputAdornment from '@mui/material/InputAdornment'
+// ** Third Party Imports
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
+
+// ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
 
 // ** Actions Imports
@@ -27,7 +33,7 @@ import { addUser } from 'src/store/apps/user'
 import { Card, CardContent } from '@mui/material'
 import axios from 'axios'
 import Headtitle from 'src/@core/components/Headtitle'
-import { toast } from 'react-hot-toast'
+import Swal from 'sweetalert2'
 
 const showErrors = (field, valueLen, min) => {
   if (valueLen === 0) {
@@ -46,21 +52,34 @@ const Header = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between'
 }))
 const schema = yup.object().shape({
+  title: yup.string().required(),
   url: yup.string().required(),
-  headline: yup.string().required(),
   // description: yup.string().required(),
+  headline: yup.string().required()
 })
+const defaultValues = {
+  nama_biaya: '',
+  nominal: '',
+  tingkat: '',
+  catatan: ''
+}
+const calledit = async (props) => {
+  const { id, setData, reset } = props
+  await axios.get(`${process.env.APP_API}/biaya_ppdb/edit/${id}`).then((data) => {
+    props.setData(data.data)
+  }).catch((err) => {
+    Swal.fire('error', 'gagal mengambil', 'error')
+    props.setData([])
+  })
+}
 
-
-const Index = (props) => {
+const Index = props => {
   const route = useRouter();
+  const [data, setData] = useState([])
+  const { open, toggle } = props
 
   const dispatch = useDispatch()
   const store = useSelector(state => state.user)
-  const [data, setData] = useState([]);
-
-  const { params } = useRouter();
-
   const {
     reset,
     control,
@@ -69,48 +88,21 @@ const Index = (props) => {
     handleSubmit,
     formState: { errors }
   } = useForm({
-    defaultValues: {
-      title: data?.title,
-      url: data?.url,
-      desc: data?.desc,
-      description: data?.description,
-      headline: data?.headline,
-    },
+    defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
-
   useEffect(() => {
-    calledit()
-  }, []);
-  const calledit = () => {
-    const config = {
-      method: 'get',
-      url: `${process.env.APP_API}video/show/` + props.id,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-      },
-    }
-    axios(config)
-      .then((res) => {
-        setData(res.data)
-        reset(res.data)
-
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }
+    calledit(props.id, setData, reset)
+  }, [])
   const onSubmit = async (data) => {
-    console.log('log data')
-    await axios.post(`${process.env.APP_API}video/update/${props?.id}`, data, {
+    await axios.post(`${process.env.APP_API}biaya_ppdb/insert`, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
     }).then(() => {
       toast.success('Data berita berhasil ditambahkan')
-      route.push('/video/list')
+      route.push('/parameterbiaya/list')
     })
     reset()
   }
@@ -118,16 +110,38 @@ const Index = (props) => {
     reset()
     route.push('/video/list');
   }
-  console.log(data?.active, 'datail data')
+  const Jenjang = [
+    {
+      'id': 1,
+      'value': 'TKA',
+
+    },
+    {
+      'id': 2,
+      'value': 'TKB',
+    },
+    {
+      'id': 3,
+      'value': 'SD',
+
+    }, {
+      'id': 4,
+      'value': 'MTSI',
+
+    },
+  ]
+  const filterByjenjang = () => {
+
+  }
   return (
     <>
-      <Headtitle title={`Edit Video`} />
+      <Headtitle title={`Tambah Biaya`} />
       <Card>
         <CardContent>
           <Header>
             <Typography variant='h5'>
-              <Icon icon='tabler:video' />
-              Edit Video</Typography>
+              <Icon icon='tabler:money' />
+              Parameter Biaya {props.id}</Typography>
             <IconButton
               size='small'
               onClick={handleClose}
@@ -149,7 +163,7 @@ const Index = (props) => {
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <Controller
-                    name='title'
+                    name='nama_biaya'
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
@@ -159,7 +173,7 @@ const Index = (props) => {
                         sx={{ mb: 4 }}
                         label=''
                         onChange={onChange}
-                        placeholder='Judul'
+                        placeholder='Nama Biaya'
                         error={Boolean(errors.title)}
                         {...(errors.title && { helperText: errors.title.message })}
                       />
@@ -168,7 +182,7 @@ const Index = (props) => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Controller
-                    name='url'
+                    name='nominal'
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
@@ -178,7 +192,7 @@ const Index = (props) => {
                         sx={{ mb: 4 }}
                         label=''
                         onChange={onChange}
-                        placeholder='url'
+                        placeholder='Example : Nama Catatan'
                         error={Boolean(errors.url)}
                         {...(errors.url && { helperText: errors.url.message })}
                       />
@@ -190,38 +204,38 @@ const Index = (props) => {
               <Grid container spacing={2}>
 
                 <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='headline'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label=''
-                        onChange={onChange}
-                        placeholder='Headline'
-                        error={Boolean(errors.headline)}
-                        {...(errors.headline && { helperText: errors.headline.message })}
-                      />
-                    )}
-                  />
+                  <FormLabel>Jenjang : </FormLabel>
+                  <CustomTextField
+                    select
+                    fullWidth
+                    SelectProps={{
+                      displayEmpty: true,
+                      onChange: e => filterByjenjang(e)
+                    }}
+                  >
+                    <MenuItem key={0} value={''}>
+                      --Semua data--
+                    </MenuItem>
+                    {Jenjang.map((level) => (
+                      <MenuItem key={level.value} value={level.id}>
+                        {level.value.toUpperCase()}
+                      </MenuItem>
+                    ))}
+                  </CustomTextField>
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
 
                   <Controller
-                    name='description'
+                    name='catatan'
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
                       <CustomTextField
                         fullWidth
                         multiline
-                        value={value}
                         minRows={4}
-                        placeholder='deskripsi ...'
+                        placeholder='Catatan Tambahan ...'
                         sx={{ '& .MuiInputBase-root.MuiFilledInput-root': { alignItems: 'baseline' } }}
                         error={Boolean(errors.description)}
                         {...(errors.description && { helperText: errors.description.message })}
@@ -232,10 +246,10 @@ const Index = (props) => {
                 </Grid>
               </Grid>
               <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
-                <Button type='submit' variant='contained' sx={{ mr: 10, width: '100%' }} >
+                <Button type='submit' variant='contained' sx={{ mr: 10, width: '50%' }} >
                   Save
                 </Button>
-                <Button variant='tonal' color='secondary' sx={{ mr: 0, width: '100%' }} onClick={handleClose}>
+                <Button variant='tonal' color='secondary' sx={{ mr: 0, width: '50%' }} onClick={handleClose}>
                   Cancel
                 </Button>
               </Box>
@@ -246,7 +260,6 @@ const Index = (props) => {
     </>
   )
 }
-
 export async function getServerSideProps(context) {
   const id = context.query.edit;
   return {
@@ -255,6 +268,5 @@ export async function getServerSideProps(context) {
     },
   };
 }
-
 
 export default Index

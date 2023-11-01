@@ -26,8 +26,13 @@ const Comheader = props => {
         justifyContent: 'space-between'
       }}
     >
-      <Button color='secondary' variant='tonal' startIcon={<Icon icon='tabler:upload' />}>
-        Export
+      <Button variant='contained' sx={{ '& svg': { mr: 2 } }}
+        onClick={() =>
+          route.push('/parameterbiaya/create')
+        }
+      >
+        <Icon fontSize='1.125rem' icon='tabler:plus' />
+        Tambah
       </Button>
       <Box sx={{ rowGap: 2, display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
         <CustomTextField
@@ -37,14 +42,7 @@ const Comheader = props => {
           onChange={e => handleFilter(e.target.value)}
         />
 
-        <Button variant='contained' sx={{ '& svg': { mr: 2 } }}
-          onClick={() =>
-            route.push('/video/create')
-          }
-        >
-          <Icon fontSize='1.125rem' icon='tabler:plus' />
-          Tambah
-        </Button>
+
       </Box>
     </Box>
   )
