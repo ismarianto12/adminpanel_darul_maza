@@ -118,8 +118,8 @@ const UserDropdown = props => {
             >
             </Badge>
             <Box sx={{ display: 'flex', ml: 2.5, alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Typography sx={{ fontWeight: 500 }}>{getUserlogin('fullName')}</Typography>
-              <Typography variant='body2'>{getUserlogin('role')}</Typography>
+              <Typography sx={{ fontWeight: 500 }}>{getUserlogin('username').toUpperCase()}</Typography>
+              <Typography variant='body2'>{getUserlogin('role') === 1 ? 'Super User ' : 'Admin'}</Typography>
             </Box>
           </Box>
         </Box>

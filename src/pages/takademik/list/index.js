@@ -43,7 +43,7 @@ const Tahunakademik = () => {
     async (sort, q, column) => {
       setLoading(true)
       await axios
-        .get(`${process.env.APP_API}takademik/list`, {
+        .get(`${process.env.APP_API}tahunakademik/list`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`
           }
@@ -101,7 +101,7 @@ const Tahunakademik = () => {
 
     const DeleteCat = (id) => {
       setLoading(true)
-      axios.delete(`${process.env.APP_API}Tahunakademik/destroy/${id}`, {
+      axios.delete(`${process.env.APP_API}tahunakademik/destroy/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
         }

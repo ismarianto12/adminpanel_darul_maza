@@ -51,10 +51,10 @@ const Header = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between'
 }))
 const schema = yup.object().shape({
-  title: yup.string().required(),
-  url: yup.string().required(),
+  nama_biaya: yup.string().required(),
+  nominal: yup.string().required(),
   // description: yup.string().required(),
-  headline: yup.string().required()
+  // tingkat: yup.string().required()
 })
 const defaultValues = {
   nama_biaya: '',
@@ -62,6 +62,7 @@ const defaultValues = {
   tingkat: '',
   catatan: ''
 }
+
 const Index = props => {
   const route = useRouter();
   const { open, toggle } = props
@@ -82,7 +83,7 @@ const Index = props => {
   })
 
   const onSubmit = async (data) => {
-    await axios.post(`${process.env.APP_API}biaya_ppdb/insert`, data, {
+    await axios.post(`${process.env.APP_API}parameterbiaya/insert`, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
@@ -194,25 +195,32 @@ const Index = props => {
 
               <Grid container spacing={2}>
 
+
                 <Grid item xs={12} sm={6}>
                   <FormLabel>Jenjang : </FormLabel>
-                  <CustomTextField
-                    select
-                    fullWidth
-                    SelectProps={{
-                      displayEmpty: true,
-                      onChange: e => filterByjenjang(e)
-                    }}
-                  >
-                    <MenuItem key={0} value={''}>
-                      --Semua data--
-                    </MenuItem>
-                    {Jenjang.map((level) => (
-                      <MenuItem key={level.value} value={level.id}>
-                        {level.value.toUpperCase()}
-                      </MenuItem>
-                    ))}
-                  </CustomTextField>
+                  <Controller
+                    name='tingkat'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        select
+                        fullWidth
+                        SelectProps={{
+                          displayEmpty: true,
+                          onChange: e => filterByjenjang(e)
+                        }}
+                      >
+                        <MenuItem key={0} value={''}>
+                          --Semua data--
+                        </MenuItem>
+                        {Jenjang.map((level) => (
+                          <MenuItem key={level.value} value={level.id}>
+                            {level.value.toUpperCase()}
+                          </MenuItem>
+                        ))}
+                      </CustomTextField>)}
+                  />
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
