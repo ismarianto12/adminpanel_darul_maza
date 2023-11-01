@@ -50,9 +50,9 @@ const Header = styled(Box)(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  tahun: yup.string().required(),
-  Semester: yup.string().required(),
-  active: yup.string().required()
+  // tahun: yup.string().required(),
+  // Semester: yup.string().required(),
+  // active: yup.string().required()
 })
 
 const defaultValues = {
@@ -99,7 +99,7 @@ const Index = props => {
       const user_id = getUserlogin('id')
       const level = getUserlogin('role')
       formData.append('tahun', user_id)
-      formData.append('Semester', data.Semester)
+      formData.append('Semester', data.semester)
       formData.append('active', data.active)
       await axios.post(`${process.env.APP_API}tahunakademik/insert/`, formData, {
         headers: {
@@ -193,9 +193,9 @@ const Index = props => {
                       <CustomTextField select fullWidth label='Semester :' id='form-layouts-tabs-select'
                         value={value}
                         onChange={onChange}
-                        error={Boolean(errors.active)}
+                        error={Boolean(errors.semester)}
                         placeholder='Semester'
-                        {...(errors.active && { helperText: errors.active.message })}
+                        {...(errors.semester && { helperText: errors.semester.message })}
                       >
                         {['Genap', 'Ganjil'].map((albums) => (
                           <MenuItem key={albums} value={albums}>

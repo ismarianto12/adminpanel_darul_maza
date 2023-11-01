@@ -147,7 +147,7 @@ const Tahunakademik = () => {
           <MenuItem
             component={Link}
             sx={{ '& svg': { mr: 2 } }}
-            href={`/tahunakademik/edit/${id}`}
+            href={`/takademik/edit/${id}`}
             onClick={handleRowOptionsClose}
           >
             <Icon icon='tabler:eye' fontSize={20} />
@@ -156,7 +156,7 @@ const Tahunakademik = () => {
           <MenuItem
             component={Link}
             onClick={handleRowOptionsClose}
-            href={`/tahunakademik/edit/${id}`}
+            href={`/takademik/edit/${id}`}
             sx={{ '& svg': { mr: 2 } }}>
             <Icon icon='tabler:edit' fontSize={20} />
             {`Edit`}
