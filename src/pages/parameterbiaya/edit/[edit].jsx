@@ -108,7 +108,7 @@ const Index = props => {
   }
   const handleClose = () => {
     reset()
-    route.push('/video/list');
+    route.push('/parameterbiaya/list');
   }
   const Jenjang = [
     {
