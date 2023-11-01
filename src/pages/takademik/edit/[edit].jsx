@@ -258,16 +258,13 @@ const Index = props => {
     </>
   )
 }
-
-export default Index
-
 export async function getServerSideProps(context) {
-  const id = context.query.index;
+  const id = context.query.edit;
   return {
     props: {
       id
     },
   };
 }
-
 export default Index
+
