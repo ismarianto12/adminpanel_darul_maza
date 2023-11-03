@@ -4,8 +4,7 @@ import { useEffect, useState, useCallback } from 'react'
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
-import Grid from '@mui/material/Grid'
-
+import CustomTextField from 'src/@core/components/mui/text-field'
 import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
 import IconButton from '@mui/material/IconButton'
@@ -15,14 +14,17 @@ import { DataGrid } from '@mui/x-data-grid'
 import axios from 'axios'
 import CustomChip from 'src/@core/components/mui/chip'
 import CustomAvatar from 'src/@core/components/mui/avatar'
-
+import Grid from '@mui/material/Grid'
 import { getInitials } from 'src/@core/utils/get-initials'
 import Icon from 'src/@core/components/icon'
 import Link from 'next/link'
 import Comheader from './Comheader'
 import Headtitle from 'src/@core/components/Headtitle'
 import toast from 'react-hot-toast'
+import { useForm, Controller } from 'react-hook-form'
 import { getparamPend } from 'src/@core/utils/encp'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 const renderClient = params => {
   const { row } = params
   const stateNum = Math.floor(Math.random() * 6)
@@ -49,7 +51,7 @@ const Kelas = () => {
   const [rows, setRows] = useState([])
   const [searchValue, setSearchValue] = useState('')
   const [sortColumn, setSortColumn] = useState('title')
-  const [value, setValue] = useState('')
+
   const [status, setStatus] = useState('')
   const [loading, setLoading] = useState(true)
 
@@ -60,7 +62,32 @@ const Kelas = () => {
 
   const onDeleteSuccess = () => {
     fetchTableData();
-  };
+  }
+
+
+  const schema = yup.object().shape({
+    nama_biaya: yup.string().required(),
+    nominal: yup.string().required(),
+    // description: yup.string().required(),
+    // tingkat: yup.string().required()
+  })
+  const defaultValues = {
+
+  }
+
+  const {
+    reset,
+    control,
+    setValue,
+    setError,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    defaultValues,
+    mode: 'onChange',
+    resolver: yupResolver(schema)
+  })
+
   const fetchTableData = useCallback(
     async (sort, q, column) => {
       await axios
@@ -107,7 +134,7 @@ const Kelas = () => {
     }
 
     const DeleteCat = (id) => {
-      axios.delete(`${process.env.APP_API}parameterbiaya/destroy/${id}`, {
+      axios.delete(`${process.env.APP_API}ppdb/destroy/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         }
@@ -152,7 +179,7 @@ const Kelas = () => {
           <MenuItem
             component={Link}
             sx={{ '& svg': { mr: 2 } }}
-            href={`/parameterbiaya/edit/${id}`}
+            href={`/ppdb/edit/${id}`}
             onClick={handleRowOptionsClose}
           >
             <Icon icon='tabler:eye' fontSize={20} />
@@ -161,7 +188,7 @@ const Kelas = () => {
           <MenuItem
             component={Link}
             sx={{ '& svg': { mr: 2 } }}
-            href={`/parameterbiaya/edit/${id}`}
+            href={`/ppdb/edit/${id}`}
             onClick={handleRowOptionsClose}
           >
             <Icon icon='tabler:edit' fontSize={20} />
@@ -204,7 +231,7 @@ const Kelas = () => {
 
               </Grid>
               <Grid item>
-                <Typography variant="h6">Keuangan Siswa</Typography>
+                <Typography variant="h6">:::Report PPDB:::</Typography>
               </Grid>
             </Grid>
 
@@ -215,11 +242,54 @@ const Kelas = () => {
       </div>
 
 
-      <Comheader
-        value={searchValue}
-        handleFilter={handleSearch}
 
-      />
+      <Grid container spacing={2} xs={8}>
+        <Grid item xs={12} sm={4} sx={{
+          'marginLeft': '10px'
+        }}>
+
+          <Controller
+            name='Dari'
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { value, onChange } }) => (
+              <CustomTextField
+                fullWidth
+                type="date"
+                value={value}
+                sx={{ mb: 4 }}
+                label=''
+                onChange={onChange}
+                // placeholder=''
+                error={Boolean(errors.nama_institusi)}
+                {...(errors.nama_institusi && { helperText: errors.nama_institusi.message })}
+              />
+            )}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Controller
+            name='sampai'
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { value, onChange } }) => (
+              <CustomTextField
+                fullWidth
+                type="date"
+                value={value}
+                sx={{ mb: 4 }}
+                label=''
+                onChange={onChange}
+                // placeholder='No Legalitas'
+                error={Boolean(errors.no_legalitas)}
+                {...(errors.no_legalitas && { helperText: errors.no_legalitas.message })}
+              />
+            )}
+          />
+        </Grid>
+
+      </Grid>
+
       <DataGrid
         autoHeight
         pagination
@@ -233,7 +303,7 @@ const Kelas = () => {
               minWidth: 100,
               headerName: 'ID',
               renderCell: ({ row }) => (
-                <Typography href={`/parameterbiaya/edit/${row.id}`}>{`#${row.id}`}</Typography>
+                <Typography href={`/ppdb/edit/${row.id}`}>{`#${row.id}`}</Typography>
               )
             },
             {
@@ -287,7 +357,7 @@ const Kelas = () => {
           }
         }}
       />
-    </Card>
+    </Card >
   )
 }
 

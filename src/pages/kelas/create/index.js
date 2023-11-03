@@ -12,8 +12,8 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import { useRouter } from 'next/router'
 // ** Custom Component Import
-import toast from 'react-hot-toast'
 import FormLabel from '@mui/material/FormLabel'
+import toast from 'react-hot-toast'
 
 import CustomTextField from 'src/@core/components/mui/text-field'
 import InputAdornment from '@mui/material/InputAdornment'
@@ -33,6 +33,7 @@ import { addUser } from 'src/store/apps/user'
 import { Card, CardContent } from '@mui/material'
 import axios from 'axios'
 import Headtitle from 'src/@core/components/Headtitle'
+import Swal from 'sweetalert2'
 
 const showErrors = (field, valueLen, min) => {
   if (valueLen === 0) {
@@ -54,7 +55,7 @@ const schema = yup.object().shape({
   nama_biaya: yup.string().required(),
   nominal: yup.string().required(),
   // description: yup.string().required(),
-  // tingkat: yup.string().required()
+  tingkat: yup.string().required()
 })
 const defaultValues = {
   nama_biaya: '',
@@ -62,9 +63,9 @@ const defaultValues = {
   tingkat: '',
   catatan: ''
 }
-
 const Index = props => {
   const route = useRouter();
+  const [data, setData] = useState([])
   const { open, toggle } = props
 
   const dispatch = useDispatch()
@@ -81,9 +82,10 @@ const Index = props => {
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
-
+  useEffect(() => {
+  }, [])
   const onSubmit = async (data) => {
-    await axios.post(`${process.env.APP_API}parameterbiaya/insert`, data, {
+    await axios.post(`${process.env.APP_API}parameterbiaya/update/${props.id}`, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
@@ -95,11 +97,8 @@ const Index = props => {
   }
   const handleClose = () => {
     reset()
-    route.push('/parameterbiaya/list')
+    route.push('/parameterbiaya/list');
   }
-
-
-
   const Jenjang = [
     {
       'id': 1,
@@ -120,20 +119,18 @@ const Index = props => {
 
     },
   ]
-
   const filterByjenjang = () => {
 
   }
-
   return (
     <>
-      <Headtitle title={`Tambah Biaya`} />
+      <Headtitle title={`Tambah Kelas`} />
       <Card>
         <CardContent>
           <Header>
             <Typography variant='h5'>
               <Icon icon='tabler:money' />
-              Parameter Biaya</Typography>
+              Tambah kelas </Typography>
             <IconButton
               size='small'
               onClick={handleClose}
@@ -155,7 +152,7 @@ const Index = props => {
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <Controller
-                    name='nama_biaya'
+                    name='kelas'
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
@@ -165,7 +162,7 @@ const Index = props => {
                         sx={{ mb: 4 }}
                         label=''
                         onChange={onChange}
-                        placeholder='Nama Biaya'
+                        placeholder='Nama Kelas'
                         error={Boolean(errors.title)}
                         {...(errors.title && { helperText: errors.title.message })}
                       />
@@ -173,31 +170,6 @@ const Index = props => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='nominal'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label=''
-                        onChange={onChange}
-                        placeholder='Example : Nama Catatan'
-                        error={Boolean(errors.url)}
-                        {...(errors.url && { helperText: errors.url.message })}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2}>
-
-
-                <Grid item xs={12} sm={6}>
-                  <FormLabel>Jenjang : </FormLabel>
                   <Controller
                     name='tingkat'
                     control={control}
@@ -222,28 +194,8 @@ const Index = props => {
                       </CustomTextField>)}
                   />
                 </Grid>
-
-                <Grid item xs={12} sm={6}>
-
-                  <Controller
-                    name='catatan'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        multiline
-                        minRows={4}
-                        placeholder='Catatan Tambahan ...'
-                        sx={{ '& .MuiInputBase-root.MuiFilledInput-root': { alignItems: 'baseline' } }}
-                        error={Boolean(errors.description)}
-                        {...(errors.description && { helperText: errors.description.message })}
-                      />
-
-                    )}
-                  />
-                </Grid>
               </Grid>
+
               <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
                 <Button type='submit' variant='contained' sx={{ mr: 10, width: '50%' }} >
                   Save
@@ -259,5 +211,6 @@ const Index = props => {
     </>
   )
 }
+
 
 export default Index

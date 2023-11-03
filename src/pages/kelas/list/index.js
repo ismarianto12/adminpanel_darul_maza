@@ -64,7 +64,7 @@ const Kelas = () => {
   const fetchTableData = useCallback(
     async (sort, q, column) => {
       await axios
-        .get(`${process.env.APP_API}parameterbiaya/list`, {
+        .get(`${process.env.APP_API}kelas/list`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
@@ -76,8 +76,13 @@ const Kelas = () => {
           }
         })
         .then(res => {
+          console.log(res.data, 'get response rest data')
+
           setTotal(res.data.length)
-          const filteredData = res.data.filter(galery => (
+          const search = q.toLowerCase()
+          const resdata = res.data[0]
+
+          const filteredData = res.data?.filter(galery => (
             galery.kelas?.toLowerCase().includes(search) || galery.tingkat?.toLowerCase().includes(search)
           ))
           setRows(loadServerRows(paginationModel.page, filteredData))
@@ -107,7 +112,7 @@ const Kelas = () => {
     }
 
     const DeleteCat = (id) => {
-      axios.delete(`${process.env.APP_API}parameterbiaya/destroy/${id}`, {
+      axios.delete(`${process.env.APP_API}kelas/destroy/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         }
@@ -152,7 +157,7 @@ const Kelas = () => {
           <MenuItem
             component={Link}
             sx={{ '& svg': { mr: 2 } }}
-            href={`/parameterbiaya/edit/${id}`}
+            href={`/kelas/edit/${id}`}
             onClick={handleRowOptionsClose}
           >
             <Icon icon='tabler:eye' fontSize={20} />
@@ -161,7 +166,7 @@ const Kelas = () => {
           <MenuItem
             component={Link}
             sx={{ '& svg': { mr: 2 } }}
-            href={`/parameterbiaya/edit/${id}`}
+            href={`/kelas/edit/${id}`}
             onClick={handleRowOptionsClose}
           >
             <Icon icon='tabler:edit' fontSize={20} />
@@ -184,7 +189,7 @@ const Kelas = () => {
       fetchTableData(newModel[0].sort, searchValue, newModel[0].field)
     } else {
       setSort('asc')
-      setSortColumn('title')
+      setSortColumn('kelas')
     }
   }
   const handleSearch = value => {
@@ -195,7 +200,7 @@ const Kelas = () => {
   return (
     <Card>
       <div style={{ 'display': 'inline' }}>
-        <Headtitle title="Master parameterbiaya" />
+        <Headtitle title="Master kelas" />
         <CardHeader title={
           (<>
             <Grid container alignItems="center" spacing={1}>
@@ -204,7 +209,7 @@ const Kelas = () => {
 
               </Grid>
               <Grid item>
-                <Typography variant="h6">Master parameterbiaya</Typography>
+                <Typography variant="h6">Master kelas</Typography>
               </Grid>
             </Grid>
 
@@ -233,29 +238,33 @@ const Kelas = () => {
               minWidth: 100,
               headerName: 'ID',
               renderCell: ({ row }) => (
-                <Typography href={`/parameterbiaya/edit/${row.id}`}>{`#${row.id}`}</Typography>
+                <Typography href={`/kelas/edit/${row.id}`}>{`#${row.id}`}</Typography>
               )
             },
             {
               flex: 0.25,
               minWidth: 290,
-              field: 'nama_biaya',
-              headerName: 'Nama Biaya'
-            },
-            {
-              flex: 0.25,
-              minWidth: 290,
-              field: 'nominal',
-              headerName: 'Nominal'
+              field: 'kelas',
+              headerName: 'Kelas'
             },
             {
               flex: 0.25,
               minWidth: 290,
               field: 'tingkat',
-              headerName: 'Tingkat',
-              renderCell: ({ row }) => {
-                return getparamPend(row.tingkat)
-              }
+              headerName: 'Tingkat'
+            },
+            {
+              flex: 0.25,
+              minWidth: 290,
+              field: 'created_at',
+              headerName: 'Created at'
+
+            },
+            {
+              flex: 0.25,
+              minWidth: 290,
+              field: 'updated_at',
+              headerName: 'Updated at'
             },
             {
               flex: 0.1,

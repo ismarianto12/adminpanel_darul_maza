@@ -141,7 +141,7 @@ const navigation = () => {
           },
           {
             title: 'Identitas Aplikasi',
-            path: '/identit/list',
+            path: '/identiti',
             auth: false,
           },
 
