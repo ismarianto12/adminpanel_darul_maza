@@ -218,8 +218,9 @@ const List = () => {
           console.log(res.data[0], 'response server');
           setTotal(res.data.length)
 
+          const search = q.toLowerCase()
           const filteredData = res.data.filter(galery => (
-            galery.status?.toLowerCase().includes(search) || galery.jenjang?.toLowerCase().includes(search)
+            galery.nama?.toLowerCase().includes(search) || galery.jenjang?.toLowerCase().includes(search)
           ))
           setRows(loadServerRows(paginationModel.page, filteredData))
         }).finally(() => {
@@ -341,8 +342,10 @@ const List = () => {
         {/* <TableHeader value={value} handleFilter={handleFilter} /> */}
         <CardContent>
           <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
-            <Grid container spacing={4} paddingBottom={10}>
-              <Grid item xs={12} sm={4}>
+            <Grid container spacing={4} paddingBottom={10} sx={{
+              display: 'flex'
+            }}>
+              <Grid item xs={12} sm={3}>
                 <FormLabel>Jenjang : </FormLabel>
                 <CustomTextField
                   select
@@ -362,7 +365,7 @@ const List = () => {
                   ))}
                 </CustomTextField>
               </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={3}>
                 <FormLabel>Tahun Akademik : </FormLabel>
 
                 <CustomTextField
@@ -383,7 +386,7 @@ const List = () => {
                   ))}
                 </CustomTextField>
               </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={3}>
 
                 <FormLabel>Status : </FormLabel>
 
@@ -405,6 +408,15 @@ const List = () => {
                     </MenuItem>
                   ))}
                 </CustomTextField>
+              </Grid>
+              <Grid item sm={3}>
+                <Button type='submit' variant='contained' sx={{
+                  mr: 3,
+                  width: '50%'
+
+                }}>
+                  Cari
+                </Button>
               </Grid>
             </Grid>
 

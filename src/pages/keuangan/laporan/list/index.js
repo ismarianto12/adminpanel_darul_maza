@@ -112,6 +112,8 @@ const Kelas = () => {
         })
         .then(res => {
           setTotal(res.data.length)
+          const search = q.toLowerCase()
+
           const filteredData = res.data.filter(galery => (
             galery.kelas?.toLowerCase().includes(search) || galery.tingkat?.toLowerCase().includes(search)
           ))
