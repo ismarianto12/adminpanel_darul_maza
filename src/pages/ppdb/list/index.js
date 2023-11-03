@@ -166,115 +166,6 @@ const RowOptions = ({ id, status }) => {
   )
 }
 
-const columns = [
-  {
-    flex: 0.2,
-    field: 'id',
-    minWidth: 100,
-    headerName: 'ID',
-    renderCell: ({ row }) => (
-      <Typography href={`/apps/invoice/preview/${row.id}`}>{`#${row.id}`}</Typography>
-    )
-  },
-  {
-    flex: 0.25,
-    minWidth: 290,
-    field: 'date_inv',
-    headerName: 'Tgl & Jam'
-  },
-  {
-    flex: 0.25,
-    minWidth: 290,
-    field: 'nama',
-    headerName: 'Nama'
-  },
-  {
-    flex: 0.25,
-    minWidth: 290,
-    field: 'no_telp',
-    headerName: 'Handphone'
-  },
-  {
-    flex: 0.25,
-    minWidth: 290,
-    field: 'nis',
-    headerName: 'Nis',
-  },
-
-  {
-    flex: 0.25,
-    minWidth: 290,
-    field: 'jk',
-    headerName: 'JK',
-    renderCell: ({ row }) => {
-      if (row.jk === 'P') {
-        return (<b>Perempuan</b>)
-      } else {
-        return 'Laki - Laki'
-      }
-    }
-  },
-  {
-    flex: 0.25,
-    minWidth: 290,
-    field: 'id_majors',
-    headerName: 'Majors',
-    renderCell: ({ row }) => {
-      return getparamPend(row.id_majors)
-    }
-  },
-  {
-    flex: 0.25,
-    minWidth: 290,
-    field: 'status',
-    headerName: 'Status',
-    renderCell: ({ row }) => {
-      if (parseInt(row.status) === 1) {
-        return <CustomChip
-          rounded
-          skin='light'
-          size='small'
-          label={'Approved'}
-          color={'success'}
-          sx={{ textTransform: 'capitalize' }}
-        />
-      } else if (parseInt(row.status) === 2) {
-        return <CustomChip
-          rounded
-          skin='light'
-          size='small'
-          label={'Tolak'}
-          color={'error'}
-          sx={{ textTransform: 'capitalize' }}
-        />
-      } else {
-        return <CustomChip
-          rounded
-          skin='light'
-          size='small'
-          label={'Baru'}
-          color={'error'}
-          sx={{ textTransform: 'capitalize' }}
-        />
-      }
-    }
-  },
-  {
-    flex: 0.25,
-    minWidth: 290,
-    field: 'username',
-    headerName: 'User id'
-  },
-  {
-    flex: 0.1,
-    minWidth: 100,
-    sortable: false,
-    field: 'staff_konfirmasi',
-    headerName: 'Actions',
-    renderCell: ({ row }) => <RowOptions id={row.id} status={row.status} />
-  }
-]
-
 const datastatus = [
   {
     'id': '1', 'status': 'Diterima',
@@ -293,6 +184,7 @@ const List = () => {
   const [role, setRole] = useState('')
   const [plan, setPlan] = useState('')
   const [value, setValue] = useState('')
+  const [loading, setLoading] = useState(true)
 
   const [takademik, setTakademik] = useState('')
   const [status, setStatus] = useState('')
@@ -313,39 +205,25 @@ const List = () => {
         .get(`${process.env.APP_API}ppdb/list`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-          }
-        }, {
+          },
           params: {
             q,
             sort,
-            column
+            column,
+            status, // Include status filter
+            jenjang, // Include jenjang filter
           }
         })
         .then(res => {
-          console.log(res.data[0], 'response server')
+          console.log(res.data[0], 'response server');
           setTotal(res.data.length)
 
-          // const filteredData = res.data.filter((item) => {
-          //   if (
-          //     (status || item.status === status) &&
-          //     (jenjang || item.id_majors.includes(jenjang))
-          //   ) {
-          //     return true;
-          //   }
-          //   return false;
-          // })
-          // setRows(loadServerRows(paginationModel.page, filteredData))
-
-          if (status === '' || jenjang === '') {
-            const filteredData = res.data
-            setRows(loadServerRows(paginationModel.page, filteredData))
-
-          } else {
-            const filteredData = res?.data?.filter(posts => (
-              posts.status?.toLowerCase().includes(status) || posts.jenjang?.toLowerCase().includes(jenjang)
-            ))
-            setRows(loadServerRows(paginationModel.page, filteredData))
-          }
+          const filteredData = res.data.filter(galery => (
+            galery.status?.toLowerCase().includes(search) || galery.jenjang?.toLowerCase().includes(search)
+          ))
+          setRows(loadServerRows(paginationModel.page, filteredData))
+        }).finally(() => {
+          setLoading(false)
         })
     },
     [paginationModel]
@@ -542,7 +420,116 @@ const List = () => {
           pagination
           rows={rows}
           rowCount={total}
-          columns={columns}
+          columns={
+            [
+              {
+                flex: 0.2,
+                field: 'id',
+                minWidth: 100,
+                headerName: 'ID',
+                renderCell: ({ row }) => (
+                  <Typography href={`/apps/invoice/preview/${row.id}`}>{`#${row.id}`}</Typography>
+                )
+              },
+              {
+                flex: 0.25,
+                minWidth: 290,
+                field: 'date_inv',
+                headerName: 'Tgl & Jam'
+              },
+              {
+                flex: 0.25,
+                minWidth: 290,
+                field: 'nama',
+                headerName: 'Nama'
+              },
+              {
+                flex: 0.25,
+                minWidth: 290,
+                field: 'no_telp',
+                headerName: 'Handphone'
+              },
+              {
+                flex: 0.25,
+                minWidth: 290,
+                field: 'nis',
+                headerName: 'Nis',
+              },
+
+              {
+                flex: 0.25,
+                minWidth: 290,
+                field: 'jk',
+                headerName: 'JK',
+                renderCell: ({ row }) => {
+                  if (row.jk === 'P') {
+                    return (<b>Perempuan</b>)
+                  } else {
+                    return 'Laki - Laki'
+                  }
+                }
+              },
+              {
+                flex: 0.25,
+                minWidth: 290,
+                field: 'id_majors',
+                headerName: 'Majors',
+                renderCell: ({ row }) => {
+                  return getparamPend(row.id_majors)
+                }
+              },
+              {
+                flex: 0.25,
+                minWidth: 290,
+                field: 'status',
+                headerName: 'Status',
+                renderCell: ({ row }) => {
+                  if (parseInt(row.status) === 1) {
+                    return <CustomChip
+                      rounded
+                      skin='light'
+                      size='small'
+                      label={'Approved'}
+                      color={'success'}
+                      sx={{ textTransform: 'capitalize' }}
+                    />
+                  } else if (parseInt(row.status) === 2) {
+                    return <CustomChip
+                      rounded
+                      skin='light'
+                      size='small'
+                      label={'Tolak'}
+                      color={'error'}
+                      sx={{ textTransform: 'capitalize' }}
+                    />
+                  } else {
+                    return <CustomChip
+                      rounded
+                      skin='light'
+                      size='small'
+                      label={'Baru'}
+                      color={'error'}
+                      sx={{ textTransform: 'capitalize' }}
+                    />
+                  }
+                }
+              },
+              {
+                flex: 0.25,
+                minWidth: 290,
+                field: 'username',
+                headerName: 'User id'
+              },
+              {
+                flex: 0.1,
+                minWidth: 100,
+                sortable: false,
+                field: 'staff_konfirmasi',
+                headerName: 'Actions',
+                renderCell: ({ row }) => <RowOptions id={row.id} status={row.status} />
+              }
+            ]
+          }
           checkboxSelection
           sortingMode='server'
           paginationMode='server'

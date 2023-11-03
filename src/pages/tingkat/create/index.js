@@ -83,12 +83,12 @@ const Index = props => {
   })
 
   const onSubmit = async (data) => {
-    await axios.post(`${process.env.APP_API}parameterbiaya/insert`, data, {
+    await axios.post(`${process.env.APP_API}tingkat/insert`, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
     }).then(() => {
-      toast.success('Data berita berhasil ditambahkan')
+      toast.success('Data tingkat master berhasil ditambahkan')
       route.push('/parameterbiaya/list')
     })
     reset()
@@ -120,9 +120,11 @@ const Index = props => {
 
     },
   ]
+
   const filterByjenjang = () => {
 
   }
+
   return (
     <>
       <Headtitle title={`Tambah Biaya`} />
@@ -153,7 +155,7 @@ const Index = props => {
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <Controller
-                    name='nama_biaya'
+                    name='kode'
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
@@ -172,8 +174,7 @@ const Index = props => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Controller
-                    name='nominal'
-                    type="number"
+                    name='tingkat'
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
@@ -183,7 +184,7 @@ const Index = props => {
                         sx={{ mb: 4 }}
                         label=''
                         onChange={onChange}
-                        placeholder='Masukan Nominal'
+                        placeholder='Example : Nama Catatan'
                         error={Boolean(errors.url)}
                         {...(errors.url && { helperText: errors.url.message })}
                       />
@@ -222,26 +223,6 @@ const Index = props => {
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
-
-                  <Controller
-                    name='catatan'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        multiline
-                        minRows={4}
-                        placeholder='Catatan Tambahan ...'
-                        sx={{ '& .MuiInputBase-root.MuiFilledInput-root': { alignItems: 'baseline' } }}
-                        error={Boolean(errors.description)}
-                        {...(errors.description && { helperText: errors.description.message })}
-                      />
-
-                    )}
-                  />
-                </Grid>
               </Grid>
               <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
                 <Button type='submit' variant='contained' sx={{ mr: 10, width: '50%' }} >

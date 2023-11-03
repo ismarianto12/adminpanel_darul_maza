@@ -24,7 +24,7 @@ export default async function handler(req, res) {
   }
 }
 const Post = db.define('user', {
-  id_user: {
+  id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
@@ -93,7 +93,7 @@ const Post = db.define('user', {
 
 const Getdata = async (req, res) => {
   try {
-    const sqlQuery = 'SELECT id_user as id, username, password, nama_lengkap, email, no_telp, sector, bio, userpicture, level, blokir, id_session, tgl_daftar, forget_key, locktype FROM users';
+    const sqlQuery = 'SELECT id, username, password, nama_lengkap, email, no_telp, sector, bio, userpicture, level, blokir, id_session, tgl_daftar, forget_key, locktype FROM users';
     const results = await db.query(sqlQuery, {
       type: QueryTypes.SELECT,
     });
@@ -105,7 +105,7 @@ const Getdata = async (req, res) => {
 const DetailPage = async (req, res) => {
 
   try {
-    const users_id = req.query.users;
+    const id = req.query.users;
     const sqlQuery = 'SELECT * FROM post where id_post = :users_id';
     const results = await db.query(sqlQuery, {
       replacements: { users_id },

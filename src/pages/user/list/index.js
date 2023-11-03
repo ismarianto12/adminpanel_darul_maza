@@ -335,7 +335,7 @@ const UserList = ({ apiData }) => {
         if (row.create_at) {
           return (<b>Kosong</b>)
         } else {
-          return row.create_at
+          return row.create_at ? row.create_at : 'Data kosong'
         }
       }
 

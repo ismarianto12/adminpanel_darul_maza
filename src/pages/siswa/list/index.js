@@ -148,9 +148,15 @@ const Siswa = () => {
           }
         })
         .then(res => {
-          // console.log(res.data[0], 'response server')
           setTotal(res.data.length)
-          setRows(loadServerRows(paginationModel.page, res.data))
+          const search = q.toLowerCase()
+          const resdata = res.data[0]
+
+          const filteredData = res.data.filter(galery => (
+            galery.nama?.toLowerCase().includes(search) || galery.kelas?.toLowerCase().includes(search) || galery.Jenjang?.toLowerCase().includes(search)
+          ))
+
+          setRows(loadServerRows(paginationModel.page, filteredData))
         })
     },
     [paginationModel]

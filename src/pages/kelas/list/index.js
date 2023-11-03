@@ -43,7 +43,7 @@ const statusObj = {
 
 
 
-const Category = () => {
+const Kelas = () => {
   const [total, setTotal] = useState(0)
   const [sort, setSort] = useState('asc')
   const [rows, setRows] = useState([])
@@ -74,19 +74,12 @@ const Category = () => {
             sort,
             column
           }
-
         })
         .then(res => {
           setTotal(res.data.length)
-
-          const search = q.toLowerCase()
-          const resdata = res.data[0]
           const filteredData = res.data.filter(galery => (
-            galery.nama_biaya?.toLowerCase().includes(search) || galery.nominal?.toLowerCase().includes(search) || galery.tingkat?.toLowerCase().includes(search)
+            galery.kelas?.toLowerCase().includes(search) || galery.tingkat?.toLowerCase().includes(search)
           ))
-          // nama_biaya
-          // nominal
-          // tingkat
           setRows(loadServerRows(paginationModel.page, filteredData))
         }).finally(() => {
           setLoading(false)
@@ -298,4 +291,4 @@ const Category = () => {
   )
 }
 
-export default Category
+export default Kelas

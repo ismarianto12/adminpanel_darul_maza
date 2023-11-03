@@ -43,7 +43,7 @@ const statusObj = {
 
 
 
-const Category = () => {
+const Kelas = () => {
   const [total, setTotal] = useState(0)
   const [sort, setSort] = useState('asc')
   const [rows, setRows] = useState([])
@@ -64,7 +64,7 @@ const Category = () => {
   const fetchTableData = useCallback(
     async (sort, q, column) => {
       await axios
-        .get(`${process.env.APP_API}parameterbiaya/list`, {
+        .get(`${process.env.APP_API}report/detail`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
@@ -74,19 +74,12 @@ const Category = () => {
             sort,
             column
           }
-
         })
         .then(res => {
           setTotal(res.data.length)
-
-          const search = q.toLowerCase()
-          const resdata = res.data[0]
           const filteredData = res.data.filter(galery => (
-            galery.nama_biaya?.toLowerCase().includes(search) || galery.nominal?.toLowerCase().includes(search) || galery.tingkat?.toLowerCase().includes(search)
+            galery.kelas?.toLowerCase().includes(search) || galery.tingkat?.toLowerCase().includes(search)
           ))
-          // nama_biaya
-          // nominal
-          // tingkat
           setRows(loadServerRows(paginationModel.page, filteredData))
         }).finally(() => {
           setLoading(false)
@@ -202,7 +195,7 @@ const Category = () => {
   return (
     <Card>
       <div style={{ 'display': 'inline' }}>
-        <Headtitle title="Master parameterbiaya" />
+        <Headtitle title="Master Keuangan" />
         <CardHeader title={
           (<>
             <Grid container alignItems="center" spacing={1}>
@@ -211,7 +204,7 @@ const Category = () => {
 
               </Grid>
               <Grid item>
-                <Typography variant="h6">Master parameterbiaya</Typography>
+                <Typography variant="h6">Keuangan Siswa</Typography>
               </Grid>
             </Grid>
 
@@ -298,4 +291,4 @@ const Category = () => {
   )
 }
 
-export default Category
+export default Kelas

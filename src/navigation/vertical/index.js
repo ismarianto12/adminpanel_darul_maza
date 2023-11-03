@@ -42,11 +42,11 @@ const navigation = () => {
             path: '/ppdb/list',
             auth: false,
           },
-          // {
-          //   title: 'KONFIRMASI BAYAR',
-          //   path: '/confirmbayar/list',
-          //   auth: false,
-          // }
+          {
+            title: 'Laporan PPDB',
+            path: '/ppdbreport/list',
+            auth: false,
+          }
         ]
       },
 
@@ -99,6 +99,18 @@ const navigation = () => {
         icon: 'tabler:news',
         auth: false,
         children: [
+          {
+            title: 'Tingkat Sekolah',
+            path: '/tingkat/list',
+            auth: false,
+
+          },
+          {
+            title: 'Kelas',
+            path: '/kelas/list',
+            auth: false,
+
+          },
           {
             title: 'ACARA',
             path: '/award/list',

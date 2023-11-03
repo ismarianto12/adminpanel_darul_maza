@@ -62,6 +62,14 @@ const navigation = () => {
       icon: 'tabler:list',
       children: [
         {
+          title: 'Tingkat Sekolah',
+          path: '/tingkat/list'
+        },
+        {
+          title: 'Kelas',
+          path: '/kelas/list'
+        },
+        {
           title: 'Category',
           path: '/category/list'
         },

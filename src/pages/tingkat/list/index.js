@@ -64,7 +64,7 @@ const Category = () => {
   const fetchTableData = useCallback(
     async (sort, q, column) => {
       await axios
-        .get(`${process.env.APP_API}parameterbiaya/list`, {
+        .get(`${process.env.APP_API}tingkat/list`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
@@ -77,17 +77,9 @@ const Category = () => {
 
         })
         .then(res => {
+          console.log(res.data[0], 'response server')
           setTotal(res.data.length)
-
-          const search = q.toLowerCase()
-          const resdata = res.data[0]
-          const filteredData = res.data.filter(galery => (
-            galery.nama_biaya?.toLowerCase().includes(search) || galery.nominal?.toLowerCase().includes(search) || galery.tingkat?.toLowerCase().includes(search)
-          ))
-          // nama_biaya
-          // nominal
-          // tingkat
-          setRows(loadServerRows(paginationModel.page, filteredData))
+          setRows(loadServerRows(paginationModel.page, res.data))
         }).finally(() => {
           setLoading(false)
         })
@@ -114,7 +106,7 @@ const Category = () => {
     }
 
     const DeleteCat = (id) => {
-      axios.delete(`${process.env.APP_API}parameterbiaya/destroy/${id}`, {
+      axios.delete(`${process.env.APP_API}tingkat/destroy/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         }
@@ -159,7 +151,7 @@ const Category = () => {
           <MenuItem
             component={Link}
             sx={{ '& svg': { mr: 2 } }}
-            href={`/parameterbiaya/edit/${id}`}
+            href={`/tingkat/edit/${id}`}
             onClick={handleRowOptionsClose}
           >
             <Icon icon='tabler:eye' fontSize={20} />
@@ -168,7 +160,7 @@ const Category = () => {
           <MenuItem
             component={Link}
             sx={{ '& svg': { mr: 2 } }}
-            href={`/parameterbiaya/edit/${id}`}
+            href={`/tingkat/edit/${id}`}
             onClick={handleRowOptionsClose}
           >
             <Icon icon='tabler:edit' fontSize={20} />
@@ -202,7 +194,7 @@ const Category = () => {
   return (
     <Card>
       <div style={{ 'display': 'inline' }}>
-        <Headtitle title="Master parameterbiaya" />
+        <Headtitle title="Master tingkat" />
         <CardHeader title={
           (<>
             <Grid container alignItems="center" spacing={1}>
@@ -211,7 +203,7 @@ const Category = () => {
 
               </Grid>
               <Grid item>
-                <Typography variant="h6">Master parameterbiaya</Typography>
+                <Typography variant="h6">Master tingkat</Typography>
               </Grid>
             </Grid>
 
@@ -240,29 +232,20 @@ const Category = () => {
               minWidth: 100,
               headerName: 'ID',
               renderCell: ({ row }) => (
-                <Typography href={`/parameterbiaya/edit/${row.id}`}>{`#${row.id}`}</Typography>
+                <Typography href={`/tingkat/edit/${row.id}`}>{`#${row.id}`}</Typography>
               )
             },
             {
               flex: 0.25,
               minWidth: 290,
-              field: 'nama_biaya',
-              headerName: 'Nama Biaya'
-            },
-            {
-              flex: 0.25,
-              minWidth: 290,
-              field: 'nominal',
-              headerName: 'Nominal'
+              field: 'kode',
+              headerName: 'Kode'
             },
             {
               flex: 0.25,
               minWidth: 290,
               field: 'tingkat',
-              headerName: 'Tingkat',
-              renderCell: ({ row }) => {
-                return getparamPend(row.tingkat)
-              }
+              headerName: 'Tingkat'
             },
             {
               flex: 0.1,

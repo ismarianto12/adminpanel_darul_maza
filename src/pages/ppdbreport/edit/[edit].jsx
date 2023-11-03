@@ -12,8 +12,8 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import { useRouter } from 'next/router'
 // ** Custom Component Import
-import toast from 'react-hot-toast'
 import FormLabel from '@mui/material/FormLabel'
+import toast from 'react-hot-toast'
 
 import CustomTextField from 'src/@core/components/mui/text-field'
 import InputAdornment from '@mui/material/InputAdornment'
@@ -33,6 +33,7 @@ import { addUser } from 'src/store/apps/user'
 import { Card, CardContent } from '@mui/material'
 import axios from 'axios'
 import Headtitle from 'src/@core/components/Headtitle'
+import Swal from 'sweetalert2'
 
 const showErrors = (field, valueLen, min) => {
   if (valueLen === 0) {
@@ -54,7 +55,7 @@ const schema = yup.object().shape({
   nama_biaya: yup.string().required(),
   nominal: yup.string().required(),
   // description: yup.string().required(),
-  // tingkat: yup.string().required()
+  tingkat: yup.string().required()
 })
 const defaultValues = {
   nama_biaya: '',
@@ -62,9 +63,24 @@ const defaultValues = {
   tingkat: '',
   catatan: ''
 }
-
+const calledit = async (
+  id, setData, reset
+) => {
+  await axios.get(`${process.env.APP_API}parameterbiaya/edit/${id}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+    }
+  }).then((data) => {
+    setData(data.data)
+    reset(data.data)
+  }).catch((err) => {
+    Swal.fire('error', 'gagal mengambil', 'error')
+    setData([])
+  })
+}
 const Index = props => {
   const route = useRouter();
+  const [data, setData] = useState([])
   const { open, toggle } = props
 
   const dispatch = useDispatch()
@@ -81,9 +97,11 @@ const Index = props => {
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
-
+  useEffect(() => {
+    calledit(props.id, setData, reset)
+  }, [])
   const onSubmit = async (data) => {
-    await axios.post(`${process.env.APP_API}parameterbiaya/insert`, data, {
+    await axios.post(`${process.env.APP_API}parameterbiaya/update/${props.id}`, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
@@ -95,11 +113,8 @@ const Index = props => {
   }
   const handleClose = () => {
     reset()
-    route.push('/parameterbiaya/list')
+    route.push('/parameterbiaya/list');
   }
-
-
-
   const Jenjang = [
     {
       'id': 1,
@@ -131,7 +146,7 @@ const Index = props => {
           <Header>
             <Typography variant='h5'>
               <Icon icon='tabler:money' />
-              Parameter Biaya</Typography>
+              Parameter Biaya {props.id}</Typography>
             <IconButton
               size='small'
               onClick={handleClose}
@@ -173,7 +188,6 @@ const Index = props => {
                 <Grid item xs={12} sm={6}>
                   <Controller
                     name='nominal'
-                    type="number"
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
@@ -183,7 +197,7 @@ const Index = props => {
                         sx={{ mb: 4 }}
                         label=''
                         onChange={onChange}
-                        placeholder='Masukan Nominal'
+                        placeholder='Example : Nama Catatan'
                         error={Boolean(errors.url)}
                         {...(errors.url && { helperText: errors.url.message })}
                       />
@@ -193,7 +207,6 @@ const Index = props => {
               </Grid>
 
               <Grid container spacing={2}>
-
 
                 <Grid item xs={12} sm={6}>
                   <FormLabel>Jenjang : </FormLabel>
@@ -257,6 +270,14 @@ const Index = props => {
       </Card>
     </>
   )
+}
+export async function getServerSideProps(context) {
+  const id = context.query.edit;
+  return {
+    props: {
+      id
+    },
+  };
 }
 
 export default Index

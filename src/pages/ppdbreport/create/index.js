@@ -120,9 +120,11 @@ const Index = props => {
 
     },
   ]
+
   const filterByjenjang = () => {
 
   }
+
   return (
     <>
       <Headtitle title={`Tambah Biaya`} />
@@ -173,7 +175,6 @@ const Index = props => {
                 <Grid item xs={12} sm={6}>
                   <Controller
                     name='nominal'
-                    type="number"
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
@@ -183,7 +184,7 @@ const Index = props => {
                         sx={{ mb: 4 }}
                         label=''
                         onChange={onChange}
-                        placeholder='Masukan Nominal'
+                        placeholder='Example : Nama Catatan'
                         error={Boolean(errors.url)}
                         {...(errors.url && { helperText: errors.url.message })}
                       />

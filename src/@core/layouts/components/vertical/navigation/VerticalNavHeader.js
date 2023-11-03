@@ -71,7 +71,7 @@ const VerticalNavHeader = props => {
 
   return (
     <>
-      <MenuHeaderWrapper className='nav-header' sx={{ pl: menuHeaderPaddingLeft(), backgroundColor: '#d0d0d0' }}>
+      <MenuHeaderWrapper className='nav-header' sx={{ pl: menuHeaderPaddingLeft() }}>
         {userNavMenuBranding ? (
           userNavMenuBranding(props)
         ) : (
