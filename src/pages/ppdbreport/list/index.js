@@ -26,6 +26,8 @@ import { getparamPend } from 'src/@core/utils/encp'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { Button } from '@mui/material'
+import { FormLabel } from '@mui/material'
+
 const renderClient = params => {
   const { row } = params
   const stateNum = Math.floor(Math.random() * 6)
@@ -256,8 +258,9 @@ const Kelas = () => {
 
 
 
-      <Grid container spacing={3} sx={{ marginLeft: 4 }}>
-        <Grid item xs={12} sm={4}>
+      <Grid container spacing={5} sx={{ justifyContent: 'center' }}>
+        {/* Left Columns */}
+        <Grid item xs={12} sm={5} sx={{ textAlign: 'left' }}>
           <Controller
             name='Dari'
             control={control}
@@ -267,7 +270,6 @@ const Kelas = () => {
                 fullWidth
                 type="date"
                 value={value}
-
                 label='Dari'
                 onChange={onChange}
                 error={Boolean(errors.Dari)}
@@ -275,8 +277,37 @@ const Kelas = () => {
               />
             )}
           />
+          <FormLabel>Status : </FormLabel>
+
+          <CustomTextField
+            select
+            fullWidth
+            // value={role} // Ganti defaultValue dengan value
+            SelectProps={{
+              displayEmpty: true,
+              onChange: e => filterByStatus(e)
+            }}
+          >
+            <MenuItem key={0} value={''}>
+              --Status--
+            </MenuItem>
+            {[
+              {
+                'id': '1', 'status': 'Diterima',
+
+              },
+              {
+                'id': '2', 'status': 'Di tolak',
+              }
+            ].map((level) => (
+              <MenuItem key={level.id} value={level.status}>
+                {level.status.toUpperCase()}
+              </MenuItem>
+            ))}
+          </CustomTextField>
         </Grid>
-        <Grid item xs={12} sm={4}>
+
+        <Grid item xs={12} sm={5} sx={{ textAlign: 'left' }}>
           <Controller
             name='sampai'
             control={control}
@@ -286,7 +317,6 @@ const Kelas = () => {
                 fullWidth
                 type='date'
                 value={value}
-
                 label='Sampai'
                 onChange={onChange}
                 error={Boolean(errors.sampai)}
@@ -294,13 +324,61 @@ const Kelas = () => {
               />
             )}
           />
+          <FormLabel>Jenjang : </FormLabel>
+
+          <CustomTextField
+            select
+            fullWidth
+            SelectProps={{
+              displayEmpty: true,
+              onChange: e => filterByjenjang(e)
+            }}
+          >
+            <MenuItem key={0} value={''}>
+              --Semua data--
+            </MenuItem>
+            {[
+              {
+                'id': 1,
+                'value': 'TKA',
+
+              },
+              {
+                'id': 2,
+                'value': 'TKB',
+              },
+              {
+                'id': 3,
+                'value': 'SD',
+
+              }, {
+                'id': 4,
+                'value': 'MTSI',
+
+              },
+            ].map((level) => (
+              <MenuItem key={level.value} value={level.id}>
+                {level.value.toUpperCase()}
+              </MenuItem>
+            ))}
+          </CustomTextField>
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <Button type='submit' onSubmit={() => Search()} variant='contained' sx={{ marginTop: 0, width: '50%' }}>
-            Save
+      </Grid>
+      <br />
+      <Grid container spacing={5} sx={{ justifyContent: 'center' }}>
+        <Grid item xs={12} sm={3} sx={{ textAlign: 'center' }}>
+          <Button type='submit' variant='contained' sx={{ width: '30%', background: 'red' }}>
+            Search
+          </Button>
+          &nbsp;&nbsp;
+          <Button type='reset' variant='contained' sx={{ width: '30%' }}>
+            Reset
           </Button>
         </Grid>
       </Grid>
+
+
+
       <br />
 
 
