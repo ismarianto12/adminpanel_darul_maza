@@ -81,7 +81,7 @@ const Category = () => {
 
           const search = q.toLowerCase()
           const resdata = res.data[0]
-          const filteredData = res.data.filter(galery => (
+          const filteredData = res.data?.filter(galery => (
             galery.nama_biaya?.toLowerCase().includes(search) || galery.nominal?.toLowerCase().includes(search) || galery.tingkat?.toLowerCase().includes(search)
           ))
           // nama_biaya

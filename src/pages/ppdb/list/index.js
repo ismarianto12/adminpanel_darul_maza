@@ -200,18 +200,20 @@ const List = () => {
   }
 
   const fetchTableData = useCallback(
-    async (sort, q, column) => {
+    async (sort, q, column,
+      status,
+      jenjang,) => {
       await axios
         .get(`${process.env.APP_API}ppdb/list`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`
           },
           params: {
+            status,
+            jenjang,
             q,
             sort,
             column,
-            status, // Include status filter
-            jenjang, // Include jenjang filter
           }
         })
         .then(res => {
@@ -243,7 +245,10 @@ const List = () => {
       })
     }
     calltahun()
-  }, [])
+  }, [
+    status,
+    jenjang
+  ])
 
   useEffect(() => {
     fetchTableData(sort, searchValue, sortColumn)
@@ -259,8 +264,9 @@ const List = () => {
   }
 
   const filterByStatus = (e) => {
+    // console.log(e.target.value, 'status')
     setStatus(e.target.value)
-    fetchTableData(sort, searchValue, sortColumn)
+    fetchTableData(sort, searchValue, sortColumn, e.target.value, jenjang)
   }
 
   const handleSortModel = newModel => {
@@ -283,7 +289,10 @@ const List = () => {
     const level = e.target.value
 
   }
-
+  const caridata = () => {
+    // setSearchValue(value)
+    fetchTableData(sort, value, sortColumn)
+  }
   return (
     <>
       <Head>
@@ -402,22 +411,23 @@ const List = () => {
                   <MenuItem key={0} value={''}>
                     --Status--
                   </MenuItem>
-                  {datastatus.map((level) => (
-                    <MenuItem key={level.id} value={level.status}>
-                      {level.status.toUpperCase()}
+                  {datastatus.map((lll) => (
+                    <MenuItem key={lll.id} value={lll.id}>
+                      {lll.status.toUpperCase()}
                     </MenuItem>
                   ))}
                 </CustomTextField>
               </Grid>
-              <Grid item sm={3}>
+              {/* <Grid item sm={3}>
                 <Button type='submit' variant='contained' sx={{
                   mr: 3,
                   width: '50%'
-
-                }}>
+                }}
+                  onClick={() => caridata()}
+                >
                   Cari
                 </Button>
-              </Grid>
+              </Grid> */}
             </Grid>
 
             <Grid item xs={12} sm={6}>
