@@ -25,6 +25,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { getparamPend } from 'src/@core/utils/encp'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { Button } from '@mui/material'
 const renderClient = params => {
   const { row } = params
   const stateNum = Math.floor(Math.random() * 6)
@@ -51,6 +52,9 @@ const Kelas = () => {
   const [rows, setRows] = useState([])
   const [searchValue, setSearchValue] = useState('')
   const [sortColumn, setSortColumn] = useState('title')
+  const [dari, setDari] = useState('')
+  const [sampai, setSampai] = useState('')
+
 
   const [status, setStatus] = useState('')
   const [loading, setLoading] = useState(true)
@@ -91,12 +95,14 @@ const Kelas = () => {
   const fetchTableData = useCallback(
     async (sort, q, column) => {
       await axios
-        .get(`${process.env.APP_API}report/detail`, {
+        .get(`${process.env.APP_API}reportppdb`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
         }, {
           params: {
+            dari,
+            sampai,
             q,
             sort,
             column
@@ -154,6 +160,13 @@ const Kelas = () => {
     const handleDelete = (id) => {
       DeleteCat(id)
       handleRowOptionsClose()
+    }
+
+
+
+    const Search = () => {
+      fetchTableData(sort, searchValue, sortColumn)
+
     }
 
     return (
@@ -243,11 +256,8 @@ const Kelas = () => {
 
 
 
-      <Grid container spacing={2} xs={8}>
-        <Grid item xs={12} sm={4} sx={{
-          'marginLeft': '10px'
-        }}>
-
+      <Grid container spacing={3} sx={{ marginLeft: 4 }}>
+        <Grid item xs={12} sm={4}>
           <Controller
             name='Dari'
             control={control}
@@ -257,12 +267,11 @@ const Kelas = () => {
                 fullWidth
                 type="date"
                 value={value}
-                sx={{ mb: 4 }}
-                label=''
+
+                label='Dari'
                 onChange={onChange}
-                // placeholder=''
-                error={Boolean(errors.nama_institusi)}
-                {...(errors.nama_institusi && { helperText: errors.nama_institusi.message })}
+                error={Boolean(errors.Dari)}
+                {...(errors.Dari && { helperText: errors.Dari.message })}
               />
             )}
           />
@@ -275,20 +284,25 @@ const Kelas = () => {
             render={({ field: { value, onChange } }) => (
               <CustomTextField
                 fullWidth
-                type="date"
+                type='date'
                 value={value}
-                sx={{ mb: 4 }}
-                label=''
+
+                label='Sampai'
                 onChange={onChange}
-                // placeholder='No Legalitas'
-                error={Boolean(errors.no_legalitas)}
-                {...(errors.no_legalitas && { helperText: errors.no_legalitas.message })}
+                error={Boolean(errors.sampai)}
+                {...(errors.sampai && { helperText: errors.sampai.message })}
               />
             )}
           />
         </Grid>
-
+        <Grid item xs={12} sm={4}>
+          <Button type='submit' onSubmit={() => Search()} variant='contained' sx={{ marginTop: 0, width: '50%' }}>
+            Save
+          </Button>
+        </Grid>
       </Grid>
+      <br />
+
 
       <DataGrid
         autoHeight
