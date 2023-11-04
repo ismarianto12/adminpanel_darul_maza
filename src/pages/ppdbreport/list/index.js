@@ -75,8 +75,8 @@ const Kelas = () => {
 
 
   const schema = yup.object().shape({
-    // nama_biaya: yup.string().required(),
-    // nominal: yup.string().required(),
+    dari: yup.string().required(),
+    sampai: yup.string().required(),
     // description: yup.string().required(),
     // tingkat: yup.string().required()
   })

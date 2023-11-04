@@ -98,7 +98,7 @@ const VerticalNavLink = ({
         sx={{
           mt: 1,
           px: '0 !important',
-          background: item.background ? '#d2a142' : '',
+          background: item.background ? '#18a6db' : '',
           // margin: item.background ? '0px 25px 10px' : ''
         }}
       >

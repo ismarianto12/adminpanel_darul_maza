@@ -254,12 +254,12 @@ const VerticalNavGroup = props => {
             sx={{
               pl: 0,
               width: '100%',
-              background: '#d2a142',
+              background: '#18a6db',
               marginTop: '20px',
-              color: '#fff',
+              color: '#000',
               fontWeight: 'bold',
               width: '90%',
-              borderRadius: '10px',
+              borderRadius: 'unset',
               margin: '0 auto',
               ...menuGroupCollapsedStyles,
               transition: 'all 0.25s ease-in-out'
