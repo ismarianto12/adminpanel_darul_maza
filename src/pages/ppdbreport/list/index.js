@@ -25,7 +25,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { getparamPend } from 'src/@core/utils/encp'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { Button } from '@mui/material'
+import { Button, ButtonGroup } from '@mui/material'
 import { FormLabel } from '@mui/material'
 
 const renderClient = params => {
@@ -56,7 +56,7 @@ const Kelas = () => {
   const [sortColumn, setSortColumn] = useState('title')
   const [dari, setDari] = useState('')
   const [sampai, setSampai] = useState('')
-
+  const [submit, setSubmit] = useState(false)
 
   const [status, setStatus] = useState('')
   const [loading, setLoading] = useState(true)
@@ -72,8 +72,8 @@ const Kelas = () => {
 
 
   const schema = yup.object().shape({
-    nama_biaya: yup.string().required(),
-    nominal: yup.string().required(),
+    // nama_biaya: yup.string().required(),
+    // nominal: yup.string().required(),
     // description: yup.string().required(),
     // tingkat: yup.string().required()
   })
@@ -94,10 +94,44 @@ const Kelas = () => {
     resolver: yupResolver(schema)
   })
 
+  const onSubmit = async (data) => {
+
+    console.log(data.dari, 'status')
+    const queryParams = {
+      dari: data.dari,
+      jenjang: data.jenjang,
+      status: data.status,
+      sampai: data.sampai,
+    };
+    setSubmit(false)
+
+    await axios
+      .get(`${process.env.APP_API}laporan/ppdb`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+        params: queryParams, // Pass the queryParams here
+      })
+      .then((res) => {
+        setSubmit(true)
+        console.log(res.data)
+        setTotal(res.data.length);
+        const filteredData = res.data.filter((galery) =>
+          galery.kelas?.toLowerCase().includes(searchValue) ||
+          galery.tingkat?.toLowerCase().includes(searchValue)
+        );
+        setRows(loadServerRows(paginationModel.page, filteredData));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+
   const fetchTableData = useCallback(
     async (sort, q, column) => {
       await axios
-        .get(`${process.env.APP_API}reportppdb`, {
+        .get(`${process.env.APP_API}laporan/ppdb`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
@@ -112,6 +146,7 @@ const Kelas = () => {
         })
         .then(res => {
           setTotal(res.data.length)
+          const search = q.toLowerCase()
           const filteredData = res.data.filter(galery => (
             galery.kelas?.toLowerCase().includes(search) || galery.tingkat?.toLowerCase().includes(search)
           ))
@@ -257,130 +292,148 @@ const Kelas = () => {
       </div>
 
 
+      <form onSubmit={handleSubmit(onSubmit)}>
 
-      <Grid container spacing={5} sx={{ justifyContent: 'center' }}>
-        {/* Left Columns */}
-        <Grid item xs={12} sm={5} sx={{ textAlign: 'left' }}>
-          <Controller
-            name='Dari'
-            control={control}
-            rules={{ required: true }}
-            render={({ field: { value, onChange } }) => (
-              <CustomTextField
-                fullWidth
-                type="date"
-                value={value}
-                label='Dari'
-                onChange={onChange}
-                error={Boolean(errors.Dari)}
-                {...(errors.Dari && { helperText: errors.Dari.message })}
-              />
-            )}
-          />
-          <FormLabel>Status : </FormLabel>
+        <Grid container spacing={5} sx={{ justifyContent: 'center' }}>
+          {/* Left Columns */}
+          <Grid item xs={12} sm={5} sx={{ textAlign: 'left' }}>
+            <Controller
+              name='dari'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
+                <CustomTextField
+                  fullWidth
+                  type='date'
+                  value={value}
+                  label='Dari'
+                  onChange={onChange}
+                  error={Boolean(errors.dari)}
+                  {...(errors.dari && { helperText: errors.dari.message })}
+                />
+              )}
+            />
+            <FormLabel>Status : </FormLabel>
+            <Controller
+              name='status'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
 
-          <CustomTextField
-            select
-            fullWidth
-            // value={role} // Ganti defaultValue dengan value
-            SelectProps={{
-              displayEmpty: true,
-              onChange: e => filterByStatus(e)
-            }}
-          >
-            <MenuItem key={0} value={''}>
-              --Status--
-            </MenuItem>
-            {[
-              {
-                'id': '1', 'status': 'Diterima',
+                <CustomTextField
+                  select
+                  fullWidth
+                  value={value}
+                  onChange={onChange}
 
-              },
-              {
-                'id': '2', 'status': 'Di tolak',
-              }
-            ].map((level) => (
-              <MenuItem key={level.id} value={level.status}>
-                {level.status.toUpperCase()}
-              </MenuItem>
-            ))}
-          </CustomTextField>
+                >
+                  <MenuItem key={0} value={''}>
+                    --Status--
+                  </MenuItem>
+                  {[
+                    {
+                      'id': '1', 'status': 'Diterima',
+
+                    },
+                    {
+                      'id': '2', 'status': 'Di tolak',
+                    }
+                  ].map((level) => (
+                    <MenuItem key={level.id} value={level.id}>
+                      {level.status.toUpperCase()}
+                    </MenuItem>
+                  ))}
+                </CustomTextField>
+              )}
+            />
+          </Grid>
+          <Grid item xs={12} sm={5} sx={{ textAlign: 'left' }}>
+            <Controller
+              name='sampai'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
+                <CustomTextField
+                  fullWidth
+                  type='date'
+                  value={value}
+                  label='Sampai'
+                  onChange={onChange}
+                  error={Boolean(errors.sampai)}
+                  {...(errors.sampai && { helperText: errors.sampai.message })}
+                />
+              )}
+            />
+            <FormLabel>Jenjang : </FormLabel>
+            <Controller
+              name='jenjang'
+              control={control}
+              rules={{ required: true }}
+              render={({ field: { value, onChange } }) => (
+                <CustomTextField
+                  select
+                  fullWidth
+                  value={value}
+                  onChange={onChange}
+                >
+                  <MenuItem key={0} value={''}>
+                    --Semua data--
+                  </MenuItem>
+                  {[
+                    {
+                      'id': 1,
+                      'value': 'TKA',
+
+                    },
+                    {
+                      'id': 2,
+                      'value': 'TKB',
+                    },
+                    {
+                      'id': 3,
+                      'value': 'SD',
+
+                    }, {
+                      'id': 4,
+                      'value': 'MTSI',
+
+                    },
+                  ].map((level) => (
+                    <MenuItem key={level.value} value={level.id}>
+                      {level.value.toUpperCase()}
+                    </MenuItem>
+                  ))}
+                </CustomTextField>
+              )}
+            />
+          </Grid>
         </Grid>
-
-        <Grid item xs={12} sm={5} sx={{ textAlign: 'left' }}>
-          <Controller
-            name='sampai'
-            control={control}
-            rules={{ required: true }}
-            render={({ field: { value, onChange } }) => (
-              <CustomTextField
-                fullWidth
-                type='date'
-                value={value}
-                label='Sampai'
-                onChange={onChange}
-                error={Boolean(errors.sampai)}
-                {...(errors.sampai && { helperText: errors.sampai.message })}
-              />
-            )}
-          />
-          <FormLabel>Jenjang : </FormLabel>
-
-          <CustomTextField
-            select
-            fullWidth
-            SelectProps={{
-              displayEmpty: true,
-              onChange: e => filterByjenjang(e)
-            }}
-          >
-            <MenuItem key={0} value={''}>
-              --Semua data--
-            </MenuItem>
-            {[
-              {
-                'id': 1,
-                'value': 'TKA',
-
-              },
-              {
-                'id': 2,
-                'value': 'TKB',
-              },
-              {
-                'id': 3,
-                'value': 'SD',
-
-              }, {
-                'id': 4,
-                'value': 'MTSI',
-
-              },
-            ].map((level) => (
-              <MenuItem key={level.value} value={level.id}>
-                {level.value.toUpperCase()}
-              </MenuItem>
-            ))}
-          </CustomTextField>
+        <br />
+        <Grid container spacing={5} sx={{ justifyContent: 'center' }}>
+          <Grid item xs={12} sm={3} sx={{ textAlign: 'center' }}>
+            <Button type='submit' variant='contained' sx={{ width: '30%', background: 'red' }}>
+              Search
+            </Button>
+            &nbsp;&nbsp;
+            <Button type='reset' onClick={reset} variant='contained' sx={{ width: '30%' }}>
+              Reset
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
+      </form>
+
       <br />
-      <Grid container spacing={5} sx={{ justifyContent: 'center' }}>
-        <Grid item xs={12} sm={3} sx={{ textAlign: 'center' }}>
-          <Button type='submit' variant='contained' sx={{ width: '30%', background: 'red' }}>
-            Search
-          </Button>
-          &nbsp;&nbsp;
-          <Button type='reset' variant='contained' sx={{ width: '30%' }}>
-            Reset
-          </Button>
-        </Grid>
-      </Grid>
 
 
+      {submit ?
 
-      <br />
-
+        (<>
+          <ButtonGroup variant="contained" color="primary">
+            <Button>Excel</Button>
+            <Button>Word</Button>
+            <Button>PDF</Button>
+          </ButtonGroup></>)
+        : ''}
 
       <DataGrid
         autoHeight
@@ -395,48 +448,121 @@ const Kelas = () => {
               minWidth: 100,
               headerName: 'ID',
               renderCell: ({ row }) => (
-                <Typography href={`/ppdb/edit/${row.id}`}>{`#${row.id}`}</Typography>
+                <Typography href={`/apps/invoice/preview/${row.id}`}>{`#${row.id}`}</Typography>
               )
             },
             {
               flex: 0.25,
               minWidth: 290,
-              field: 'nama_biaya',
-              headerName: 'Nama Biaya'
+              field: 'date_inv',
+              headerName: 'Tgl & Jam'
             },
             {
               flex: 0.25,
               minWidth: 290,
-              field: 'nominal',
-              headerName: 'Nominal'
+              field: 'nama',
+              headerName: 'Nama'
             },
             {
               flex: 0.25,
               minWidth: 290,
-              field: 'tingkat',
-              headerName: 'Tingkat',
+              field: 'no_telp',
+              headerName: 'Handphone'
+            },
+            {
+              flex: 0.25,
+              minWidth: 290,
+              field: 'nis',
+              headerName: 'Nis',
+            },
+
+            {
+              flex: 0.25,
+              minWidth: 290,
+              field: 'jk',
+              headerName: 'JK',
               renderCell: ({ row }) => {
-                return getparamPend(row.tingkat)
+                if (row.jk === 'P') {
+                  return (<b>Perempuan</b>)
+                } else {
+                  return 'Laki - Laki'
+                }
               }
+            },
+            {
+              flex: 0.25,
+              minWidth: 290,
+              field: 'id_majors',
+              headerName: 'Majors',
+              renderCell: ({ row }) => {
+                return getparamPend(row.id_majors)
+              }
+            },
+            {
+              flex: 0.25,
+              minWidth: 290,
+              field: 'status',
+              headerName: 'Status',
+              renderCell: ({ row }) => {
+                if (parseInt(row.status) === 1) {
+                  return <CustomChip
+                    rounded
+                    skin='light'
+                    size='small'
+                    label={'Approved'}
+                    color={'success'}
+                    sx={{ textTransform: 'capitalize' }}
+                  />
+                } else if (parseInt(row.status) === 2) {
+                  return <CustomChip
+                    rounded
+                    skin='light'
+                    size='small'
+                    label={'Tolak'}
+                    color={'error'}
+                    sx={{ textTransform: 'capitalize' }}
+                  />
+                } else {
+                  return <CustomChip
+                    rounded
+                    skin='light'
+                    size='small'
+                    label={'Baru'}
+                    color={'error'}
+                    sx={{ textTransform: 'capitalize' }}
+                  />
+                }
+              }
+            },
+            {
+              flex: 0.25,
+              minWidth: 290,
+              field: 'username',
+              headerName: 'User id'
             },
             {
               flex: 0.1,
               minWidth: 100,
               sortable: false,
-              // field: 'actions',
+              field: 'staff_konfirmasi',
               headerName: 'Actions',
-              renderCell: ({ row }) => <RowOptions id={row.id} setLoading={setLoading} />
+              renderCell: ({ row }) => <RowOptions id={row.id} status={row.status} />
             }
           ]
         }
-        loading={loading}
         checkboxSelection
         sortingMode='server'
         paginationMode='server'
         pageSizeOptions={[7, 10, 25, 50]}
         paginationModel={paginationModel}
         onSortModelChange={handleSortModel}
-        onPaginationModelChange={setPaginationModel}
+        // slots={{ toolbar: ServerSideToolbar }}
+        // onPaginationModelChange={setPaginationModel}
+        onPaginationModelChange={newModel => {
+          setPaginationModel(newModel);
+          fetchTableData(sort, searchValue, sortColumn, newModel.page);
+        }}
+
         slotProps={{
           baseButton: {
             size: 'medium',
