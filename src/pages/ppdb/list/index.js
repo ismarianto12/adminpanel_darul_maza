@@ -432,7 +432,7 @@ const List = () => {
 
             <Grid item xs={12} sm={6}>
               <Comheader addUserOpen={null} setAddUserOpen={null}
-                handleFilter={handleSearch} setAction={''}
+                handleFilter={handleSearch} setAction={''} url={'/ppdb/create'}
               />
             </Grid>
           </Box>

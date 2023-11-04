@@ -144,13 +144,13 @@ const Index = props => {
 
   return (
     <>
-      <Headtitle title="Edit data ppdb" />
+      <Headtitle title="Tambah data PPDB" />
       <Card>
         <CardContent>
           <Header>
             <Typography variant='h5'>
               <Icon icon='tabler:edit' fontSize='1.125rem' />
-              {`Edit Data ppdb`}</Typography>
+              {`Data PPDB`}</Typography>
             <IconButton
               size='small'
               onClick={handleClose}
@@ -169,96 +169,458 @@ const Index = props => {
           </Header>
           <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <Controller
-                name='nama_ppdb'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    value={value}
-                    sx={{ mb: 4 }}
-                    label='Nama ppdb'
-                    onChange={onChange}
-                    placeholder='Nama ppdb'
-                    error={Boolean(errors.nama_ppdb)}
-                    {...(errors.nama_ppdb && { helperText: errors.nama_ppdb.message })}
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='no_hp'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="No HP"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.no_hp)}
+                        helperText={errors.no_hp?.message}
+                      />
+                    )}
                   />
-                )}
-              />
-              <Controller
-                name='alamat1'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    multiline
-                    minRows={4}
-                    value={value}
-                    onChange={onChange}
-                    label='Alamat 1'
-                    placeholder='Alamat ...'
-                    sx={{ '& .MuiInputBase-root.MuiFilledInput-root': { alignItems: 'baseline' } }}
-                    error={Boolean(errors.alamat1)}
-                    {...(errors.alamat1 && { helperText: errors.alamat1.message })}
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='password'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="Password"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.password)}
+                        helperText={errors.password?.message}
+                      />
+                    )}
                   />
-                )}
-              />
-              <Controller
-                name='alamat2'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    multiline
-                    minRows={4}
-                    value={value}
-                    onChange={onChange}
-                    label='Alamat 2'
-                    placeholder='Alamat ...'
-                    sx={{ '& .MuiInputBase-root.MuiFilledInput-root': { alignItems: 'baseline' } }}
-                    error={Boolean(errors.alamat2)}
-                    {...(errors.alamat2 && { helperText: errors.alamat2.message })}
-                  />
-                )}
-              />
-              <Controller
-                name='no_telp'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    value={value}
-                    sx={{ mb: 4 }}
+                </Grid>
+              </Grid>
 
-                    label='Telepone ppdb'
-                    onChange={onChange}
-                    placeholder='Telepon ppdb'
-                    error={Boolean(errors.no_telp)}
-                    {...(errors.no_telp && { helperText: errors.no_telp.message })}
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='jk'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="JK"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.jk)}
+                        helperText={errors.jk?.message}
+                      />
+                    )}
                   />
-                )}
-              />
-              <Controller
-                name='email'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    value={value}
-                    sx={{ mb: 4 }}
-                    label='Email ppdb'
-                    onChange={onChange}
-                    placeholder='Email ppdb'
-                    error={Boolean(errors.email)}
-                    {...(errors.email && { helperText: errors.email.message })}
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='ttl'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="TTL"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.ttl)}
+                        helperText={errors.ttl?.message}
+                      />
+                    )}
                   />
-                )}
-              />
+                </Grid>
+              </Grid>
+
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='prov'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="Prov"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.prov)}
+                        helperText={errors.prov?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='kab'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="Kab"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.kab)}
+                        helperText={errors.kab?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+              </Grid>
+
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='kec'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="Kec"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.kec)}
+                        helperText={errors.kec?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='kel'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="Kel"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.kel)}
+                        helperText={errors.kel?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+              </Grid>
+
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='alamat'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="Alamat"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.alamat)}
+                        helperText={errors.alamat?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='nama_ayah'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="Nama Ayah"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.nama_ayah)}
+                        helperText={errors.nama_ayah?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+              </Grid>
+
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='nama_ibu'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="Nama Ibu"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.nama_ibu)}
+                        helperText={errors.nama_ibu?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='pek_ayah'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="Pek Ayah"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.pek_ayah)}
+                        helperText={errors.pek_ayah?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+              </Grid>
+
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='pek_ibu'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="Pek Ibu"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.pek_ibu)}
+                        helperText={errors.pek_ibu?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='nama_wali'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="Nama Wali"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.nama_wali)}
+                        helperText={errors.nama_wali?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+              </Grid>
+
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='pek_wali'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="Pek Wali"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.pek_wali)}
+                        helperText={errors.pek_wali?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='peng_ortu'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="Peng Ortu"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.peng_ortu)}
+                        helperText={errors.peng_ortu?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+              </Grid>
+
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='no_telp'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="No Telp"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.no_telp)}
+                        helperText={errors.no_telp?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='thn_msk'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="Thn Msk"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.thn_msk)}
+                        helperText={errors.thn_msk?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+              </Grid>
+
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='sekolah_asal'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="Sekolah Asal"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.sekolah_asal)}
+                        helperText={errors.sekolah_asal?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='thn_lls'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="Thn Lls"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.thn_lls)}
+                        helperText={errors.thn_lls?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+              </Grid>
+
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='kelas'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="Kelas"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.kelas)}
+                        helperText={errors.kelas?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='id_pend'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        value={value}
+                        sx={{ mb: 4 }}
+                        label="ID PEND"
+                        onChange={onChange}
+                        placeholder="Field Required"
+                        error={Boolean(errors.id_pend)}
+                        helperText={errors.id_pend?.message}
+                      />
+                    )}
+                  />
+                </Grid>
+              </Grid>
+
+              <br /><br /><br />
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Button type='submit' variant='contained' sx={{
                   mr: 3,
@@ -273,6 +635,7 @@ const Index = props => {
                   Cancel
                 </Button>
               </Box>
+
             </form>
           </Box>
         </CardContent>

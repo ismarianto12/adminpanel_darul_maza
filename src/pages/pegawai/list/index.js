@@ -180,7 +180,7 @@ const Index = () => {
 
   return (
     <>
-      <Headtitle title="List Promo" />
+      <Headtitle title="List Data pegawai" />
       <Grid container spacing={2}>
         <Grid item xs={12} sm={4}>
           <CardStatsHorizontalWithDetails
