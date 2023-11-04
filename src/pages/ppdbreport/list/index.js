@@ -28,6 +28,9 @@ import * as yup from 'yup'
 import { Button, ButtonGroup } from '@mui/material'
 import { FormLabel } from '@mui/material'
 
+import ExcelJS from 'exceljs';
+import FileSaver from 'file-saver';
+
 const renderClient = params => {
   const { row } = params
   const stateNum = Math.floor(Math.random() * 6)
@@ -206,6 +209,9 @@ const Kelas = () => {
 
     }
 
+
+
+
     return (
       <>
         <IconButton size='small' onClick={handleRowOptionsClick}>
@@ -268,6 +274,48 @@ const Kelas = () => {
     setSearchValue(value)
     fetchTableData(sort, value, sortColumn)
   }
+
+  const exportToExcel = () => {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Data Peserta PPDB 2023');
+
+    // Define the columns in the Excel file
+    const columns = [
+      { header: 'ID', key: 'id', width: 10 },
+      { header: 'Tgl & Jam', key: 'date_inv', width: 15 },
+      { header: 'Nama', key: 'nama', width: 20 },
+      { header: 'Handphone', key: 'no_telp', width: 15 },
+      { header: 'Nis', key: 'nis', width: 10 },
+      { header: 'JK', key: 'jk', width: 10 },
+      { header: 'Majors', key: 'id_majors', width: 15 },
+      { header: 'Status', key: 'status', width: 15 },
+      { header: 'User ID', key: 'username', width: 15 },
+    ];
+
+    // Set the columns in the worksheet
+    worksheet.columns = columns;
+
+    // Populate the data from your DataGrid
+    rows.forEach((row) => {
+      worksheet.addRow({
+        id: row.id,
+        date_inv: row.date_inv,
+        nama: row.nama,
+        no_telp: row.no_telp,
+        nis: row.nis,
+        jk: row.jk,
+        id_majors: getparamPend(row.id_majors), // You may need to modify this to get the actual data
+        status: row.status,
+        username: row.username,
+      });
+    });
+
+    // Create a blob from the Excel file and save it
+    workbook.xlsx.writeBuffer().then((buffer) => {
+      const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      FileSaver.saveAs(blob, 'LaporanPesertaPPDB.xlsx');
+    });
+  };
 
   return (
     <Card>
@@ -429,7 +477,7 @@ const Kelas = () => {
 
         (<>
           <ButtonGroup variant="contained" color="primary">
-            <Button>Excel</Button>
+            <Button onClick={exportToExcel}>Excel</Button>
             <Button>Word</Button>
             <Button>PDF</Button>
           </ButtonGroup></>)
