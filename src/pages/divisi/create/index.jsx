@@ -31,7 +31,6 @@ import axios from 'axios'
 import toast from 'react-hot-toast'
 import Editordata from 'src/@core/components/Editordata'
 import { getUserlogin } from 'src/@core/utils/encp'
-import Swal from 'sweetalert2'
 
 const showErrors = (field, valueLen, min) => {
   if (valueLen === 0) {
@@ -51,9 +50,9 @@ const Header = styled(Box)(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  tahun: yup.string().required(),
-  Semester: yup.string().required(),
-  active: yup.string().required()
+  // tahun: yup.string().required(),
+  // Semester: yup.string().required(),
+  // active: yup.string().required()
 })
 
 const defaultValues = {
@@ -61,21 +60,6 @@ const defaultValues = {
   Semester: '',
   active: ''
 }
-
-const Calledit = async ({ id, reset }) => {
-  await axios.get(`${process.env.APP_API}tahunakademik/edit/${id}`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-    },
-  }).then((data) => {
-    // setData(data.data)
-    reset(data.data)
-  }).catch((err) => {
-    Swal.fire('Gagal', err, 'error')
-  })
-
-}
-
 
 
 const Index = props => {
@@ -106,9 +90,6 @@ const Index = props => {
     const call = async () => {
       await getAlbum({ album, setAlbum })
     }
-
-    const id = props.id
-    Calledit({ id, reset })
     call()
   }, [])
 
@@ -118,9 +99,9 @@ const Index = props => {
       const user_id = getUserlogin('id')
       const level = getUserlogin('role')
       formData.append('tahun', user_id)
-      formData.append('Semester', data.Semester)
+      formData.append('Semester', data.semester)
       formData.append('active', data.active)
-      await axios.post(`${process.env.APP_API}tahunakademik/update/${props.id}`, formData, {
+      await axios.post(`${process.env.APP_API}tahunakademik/insert/`, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
@@ -205,16 +186,16 @@ const Index = props => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Controller
-                    name='Semester'
+                    name='semester'
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
                       <CustomTextField select fullWidth label='Semester :' id='form-layouts-tabs-select'
                         value={value}
                         onChange={onChange}
-                        error={Boolean(errors.active)}
+                        error={Boolean(errors.semester)}
                         placeholder='Semester'
-                        {...(errors.active && { helperText: errors.active.message })}
+                        {...(errors.semester && { helperText: errors.semester.message })}
                       >
                         {['Genap', 'Ganjil'].map((albums) => (
                           <MenuItem key={albums} value={albums}>
@@ -276,14 +257,6 @@ const Index = props => {
       </Card>
     </>
   )
-}
-export async function getServerSideProps(context) {
-  const id = context.query.edit;
-  return {
-    props: {
-      id
-    },
-  };
 }
 export default Index
 

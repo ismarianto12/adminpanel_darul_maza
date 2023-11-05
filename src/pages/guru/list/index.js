@@ -24,14 +24,6 @@ import toast from 'react-hot-toast'
 import CardStatsVertical from 'src/@core/components/card-statistics/card-stats-vertical'
 import CardStatsHorizontalWithDetails from 'src/@core/components/card-statistics/card-stats-horizontal-with-details'
 
-const fetchDivisi = (setDivisi) => {
-  axios.post(`${process.env.APP_API}/divisi/list`).then((data) => {
-    setDivisi(data.data)
-  }).then((err) => {
-    toast.error('data divisi tidak bisa di tampilkan')
-  })
-}
-
 const RowOptions = ({ id, onDeleteSuccess }) => {
   // ** Hooks
   // const dispatch = useDispatch()
@@ -125,8 +117,6 @@ const Index = () => {
   const [value, setValue] = useState('')
   const [status, setStatus] = useState('')
   const [loading, setLoading] = useState(true)
-  const [divis, setDivisi] = useState([])
-
 
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 7 })
   function loadServerRows(currentPage, data) {
@@ -134,35 +124,7 @@ const Index = () => {
   }
   const onDeleteSuccess = () => {
     fetchTableData();
-  }
-
-  const onSubmit = async (data) => {
-    const queryParams = {
-      divisi: data.divisi
-    }
-    setSubmit(false)
-    await axios
-      .get(`${process.env.APP_API}karyawan/list`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-        params: queryParams, // Pass the queryParams here
-      })
-      .then((res) => {
-        setSubmit(true)
-        console.log(res.data)
-        setTotal(res.data.length);
-        const filteredData = res.data.filter((datares) =>
-          datares.nama?.toLowerCase().includes(searchValue) ||
-          datares.email?.toLowerCase().includes(searchValue)
-        )
-        setRows(loadServerRows(paginationModel.page, filteredData))
-      })
-      .finally(() => {
-        setLoading(false);
-      });
   };
-
   const fetchTableData = useCallback(
     async (sort, q, column) => {
       await axios
@@ -199,8 +161,6 @@ const Index = () => {
   )
   useEffect(() => {
     fetchTableData(sort, searchValue, sortColumn)
-    fetchDivisi(setDivisi)
-
   }, [fetchTableData, searchValue, sort, sortColumn])
 
   const handleSortModel = newModel => {
@@ -217,8 +177,6 @@ const Index = () => {
     setSearchValue(value)
     fetchTableData(sort, value, sortColumn)
   }
-
-
 
   return (
     <>
@@ -237,52 +195,6 @@ const Index = () => {
           value={searchValue}
           handleFilter={handleSearch}
         />
-
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={5} sx={{ justifyContent: 'center' }}>
-            <Grid item xs={12} sm={5} sx={{ textAlign: 'left' }}>
-
-              <Controller
-                name='divisi'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-
-                  <CustomTextField
-                    select
-                    fullWidth
-                    value={value}
-                    onChange={onChange}
-
-                  >
-                    <MenuItem key={0} value={''}>
-                      --Status--
-                    </MenuItem>
-                    {
-                      datadivisi.map((level) => (
-                        <MenuItem key={level.id} value={level.id}>
-                          {level.status.toUpperCase()}
-                        </MenuItem>
-                      ))}
-                  </CustomTextField>
-                )}
-              />
-            </Grid>
-          </Grid>
-          <br />
-          <Grid container spacing={5} sx={{ justifyContent: 'center' }}>
-            <Grid item xs={12} sm={3} sx={{ textAlign: 'center' }}>
-              <Button type='submit' variant='contained' sx={{ width: '30%', background: 'red' }}>
-                Search
-              </Button>
-              &nbsp;&nbsp;
-              <Button type='reset' onClick={reset} variant='contained' sx={{ width: '30%' }}>
-                Reset
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-
         <DataGrid
           autoHeight
           pagination

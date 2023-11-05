@@ -49,7 +49,6 @@ const navigation = () => {
           }
         ]
       },
-
       {
         title: 'Akademik',
         icon: 'tabler:users',
@@ -58,6 +57,11 @@ const navigation = () => {
           {
             title: 'MASTER SISWA',
             path: '/siswa/list',
+            auth: false,
+          },
+          {
+            title: 'MASTER DIVISI',
+            path: '/divisi/list',
             auth: false,
           },
           {

@@ -127,8 +127,11 @@ const Siswa = () => {
   const [value, setValue] = useState('')
   const [status, setStatus] = useState('')
 
+  const [filjenjang, , setJenjang] = useState('');
+  const [filkelas, setFilkelas] = useState('');
+
   const [searchValue, setSearchValue] = useState('')
-  const [sortColumn, setSortColumn] = useState('full_name')
+  const [sortColumn, setSortColumn] = useState('nama')
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 7 })
   function loadServerRows(currentPage, data) {
     return data.slice(currentPage * paginationModel.pageSize, (currentPage + 1) * paginationModel.pageSize)
@@ -277,7 +280,14 @@ const Siswa = () => {
     {
       flex: 0.25,
       field: 'jk',
-      headerName: 'Jenis Kel'
+      headerName: 'Jk',
+      renderCell: ({ row }) => {
+        if (row.jk === 'P') {
+          return "Perempuan"
+        } else {
+          return "Laki - laki"
+        }
+      }
     },
     {
       flex: 0.25,
@@ -305,8 +315,15 @@ const Siswa = () => {
     fetchTableData(sort, value, sortColumn)
   }
 
+
+
   const fhandleRoleChange = (e) => {
     const level = e.target.value
+
+  }
+
+  const filterjenjang = (e) => {
+    fetchTableData(sort, searchValue, sortColumn, filjenjang, filkelas)
 
   }
   return (
@@ -373,7 +390,7 @@ const Siswa = () => {
                   // value={role} // Ganti defaultValue dengan value
                   SelectProps={{
                     displayEmpty: true,
-                    onChange: e => fhandleRoleChange(e)
+                    onChange: e => filterjenjang(e)
                   }}
                 >
                   <MenuItem key={0} value={null}>
@@ -388,11 +405,36 @@ const Siswa = () => {
               </Grid>
 
               <Grid item xs={12} sm={6}>
+                <CustomTextField
+                  select
+                  fullWidth
+                  // value={role} // Ganti defaultValue dengan value
+                  SelectProps={{
+                    displayEmpty: true,
+                    onChange: e => filterjenjang(e)
+                  }}
+                >
+                  <MenuItem key={0} value={null}>
+                    --Kelas--
+                  </MenuItem>
+                  {Jenjang.map((level) => (
+                    <MenuItem key={level.value} value={level.value}>
+                      {level.value.toUpperCase()}
+                    </MenuItem>
+                  ))}
+                </CustomTextField>
+
+
+              </Grid>
+
+
+              <Grid item xs={12} sm={6}>
                 <Comheader addUserOpen={null} setAddUserOpen={null}
                   handleFilter={handleSearch} setAction={null}
                 />
               </Grid>
             </Grid>
+
           </Box>
         </CardContent>
         <Divider sx={{ m: '0 !important' }} />

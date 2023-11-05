@@ -25,7 +25,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { getparamPend } from 'src/@core/utils/encp'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { Button } from '@mui/material'
+import { Alert, Button } from '@mui/material'
 import { FormLabel } from '@mui/material'
 
 const renderClient = params => {
@@ -248,7 +248,7 @@ const Kelas = () => {
 
               </Grid>
               <Grid item>
-                <Typography variant="h6">:::Report Keuangan:::</Typography>
+                <Typography variant="h6">Laporan Keuangan</Typography>
               </Grid>
             </Grid>
 
@@ -279,19 +279,13 @@ const Kelas = () => {
               />
             )}
           />
-          <FormLabel>Status : </FormLabel>
-
+          <FormLabel>Tingkat : </FormLabel>
           <CustomTextField
             select
             fullWidth
-            // value={role} // Ganti defaultValue dengan value
-            SelectProps={{
-              displayEmpty: true,
-              onChange: e => filterByStatus(e)
-            }}
           >
             <MenuItem key={0} value={''}>
-              --Status--
+              Tingkat
             </MenuItem>
             {[
               {
@@ -369,11 +363,11 @@ const Kelas = () => {
       <br />
       <Grid container spacing={5} sx={{ justifyContent: 'center' }}>
         <Grid item xs={12} sm={3} sx={{ textAlign: 'center' }}>
-          <Button type='submit' variant='contained' sx={{ width: '30%', background: 'red' }}>
+          <Button type='submit' variant='contained' sx={{ width: '40%', background: 'red' }}>
             Search
           </Button>
           &nbsp;&nbsp;
-          <Button type='reset' variant='contained' sx={{ width: '30%' }}>
+          <Button type='reset' variant='contained' sx={{ width: '40%' }}>
             Reset
           </Button>
         </Grid>
@@ -383,7 +377,9 @@ const Kelas = () => {
 
       <br />
 
-
+      <Alert
+        type="info"
+      >Laporan Keuangan Siswa</Alert>
       <DataGrid
         autoHeight
         pagination

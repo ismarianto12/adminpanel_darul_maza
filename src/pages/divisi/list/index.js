@@ -3,7 +3,7 @@ import { useEffect, useState, useCallback } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
-import { Card, Alert } from '@mui/material'
+import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
 import IconButton from '@mui/material/IconButton'
@@ -21,8 +21,9 @@ import Comheader from './Comheader'
 import Headtitle from 'src/@core/components/Headtitle'
 import toast from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
+import { Alert } from '@mui/material'
 
-const Tahunakademik = () => {
+const divisi = () => {
   const [total, setTotal] = useState(0)
   const [sort, setSort] = useState('asc')
   const [rows, setRows] = useState([])
@@ -43,7 +44,7 @@ const Tahunakademik = () => {
     async (sort, q, column) => {
       setLoading(true)
       await axios
-        .get(`${process.env.APP_API}tahunakademik/list`, {
+        .get(`${process.env.APP_API}divisi/list`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`
           }
@@ -55,7 +56,6 @@ const Tahunakademik = () => {
           }
         },)
         .then(res => {
-          console.log(res.data, 'response server')
           setLoading(false)
           setTotal(res.data.length)
           setRows(loadServerRows(paginationModel.page, res.data))
@@ -66,7 +66,7 @@ const Tahunakademik = () => {
     [paginationModel]
   )
   const dispatch = useDispatch()
-  const store = useSelector(state => state.Tahunakademik)
+  const store = useSelector(state => state.divisi)
 
   useEffect(() => {
     fetchTableData(sort, searchValue, sortColumn)
@@ -101,7 +101,7 @@ const Tahunakademik = () => {
 
     const DeleteCat = (id) => {
       setLoading(true)
-      axios.delete(`${process.env.APP_API}tahunakademik/destroy/${id}`, {
+      axios.delete(`${process.env.APP_API}divisi/destroy/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
         }
@@ -109,7 +109,7 @@ const Tahunakademik = () => {
         .then((response) => {
           fetchTableData()
           setLoading(false)
-          toast.success('Data Tahunakademik Berhasil di hapus')
+          toast.success('Data divisi Berhasil di hapus')
         })
         .catch(error => {
           toast.error(`gagal di hapus ${error}`)
@@ -147,7 +147,7 @@ const Tahunakademik = () => {
           <MenuItem
             component={Link}
             sx={{ '& svg': { mr: 2 } }}
-            href={`/takademik/edit/${id}`}
+            href={`/divisi/edit/${id}`}
             onClick={handleRowOptionsClose}
           >
             <Icon icon='tabler:eye' fontSize={20} />
@@ -156,7 +156,7 @@ const Tahunakademik = () => {
           <MenuItem
             component={Link}
             onClick={handleRowOptionsClose}
-            href={`/takademik/edit/${id}`}
+            href={`/divisi/edit/${id}`}
             sx={{ '& svg': { mr: 2 } }}>
             <Icon icon='tabler:edit' fontSize={20} />
             {`Edit`}
@@ -173,11 +173,11 @@ const Tahunakademik = () => {
 
   return (
     <Card>
-      <Headtitle title="Master Tahun akademik" />
+      <Headtitle title="Master Divisi" />
       <CardHeader title={
         (<>
-          <Icon fontSize='1.25rem' icon='tabler:Tahunakademik' />
-          {`Master Tahunakademik`}
+          <Icon fontSize='1.25rem' icon='tabler:divisi' />
+          {`Master divisi`}
         </>)
       } />
 
@@ -189,11 +189,20 @@ const Tahunakademik = () => {
 
       />
 
-
-      <Alert type={'info'} sx={{ 'padding': '10px' }}>Untuk tahun akademik hanya ada satu yang aktif</Alert>
-      <form>
-
-      </form>
+      <Box
+        sx={{
+          py: 4,
+          px: 6,
+          rowGap: 2,
+          columnGap: 4,
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}
+      >
+        <Alert type={'info'} sx={{ 'padding': '10px' }}>Divisi tenaga pengajar atau pendidik.</Alert>
+      </Box>
       <DataGrid
         autoHeight
         pagination
@@ -218,48 +227,14 @@ const Tahunakademik = () => {
             {
               flex: 0.25,
               minWidth: 290,
-              field: 'tahun',
-              headerName: 'Tahun',
-              renderCell: ({ row }) => {
-                if (row.tahun === null) {
-                  return (<b>Kosong</b>)
-                } else {
-                  return (<IconButton size='small'>
-                    {row.tahun}
-                    <Icon icon='tabler:year' />
-                  </IconButton>)
-                }
-              }
+              field: 'namadivisi',
+              headerName: 'Nama'
             },
             {
               flex: 0.25,
               minWidth: 290,
-              field: 'created_at',
-              headerName: 'Created at',
-              renderCell: ({ row }) => {
-                if (row?.created_at === null || row?.created_at === undefined) {
-                  return (<b>Kosong</b>)
-                } else {
-                  return row.created_at
-                }
-              }
-            },
-            {
-              flex: 0.25,
-              field: 'active',
-              headerName: 'active',
-              renderCell: ({ row }) => {
-                if (row?.active === null || row?.active === undefined) {
-                  return (<b>Unactive</b>)
-                } else {
-                  return row.active === '1' ? 'Active' : 'Unactive'
-                }
-              }
-            },
-            {
-              flex: 0.25,
-              field: 'Semester',
-              headerName: 'Semester'
+              field: 'status',
+              headerName: 'Status'
             },
             {
               flex: 0.1,
@@ -295,4 +270,4 @@ const Tahunakademik = () => {
   )
 }
 
-export default Tahunakademik
+export default divisi
