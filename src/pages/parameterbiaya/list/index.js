@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
-
+import Alert from '@mui/material/Alert'
 import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
 import IconButton from '@mui/material/IconButton'
@@ -211,7 +211,9 @@ const Category = () => {
 
               </Grid>
               <Grid item>
-                <Typography variant="h6">Master parameterbiaya</Typography>
+                <Alert type={'success'}>
+                  <Typography variant="h6">Master parameterbiaya</Typography>
+                </Alert>
               </Grid>
             </Grid>
 

@@ -62,7 +62,7 @@ const Index = props => {
   // ** Props
   const route = useRouter();
   const { open, toggle } = props
-
+  const [dataunit, setDataunit] = useState([])
   const dispatch = useDispatch()
   const store = useSelector(state => state.user)
   const {
@@ -140,16 +140,20 @@ const Index = props => {
                       </label>
                       <select name="unit" id="unit" className="form-select tomselected ts-hidden-accessible" tabIndex={-1}>
                         <option value />
-                        <option value="MU1iSCtrTSs4amFmQmlYcCtIampNQT9">
-                          MA
-                        </option>
-                        <option value="bkIzcUIUlNWcmp6NmQxUnBTTklJZz9">
-                          MTS
-                        </option>
+
+
+                        {dataunit.map((data, i) => {
+                          return (<option value="MU1iSCtrTSs4amFmQmlYcCtIampNQT9">
+                            MA
+                          </option>)
+
+                        })
+                        }
+
                       </select>
-                      <p id="unit-feedback" className="mt-2" style={{ display: 'none' }} />
+                      <p id="unit-feedback" className="mt-2" />
                     </div>
-                    <div id="select-classroom" className="mb-4" style={{ display: 'none' }}>
+                    <div id="select-classroom" className="mb-4" >
                       <label className="form-label">
                         Daftar Kelas
                       </label>
@@ -160,7 +164,7 @@ const Index = props => {
                       <small className="form-hint">
                         Memilih daftar kelas untuk menambahkan tagihan terhadap kelas yang dipilih
                       </small>
-                      <div id="table-select-classroom" className="mt-3 p-2" style={{ border: '1px solid #d9dbde', borderRadius: 4, display: 'none' }}>
+                      <div id="table-select-classroom" className="mt-3 p-2" style={{ border: '1px solid #d9dbde', borderRadius: 4 }}>
                         <table className="table table-sm table-hover">
                           <thead>
                             <tr>
@@ -393,8 +397,8 @@ const Index = props => {
                 </div>
               </div>
             </form>
-          </Box>
-        </CardContent>
+          </Box >
+        </CardContent >
       </Card >
     </>
   )
