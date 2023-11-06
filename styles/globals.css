@@ -28,3 +28,11 @@ code[class*='language-'] {
 .jodit-status-bar-link {
   display: none;
 }
+
+input::placeholder {
+  color: #999;
+  /* Placeholder text color */
+  font-style: italic;
+  /* Italics, if desired */
+  /* Add any other CSS styles you want for the placeholder text */
+}
