@@ -36,3 +36,8 @@ input::placeholder {
   /* Italics, if desired */
   /* Add any other CSS styles you want for the placeholder text */
 }
+
+
+label {
+  font-weight: 100;
+}

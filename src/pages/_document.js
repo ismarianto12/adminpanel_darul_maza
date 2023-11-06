@@ -29,7 +29,7 @@ class CustomDocument extends Document {
           <style>
             {`
         label{
-          font-weight: bold;
+          font-weight: ligther;
         }
         .MuiFormLabel{
           font-weight: bold;
