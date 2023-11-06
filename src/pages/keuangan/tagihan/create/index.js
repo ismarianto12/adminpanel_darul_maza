@@ -81,10 +81,10 @@ const Index = props => {
   const onSubmit = data => {
     const config = {
       method: 'post',
-      url: '/admin/api/category/insert',
+      url: `${process.env.APP_API}/tagihan/terbit`,
       headers: {
         'Content-Type': 'application/json',
-        'token': '123'
+        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
       },
       data: data
     }
@@ -297,7 +297,7 @@ const Index = props => {
                           <p id="bill-month-feedback" className="mt-2" style={{ display: 'none' }} />
                         </div>
                         <div className="col-6">
-                          <input type="text" name="bill_year" id="bill-year" className="form-control" data-mask={''} data-mask-visible="true" placeholder={'tet'} autoComplete="off" />
+                          <input type="text" name="bill_year" id="bill-year" className="form-control" data-mask={''} data-mask-visible="true" placeholder={'Masukan tahun'} autoComplete="off" />
                           <p id="bill-year-feedback" className="mt-2" style={{ display: 'none' }} />
                         </div>
                       </div>
@@ -386,6 +386,10 @@ const Index = props => {
                       </button>
                     </div>
                   </form>
+                </div>
+                <div className="col-sm-12 col-md-6">
+                  <img src="https://png.pngtree.com/png-vector/20200312/ourmid/pngtree-modern-flat-design-concept-of-ui-ux-design-with-characters-and-png-image_2157890.jpg" className='img-reponsive' />
+
                 </div>
               </div>
             </form>
