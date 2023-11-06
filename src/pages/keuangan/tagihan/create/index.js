@@ -12,11 +12,10 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import { useRouter } from 'next/router'
 // ** Custom Component Import
-import CustomTextField from 'src/@core/components/mui/text-field'
-import InputAdornment from '@mui/material/InputAdornment'
+import Swal from 'sweetalert2'
+
 // ** Third Party Imports
 import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
 
 // ** Icon Imports
@@ -24,7 +23,6 @@ import Icon from 'src/@core/components/icon'
 
 // ** Store Imports
 import { useDispatch, useSelector } from 'react-redux'
-import Preloading from 'src/@core/components/Preloading'
 
 // ** Actions Imports
 import { addUser } from 'src/store/apps/user'
@@ -63,16 +61,48 @@ const Index = props => {
   // ** Props
   const route = useRouter();
   const { open, toggle } = props
-  const [dataunit, setDataunit] = useState([])
-  const [loading, setLoading] = useState(false)
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+  const [dataunit, setDataunit] = useState(
+    [
+      {
+        'id': 1,
+        'value': 'TKA',
+
+      },
+      {
+        'id': 2,
+        'value': 'TKB',
+      },
+      {
+        'id': 3,
+        'value': 'SD',
+
+      }, {
+        'id': 4,
+        'value': 'MTSI',
+
+      },
+    ]
+
+  )
 
 
   const dispatch = useDispatch()
   const store = useSelector(state => state.user)
 
+  function showLoadingAlert() {
+    Swal.fire({
+      title: 'Please Wait',
+      html: 'Sedang Menyimpan data tagihan...',
+      allowOutsideClick: false,
+
+    });
+    Swal.showLoading()
+
+  }
+
   const onSubmit = data => {
-    setLoading(true)
+    showLoadingAlert()
+
     const config = {
       method: 'post',
       url: `${process.env.APP_API}/tagihan/terbit`,
@@ -84,7 +114,7 @@ const Index = props => {
     }
     axios(config)
       .then((res) => {
-        route.push('/category/list');
+        route.push('/keuangan/tagihan/list/');
       })
       .catch((err) => {
         console.error(err);
@@ -93,9 +123,12 @@ const Index = props => {
   }
   const handleClose = () => {
     reset()
-    route.push('/category/list');
+    route.push('/keuangan/tagihan/list/');
   }
 
+
+
+  const { register, reset, handleSubmit, setValue, formState: { errors } } = useForm();
 
   return (
     <>
@@ -138,9 +171,10 @@ const Index = props => {
                       name="unit"
                       {...register('unit', { required: true })}
                     >
+                      <option value="">Pilih Unit</option>
                       {dataunit.map((data, i) => {
-                        return (<option value="MU1iSCtrTSs4amFmQmlYcCtIampNQT9">
-                          MA
+                        return (<option value={`${data.id}`}>
+                          {data.value}
                         </option>)
 
                       })
@@ -423,7 +457,6 @@ const Index = props => {
           </Box >
         </CardContent>
       </Card>
-      <Preloading show={loading} />
     </>
   )
 }
