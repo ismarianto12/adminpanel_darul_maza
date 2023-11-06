@@ -41,7 +41,7 @@ const Cainprovsimple = (props) => {
 
   return (
     <div>
-      <div className="form-group">
+      <div className="form-group mb-4">
         <label>Provinsi:</label>
         <select
           className={`form-control ${props.errors.provinsi ? 'is-invalid' : ''}`}
@@ -67,7 +67,7 @@ const Cainprovsimple = (props) => {
 
         {props.errors.provinsi && <div className="invalid-feedback">Silahkan pilih provinsi</div>}
       </div>
-      <div className="form-group">
+      <div className="form-group mb-4">
         <label>Kabupaten:</label>
         <select
           className={`form-control ${props.errors.kabupaten ? 'is-invalid' : ''}`}
@@ -92,7 +92,7 @@ const Cainprovsimple = (props) => {
         {props.errors.kabupaten && <div className="invalid-feedback">Silahkan pilih kabupaten</div>}
 
       </div>
-      <div className="form-group">
+      <div className="form-group mb-4">
         <label>Kecamatan:</label>
         <select
           className={`form-control ${props.errors.kecamatan ? 'is-invalid' : ''}`}
@@ -118,7 +118,7 @@ const Cainprovsimple = (props) => {
         {props.errors.kecamatan && <div className="invalid-feedback">Silahkan pilih Kecamatan</div>}
 
       </div>
-      <div className="form-group">
+      <div className="form-group mb-4">
         <label>Kelurahan:</label>
         <select
           className={`form-control ${props.errors.kelurahan ? 'is-invalid' : ''}`}
