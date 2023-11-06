@@ -299,6 +299,9 @@ const Index = () => {
         </Grid>
         <Grid item xs={12} sm={3}>
           <CardStatsHorizontalWithDetails
+            sx={{
+              background: 'red', fontColors: 'white'
+            }}
             stats='19,860'
             // trend='negative'
             title='Total Tunggakan'
@@ -308,7 +311,6 @@ const Index = () => {
           />
         </Grid>
       </Grid>
-      <br /><br />
       <br /><br />
 
       <Card>

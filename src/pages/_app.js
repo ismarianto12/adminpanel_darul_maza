@@ -1,3 +1,4 @@
+"use strict";
 // ** Next Imports
 import { useEffect } from 'react'
 import Head from 'next/head'
@@ -50,6 +51,7 @@ import 'prismjs/components/prism-tsx'
 // ** React Perfect Scrollbar Style
 import 'react-perfect-scrollbar/dist/css/styles.css'
 import 'src/iconify-bundle/icons-bundle-react'
+import 'bootstrap/dist/css/bootstrap.css'
 
 // ** Global css styles
 import '../../styles/globals.css'

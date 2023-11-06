@@ -25,7 +25,7 @@ const AppBarContent = props => {
         <ModeToggler settings={settings} saveSettings={saveSettings} />
       </Box>
       <Box>
-        <h4>{`SIAKAD SEKOLAH  - V1`}</h4>
+        <b>{`SIAKAD SEKOLAH  - V1`}</b>
       </Box>
       <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
 

@@ -32,7 +32,7 @@ import axios from 'axios'
 import Headtitle from 'src/@core/components/Headtitle'
 
 const showErrors = (field, valueLen, min) => {
-  if (valueLen === 0) {
+  if (valueLen === null) {
     return `${field} field is required`
   } else if (valueLen > 0 && valueLen < min) {
     return `${field} must be at least ${min} characters`
@@ -111,17 +111,17 @@ const Index = props => {
           <Header>
             <Typography variant='h5'>
               <Icon icon='tabler:edit' />
-              Tambah Pegawai</Typography>
+              Terbitkan tagihan </Typography>
             <IconButton
               size='small'
               onClick={handleClose}
               sx={{
-                p: '0.438rem',
+                p: '.438rem',
                 borderRadius: 1,
                 color: 'text.primary',
                 backgroundColor: 'action.selected',
                 '&:hover': {
-                  backgroundColor: theme => `rgba(${theme.palette.customColors.main}, 0.16)`
+                  backgroundColor: theme => `rgba(${theme.palette.customColors.main}, .16)`
                 }
               }}
             >
@@ -130,510 +130,268 @@ const Index = props => {
           </Header>
           <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='id_fingerprint'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="ID FINGERPRINT"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.id_fingerprint)}
-                        helperText={errors.id_fingerprint?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='nik'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="NIK"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.nik)}
-                        helperText={errors.nik?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
 
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='nama'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="NAMA"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.nama)}
-                        helperText={errors.nama?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='jk'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="JK"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.jk)}
-                        helperText={errors.jk?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
+              <div className="row">
+                <div className="col-sm-12 col-md-6">
+                  <form id="form" action="javascript:void()">
+                    <div className="mb-4">
+                      <label className="form-label required">
+                        Pilih Unit
+                      </label>
+                      <select name="unit" id="unit" className="form-select tomselected ts-hidden-accessible" tabIndex={-1}>
+                        <option value />
+                        <option value="MU1iSCtrTSs4amFmQmlYcCtIampNQT9">
+                          MA
+                        </option>
+                        <option value="bkIzcUIUlNWcmp6NmQxUnBTTklJZz9">
+                          MTS
+                        </option>
+                      </select>
+                      <p id="unit-feedback" className="mt-2" style={{ display: 'none' }} />
+                    </div>
+                    <div id="select-classroom" className="mb-4" style={{ display: 'none' }}>
+                      <label className="form-label">
+                        Daftar Kelas
+                      </label>
+                      <label className="form-check form-switch">
+                        <input type="checkbox" id="input-select-classroom" className="form-check-input" />
+                        <span className="form-check-label">Memilih</span>
+                      </label>
+                      <small className="form-hint">
+                        Memilih daftar kelas untuk menambahkan tagihan terhadap kelas yang dipilih
+                      </small>
+                      <div id="table-select-classroom" className="mt-3 p-2" style={{ border: '1px solid #d9dbde', borderRadius: 4, display: 'none' }}>
+                        <table className="table table-sm table-hover">
+                          <thead>
+                            <tr>
+                              <th className="col-1 text-center">
+                                <input type="checkbox" id="classroom-checks" className="form-check-input" />
+                              </th>
+                              <th className="col-1 text-center">#</th>
+                              <th className="col-2">
+                                Nama Unit
+                              </th>
+                              <th className="col-2">
+                                Kode Kelas
+                              </th>
+                              <th className="col-2">
+                                Nama Kelas
+                              </th>
+                              <th className="col-2">
+                                Tahun Ajaran
+                              </th>
+                              <th className="col-1">
+                                Jml. Siswa
+                              </th>
+                              <th className="col-1">
+                                Status
+                              </th>
+                            </tr>
+                          </thead>
+                        </table>
+                        <div className="table-responsive" style={{ maxHeight: 3 }}>
+                          <table className="table table-sm table-hover">
+                            <tbody id="classroom-list">
+                              <tr>
+                                <td colSpan={6} />
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="select-student" className="mb-4" style={{ display: 'none' }}>
+                      <label className="form-label">
+                        Daftar Siswa
+                      </label>
+                      <label className="form-check form-switch">
+                        <input type="checkbox" id="input-select-student" className="form-check-input" />
+                        <span className="form-check-label">Memilih</span>
+                      </label>
+                      <small className="form-hint">
+                        Memilih daftar siswa untuk menambahkan tagihan terhadap siswa dari kelas yang dipilih
+                      </small>
+                      <div id="table-select-student" className="mt-3 p-2" style={{ border: '1px solid #d9dbde', borderRadius: 4, display: 'none' }}>
+                        <table className="table table-sm table-hover">
+                          <thead>
+                            <tr>
+                              <th className="col-1 text-center">
+                                <input type="checkbox" id="student-checks" className="form-check-input" />
+                              </th>
+                              <th className="col-1 text-center">#</th>
+                              <th className="col-2">
+                                Nama Kelas
+                              </th>
+                              <th className="col-2">
+                                Nomor Induk
+                              </th>
+                              <th className="col-5">
+                                Nama Lengkap
+                              </th>
+                              <th className="col-1">
+                                Status
+                              </th>
+                            </tr>
+                          </thead>
+                        </table>
+                        <div className="table-responsive" style={{ maxHeight: 3 }}>
+                          <table className="table table-sm table-hover">
+                            <tbody id="student-list">
+                              <tr>
+                                <td colSpan={7} />
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mb-4">
+                      <label className="form-label required">
+                        Jangka Waktu Penagihan
+                      </label>
+                      <select name="bill_time" id="bill-time" className="form-select">
+                        <option value />
+                        <optgroup label="Bulanan">
+                          <option value={1}>1 Bulan</option>
+                          <option value={2}>2 Bulan</option>
+                          <option value={3}>3 Bulan</option>
+                          <option value={4}>4 Bulan</option>
+                          <option value={5}>5 Bulan</option>
+                          <option value={6}>6 Bulan</option>
+                          <option value={7}>7 Bulan</option>
+                          <option value={8}>8 Bulan</option>
+                          <option value={9}>9 Bulan</option>
+                          <option value={1}>1 Bulan</option>
+                          <option value={11}>11 Bulan</option>
+                        </optgroup>
+                        <optgroup label="Tahunan">
+                          <option value={12}>1 Tahun</option>
+                          <option value={24}>2 Tahun</option>
+                          <option value={36}>3 Tahun</option>
+                          <option value={48}>4 Tahun</option>
+                        </optgroup>
+                      </select>
+                      <p id="bill-time-feedback" className="mt-2" style={{ display: 'none' }} />
+                    </div>
+                    <div className="mb-4">
+                      <div className="row g-2">
+                        <label className="form-label required">
+                          Bulan dan Tahun Mulai
+                        </label>
+                        <div className="col-6">
+                          <select name="bill_month" id="bill-month" className="form-select">
+                            <option value />
+                            <option value={1}>Januari</option>
+                            <option value={2}>Februari</option>
+                            <option value={3}>Maret</option>
+                            <option value={4}>April</option>
+                            <option value={5}>Mei</option>
+                            <option value={6}>Juni</option>
+                            <option value={7}>Juli</option>
+                            <option value={8}>Agustus</option>
+                            <option value={9}>September</option>
+                            <option value={10}>Oktober</option>
+                            <option value={11}>November</option>
+                            <option value={12}>Desember</option>
+                          </select>
+                          <p id="bill-month-feedback" className="mt-2" style={{ display: 'none' }} />
+                        </div>
+                        <div className="col-6">
+                          <input type="text" name="bill_year" id="bill-year" className="form-control" data-mask={''} data-mask-visible="true" placeholder={'tet'} autoComplete="off" />
+                          <p id="bill-year-feedback" className="mt-2" style={{ display: 'none' }} />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mb-4">
+                      <label className="form-label  required ">
+                        Item Tagihan 1
+                      </label>
+                      <select name="bill_category_1" id="bill-category-1" className="form-select tomselected ts-hidden-accessible" tabIndex={-1}>
+                        <option value />
+                        <option value="dlRBSjdrSTBwUU8wWUNqL3RYMlBkMjlhYJwUDRLWTY5bC9sTHRzcVBObVZ5MlBjOUZvVlZTdFhwWVM4WHRCVQ==">
+                          Buku Paket MA -- Rp 2,
+                        </option>
+                        <option value="OUppYzFJcUVsWmV4b3VTWUhEeEo4UnJ2V1drZW5YZGVicXY4Z21nbk1tTmZoSTNneHVwdm1obW5QNXhHYVJsOA==">
+                          Buku Paket MTS -- Rp 18,
+                        </option>
+                        <option value="R2dWDQ3TGROQjhxbjR3UVR5Q3FPdmNKRFJHMWcvaHhOb1ZxZmZCcG1meGN4YUFheGxaMlhczkL1hkZTB4Zw==">
+                          Infaq Bangunan -- Rp 35,
+                        </option>
+                        <option value="SFNIbk5lNTBwWjRkNt1aHlERXl2bXRocVljYzdmNVFicUE4azFtSUc1YmFmVXlpNmlTcXZISHVVUjNvWWhmLw==">
+                          IURAN JALAN JALAN -- Rp 5,
+                        </option>
+                        <option value="T2FXNTJYNVlDLzZQchIQUdFaWlMY29qeGRVQmFDSUpBODFYR1RBVUNCZz=">
+                          SPP -- Rp 25,
+                        </option>
+                        <option value="eEo5VVhkallQbFdNRDBmMmdOYXNkKys1NzJOeEtYdXJSQ3h6TkFUQRpaz=">
+                          SPP MA -- Rp 35,
+                        </option>
+                        <option value="VURyUkkySEU4bDl1WDVjSU55N1ptOGYwaGVPemozUVVSaVl2TnlScmhFUT=">
+                          SPP MTS -- Rp 275,
+                        </option>
+                        <option value="NG1nTit3YnYrWmhQVDYwbXgrS2NyUzNIVmRkcWRlQmRreEFRZDFKR21rSi8yelBRcmo1TU1WS1JUbTVwaEFNQg==">
+                          UAS-GANJIL -- Rp 2,
+                        </option>
+                        <option value="Wmx4QnhEdURqM2dCZmtJWkpQZlCbmlldUkrb2xcUZFRjhPTjhGR9OQ3Z6bys3WUpiMnZWb1l5Y3RnNlA2Tg==">
+                          UAS-GENAP -- Rp 25,
+                        </option>
+                      </select>
 
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='ttl'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="Tempat Tanggal lahir"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.ttl)}
-                        helperText={errors.ttl?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='email'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="EMAIL"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.email)}
-                        helperText={errors.email?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='password'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="PASSWORD"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.password)}
-                        helperText={errors.password?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='alamat'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="ALAMAT"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.alamat)}
-                        helperText={errors.alamat?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='telp'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="TELP"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.telp)}
-                        helperText={errors.telp?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='id_divisi'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="ID DIVISI"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.id_divisi)}
-                        helperText={errors.id_divisi?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='dept'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="DEPT"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.dept)}
-                        helperText={errors.dept?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='intensif'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="INTENSIF"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.intensif)}
-                        helperText={errors.intensif?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='jam_mengajar'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="JAM MENGAJAR"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.jam_mengajar)}
-                        helperText={errors.jam_mengajar?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='nominal_jam'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="NOMINAL JAM"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.nominal_jam)}
-                        helperText={errors.nominal_jam?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='bpjs'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="BPJS"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.bpjs)}
-                        helperText={errors.bpjs?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='koperasi'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="KOPERASI"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.koperasi)}
-                        helperText={errors.koperasi?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='simpanan'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="SIMPANAN"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.simpanan)}
-                        helperText={errors.simpanan?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='tabungan'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="TABUNGAN"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.tabungan)}
-                        helperText={errors.tabungan?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='id_pend'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="ID PEND"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.id_pend)}
-                        helperText={errors.id_pend?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='kode_reff'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="KODE REFF"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.kode_reff)}
-                        helperText={errors.kode_reff?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='jumlah_reff'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="JUMLAH REFF"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.jumlah_reff)}
-                        helperText={errors.jumlah_reff?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='role_id'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="ROLE ID"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.role_id)}
-                        helperText={errors.role_id?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='status'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="STATUS"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.status)}
-                        helperText={errors.status?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='date_created'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="DATE CREATED"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.date_created)}
-                        helperText={errors.date_created?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
-              <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
-                <Button type='submit' variant='contained' sx={{ mr: 10, width: '50%' }} >
-                  Save
-                </Button>
-                <Button variant='tonal' color='secondary' sx={{ mr: 0, width: '50%' }} onClick={handleClose}>
-                  Cancel
-                </Button>
-              </Box>
-
+                      <p id="bill-category-1-feedback" className="mt-2" style={{ display: 'none' }} />
+                    </div>
+                    <div className="mb-4">
+                      <label className="form-label ">
+                        Item Tagihan 2
+                      </label>
+                      <select name="bill_category_2" id="bill-category-2" className="form-select tomselected ts-hidden-accessible" tabIndex={-1}>
+                        <option value />
+                        <option value="dlRBSjdrSTBwUU8wWUNqL3RYMlBkMjlhYJwUDRLWTY5bC9sTHRzcVBObVZ5MlBjOUZvVlZTdFhwWVM4WHRCVQ==">
+                          Buku Paket MA -- Rp 2,
+                        </option>
+                        <option value="OUppYzFJcUVsWmV4b3VTWUhEeEo4UnJ2V1drZW5YZGVicXY4Z21nbk1tTmZoSTNneHVwdm1obW5QNXhHYVJsOA==">
+                          Buku Paket MTS -- Rp 18,
+                        </option>
+                        <option value="R2dWDQ3TGROQjhxbjR3UVR5Q3FPdmNKRFJHMWcvaHhOb1ZxZmZCcG1meGN4YUFheGxaMlhczkL1hkZTB4Zw==">
+                          Infaq Bangunan -- Rp 35,
+                        </option>
+                        <option value="SFNIbk5lNTBwWjRkNt1aHlERXl2bXRocVljYzdmNVFicUE4azFtSUc1YmFmVXlpNmlTcXZISHVVUjNvWWhmLw==">
+                          IURAN JALAN JALAN -- Rp 5,
+                        </option>
+                        <option value="T2FXNTJYNVlDLzZQchIQUdFaWlMY29qeGRVQmFDSUpBODFYR1RBVUNCZz=">
+                          SPP -- Rp 25,
+                        </option>
+                        <option value="eEo5VVhkallQbFdNRDBmMmdOYXNkKys1NzJOeEtYdXJSQ3h6TkFUQRpaz=">
+                          SPP MA -- Rp 35,
+                        </option>
+                        <option value="VURyUkkySEU4bDl1WDVjSU55N1ptOGYwaGVPemozUVVSaVl2TnlScmhFUT=">
+                          SPP MTS -- Rp 275,
+                        </option>
+                        <option value="NG1nTit3YnYrWmhQVDYwbXgrS2NyUzNIVmRkcWRlQmRreEFRZDFKR21rSi8yelBRcmo1TU1WS1JUbTVwaEFNQg==">
+                          UAS-GANJIL -- Rp 2,
+                        </option>
+                        <option value="Wmx4QnhEdURqM2dCZmtJWkpQZlCbmlldUkrb2xcUZFRjhPTjhGR9OQ3Z6bys3WUpiMnZWb1l5Y3RnNlA2Tg==">
+                          UAS-GENAP -- Rp 25,
+                        </option>
+                      </select>
+                    </div>
+                    <div className="d-grid mb-3">
+                      <button type="submit" id="btn-submit" className="btn btn-primary btn-block">
+                        <svg xmlns="http://www.w3.org/2/svg" id="btn-svg" className="icon icon-tabler icon-tabler-circle-check" width={24} height={24} viewBox="  24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                          <path stroke="none" d="M h24v24Hz" fill="none" />
+                          <circle cx={12} cy={12} r={9} />
+                          <path d="M9 12l2 2l4 -4" />
+                        </svg>
+                        <span id="btn-icon" />
+                        <span id="btn-text">Proses Tambah Tagihan</span>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </form>
           </Box>
         </CardContent>
-      </Card>
+      </Card >
     </>
   )
 }

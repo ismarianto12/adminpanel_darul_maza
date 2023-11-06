@@ -28,7 +28,7 @@ const Comheader = props => {
     >
       <Button variant='contained' sx={{ '& svg': { mr: 2 } }}
         onClick={() =>
-          route.push('/tagihan/create')
+          route.push('/keuangan/tagihan/create/')
         }
       >
         <Icon fontSize='1.125rem' icon='tabler:plus' />
