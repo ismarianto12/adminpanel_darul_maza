@@ -2,8 +2,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import Grid from '@mui/material/Grid'
 
-// ** MUI Imports
-import Box from '@mui/material/Box'
+import { Box, Button } from '@mui/material/'
 import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
@@ -12,17 +11,17 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import { DataGrid } from '@mui/x-data-grid'
 import axios from 'axios'
-import CustomChip from 'src/@core/components/mui/chip'
-import CustomAvatar from 'src/@core/components/mui/avatar'
-
-import { getInitials } from 'src/@core/utils/get-initials'
+import { useForm, Controller } from 'react-hook-form';
 import Icon from 'src/@core/components/icon'
 import Link from 'next/link'
 import Comheader from './Comheader'
 import Headtitle from 'src/@core/components/Headtitle'
 import toast from 'react-hot-toast'
-import CardStatsVertical from 'src/@core/components/card-statistics/card-stats-vertical'
-import CardStatsHorizontalWithDetails from 'src/@core/components/card-statistics/card-stats-horizontal-with-details'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import CustomTextField from 'src/@core/components/mui/text-field'
+
+
 
 const fetchDivisi = (setDivisi) => {
   axios.post(`${process.env.APP_API}/divisi/list`).then((data) => {
@@ -122,10 +121,9 @@ const Index = () => {
   const [rows, setRows] = useState([])
   const [searchValue, setSearchValue] = useState('')
   const [sortColumn, setSortColumn] = useState('title')
-  const [value, setValue] = useState('')
   const [status, setStatus] = useState('')
   const [loading, setLoading] = useState(true)
-  const [divis, setDivisi] = useState([])
+  const [datadivisi, setDatadivisi] = useState([])
 
 
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 7 })
@@ -135,6 +133,31 @@ const Index = () => {
   const onDeleteSuccess = () => {
     fetchTableData();
   }
+
+
+  const defaultValues = {
+
+  }
+
+  const schema = yup.object().shape({
+    nama_biaya: yup.string().required(),
+    nominal: yup.string().required(),
+    // description: yup.string().required(),
+    tingkat: yup.string().required()
+  })
+
+  const {
+    reset,
+    control,
+    setValue,
+    setError,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    defaultValues,
+    mode: 'onChange',
+    resolver: yupResolver(schema)
+  })
 
   const onSubmit = async (data) => {
     const queryParams = {
@@ -199,7 +222,7 @@ const Index = () => {
   )
   useEffect(() => {
     fetchTableData(sort, searchValue, sortColumn)
-    fetchDivisi(setDivisi)
+    fetchDivisi(setDatadivisi)
 
   }, [fetchTableData, searchValue, sort, sortColumn])
 
