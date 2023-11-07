@@ -97,7 +97,6 @@ const Index = props => {
 
     });
     Swal.showLoading()
-
   }
 
   const onSubmit = data => {
@@ -117,7 +116,8 @@ const Index = props => {
         route.push('/keuangan/tagihan/list/');
       })
       .catch((err) => {
-        console.error(err);
+        Swal.fire("info", "insert data gagal", "info")
+
       });
     reset()
   }
@@ -289,7 +289,6 @@ const Index = props => {
                       id="bill_time"
                       name="bill_time"
                       {...register('bill_time', { required: true })}
-
 
                     >
                       <option value />

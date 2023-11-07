@@ -134,6 +134,7 @@ const Index = () => {
   const [loading, setLoading] = useState(true)
   const [divis, setDivisi] = useState([])
   const [datadivisi, setDatadivisi] = useState([])
+  const [show, setShow] = useState(false)
 
 
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 7 })
@@ -260,7 +261,6 @@ const Index = () => {
   }
 
 
-
   return (
     <>
       <Headtitle title="Tagihan Siswa" />
@@ -299,9 +299,7 @@ const Index = () => {
         </Grid>
         <Grid item xs={12} sm={3}>
           <CardStatsHorizontalWithDetails
-            sx={{
-              background: 'red', fontColors: 'white'
-            }}
+
             stats='19,860'
             // trend='negative'
             title='Total Tunggakan'
@@ -312,6 +310,107 @@ const Index = () => {
         </Grid>
       </Grid>
       <br /><br />
+
+      <div className="accordion bg-white mb-3">
+        <div className="accordion-item">
+          <div className="accordion-header">
+            <h2 className="accordion-button" data-bs-toggle="collapse" data-bs-target="#tab-filter" aria-expanded="true" style={{ cursor: 'pointer' }} onClick={() => setShow((show) => !show)}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-filter" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M5.5 5h13a1 1 0 0 1 .5 1.5l-5 5.5l0 7l-4 -3l0 -4l-5 -5.5a1 1 0 0 1 .5 -1.5" />
+              </svg>
+              Filter Data
+            </h2>
+          </div>
+          <div id="tab-filter" className={`accordion-collapse collapse ${show ? '' : 'show'}`} style={{}}>
+            <div className="accordion-body pt-0">
+              <form id="filter-form" action="javascript:void(0)">
+                <div className="row">
+                  <div className="col-sm-6 col-md-2 mb-3">
+                    <label className="form-label">Kata Kunci</label>
+                    <input type="text" name="keyword" id="keyword" className="form-control" placeholder="Masukan kata kunci pencarian" maxLength={64} />
+                  </div>
+                  <div className="col-sm-6 col-md-2 mb-3">
+                    <label className="form-label">
+                      Pilih Unit
+                    </label>
+                    <select name="unit" id="filter-unit" className="form-select">
+                      <option value />
+                      <option value="MU1iSCtrTSs4amFmQmlYcCtIampNQT09">
+                        MA
+                      </option>
+                      <option value="bkIzcUI0UlNWcmp6NmQxUnBTTklJZz09">
+                        MTS
+                      </option>
+                      <option value="ZzhhN3BLc3luWGRmNW1HZzVhdExPdz09">
+                        PAUD AA
+                      </option>
+                    </select>
+                  </div>
+                  <div className="col-sm-6 col-md-2 mb-3">
+                    <label className="form-label">
+                      Pilih Kelas
+                    </label>
+                    <select name="class_name" id="class-name" className="form-select">
+                      <option value />
+                      <option value="10 - A">
+                        10 - A
+                      </option>
+                      <option value="10 - B">
+                        10 - B
+                      </option>
+                      <option value="11 - A">
+                        11 - A
+                      </option>
+                      <option value="TES KELAS">
+                        TES KELAS
+                      </option>
+                      <option value="7 - A">
+                        7 - A
+                      </option>
+                      <option value="7 - B">
+                        7 - B
+                      </option>
+                    </select>
+                  </div>
+                  <div className="col-sm-6 col-md-2 mb-4">
+                    <label className="form-label">
+                      Tahun Ajaran
+                    </label>
+                    <select name="class_year" id="class-year" className="form-select">
+                      <option />
+                      <option value="2022/2023">2022/2023</option>
+                      <option value="2023/2024">2023/2024</option>
+                    </select>
+                  </div>
+                  <div className="col-sm-6 col-md-2 mb-4">
+                    <label className="form-label">
+                      Status Siswa
+                    </label>
+                    <select name="status" id="status" className="form-select">
+                      <option />
+                      <option value="A" selected>Aktif</option>
+                      <option value="L">Lulus</option>
+                      <option value="K">Keluar</option>
+                      <option value="D">Dihapus</option>
+                      <option value="all">Semua</option>
+                    </select>
+                  </div>
+                  <div className="col-12">
+                    <button type="button" id="btn-apply-filter" className="btn btn-primary">
+                      Terapkan Filter
+                    </button>
+                    <button type="button" id="btn-reset-filter" className="btn btn-default ms-2">
+                      Reset Filter
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
       <Card>
         <CardHeader title={
@@ -332,144 +431,23 @@ const Index = () => {
 
 
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={5} sx={{ justifyContent: 'center' }}>
-            <Grid item xs={12} sm={5} sx={{ textAlign: 'left' }}>
-
-              <Controller
-                name='divisi'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-
-                  <CustomTextField
-                    select
-                    fullWidth
-                    value={value}
-                    onChange={onChange}
-
-                  >
-                    <MenuItem key={0} value={''}>
-                      --Status--
-                    </MenuItem>
-                    {
-                      datadivisi.map((level) => (
-                        <MenuItem key={level.id} value={level.id}>
-                          {level.status.toUpperCase()}
-                        </MenuItem>
-                      ))}
-                  </CustomTextField>
-                )}
-              />
-            </Grid>
-          </Grid>
-          <br />
-          <Grid container spacing={5} sx={{ justifyContent: 'center' }}>
-            <Grid item xs={12} sm={3} sx={{ textAlign: 'center' }}>
-              <Button type='submit' variant='contained' sx={{ width: '30%', background: 'red' }}>
-                Search
-              </Button>
-              &nbsp;&nbsp;
-              <Button type='reset' onClick={reset} variant='contained' sx={{ width: '30%' }}>
-                Reset
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-
-        <br /><br />
-
         <DataGrid
           autoHeight
           pagination
           rows={rows}
           rowCount={total}
-          columns={
-            [
-              {
-                flex: 0.25,
-                minWidth: 290,
-                field: 'nama',
-                headerName: 'Nama',
-                renderCell: ({ row }) => {
-                  if (row.nama === null) {
-                    return (<b>Kosong</b>)
-                  } else {
-                    return row.nama
-                  }
-                }
-
-              },
-              {
-                flex: 0.25,
-                minWidth: 290,
-                field: 'jk',
-                headerName: 'Jenis Kelamin',
-                renderCell: ({ row }) => {
-                  if (row.jk === 'P') {
-                    return (<b>Perempuan</b>)
-                  } else {
-                    return 'Laki - laki'
-                  }
-                }
-
-              },
-              {
-                flex: 0.25,
-                minWidth: 290,
-                field: 'email',
-                headerName: 'Email'
-
-              },
-              {
-                flex: 0.25,
-                minWidth: 290,
-                field: 'create_at',
-                headerName: 'created at ',
-                renderCell: ({ row }) => {
-                  if (row.created_at === null) {
-                    return (<b>Kosong</b>)
-                  } else {
-                    return row.created_at
-                  }
-                }
-              },
-              {
-                flex: 0.25,
-                minWidth: 290,
-                field: 'update_at',
-                headerName: 'udataed at',
-                renderCell: ({ row }) => {
-                  if (row.updated_at === null) {
-                    return (<b>Kosong</b>)
-                  } else {
-                    return row.updated_at
-                  }
-                }
-              },
-              {
-                flex: 0.25,
-                minWidth: 290,
-                field: 'user_id',
-                headerName: 'User id',
-                renderCell: ({ row }) => {
-                  if (row.user_id === null) {
-                    return (<b>Kosong</b>)
-                  } else {
-                    return row.user_id
-                  }
-                }
-              },
-              {
-                flex: 0.1,
-                minWidth: 100,
-                sortable: false,
-                field: 'actions',
-                headerName: 'Actions',
-                renderCell: ({ row }) => <RowOptions id={row.id} onDeleteSuccess={onDeleteSuccess} />
-              }
-            ]
-          }
+          columns={[
+            { field: 'id', headerName: '#', width: 90 },
+            { field: 'Nama Unit', headerName: 'Nama Unit', width: 150 },
+            { field: 'Nomor Induk', headerName: 'Nomor Induk', width: 150 },
+            { field: 'Nama Lengkap', headerName: 'Nama Lengkap', width: 200 },
+            { field: 'Kelas Sekarang', headerName: 'Kelas Sekarang', width: 150 },
+            { field: 'Tahun Ajaran', headerName: 'Tahun Ajaran', width: 150 },
+            { field: 'Status', headerName: 'Status', width: 100 },
+            { field: 'Total Tagihan', headerName: 'Total Tagihan', width: 150 },
+            { field: 'Total Dibayar', headerName: 'Total Dibayar', width: 150 },
+            { field: 'Total Tunggakan', headerName: 'Total Tunggakan', width: 200 },
+          ]}
           loading={loading}
           checkboxSelection
           sortingMode='server'
