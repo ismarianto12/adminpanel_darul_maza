@@ -32,7 +32,7 @@ const Comheader = props => {
         }
       >
         <Icon fontSize='1.125rem' icon='tabler:plus' />
-        Kelolal Tagihan
+        Kelola Tagihan
       </Button>
       <Box sx={{ rowGap: 2, display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
         <CustomTextField

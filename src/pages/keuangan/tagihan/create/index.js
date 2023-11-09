@@ -47,20 +47,44 @@ const Header = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between'
 }))
 const schema = yup.object().shape({
-  title: yup.string().required(),
-  seotitle: yup.string().required(),
-  active: yup.string().required(),
-
+  // title: yup.string().required(),
+  // seotitle: yup.string().required(),
+  // active: yup.string().required(),
+  // kelas: yup.string().required(),
 })
 const defaultValues = {
   // title: '',
   // seotitle: '',
   // active: '',
 }
+
+
+const fetchSiswa = (
+  { id_unit, id_kelas, setKelas, reset }) => {
+  return axios.post(`${process.env.APP_API}siswa/${editid}`, {
+    data: {
+      id_unit: id_unit
+    }
+  }, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+    }
+  }).then((res) => {
+    setKelas(res.data)
+
+  }).catch((err) => {
+    Swal.fire('error', err, 'error')
+  })
+}
+
+
 const Index = props => {
   // ** Props
   const route = useRouter();
   const { open, toggle } = props
+  const [kelas, setKelas] = useState([])
+  const [datasiswa, setDataSiswa] = useState([])
+  const [idunit, setIdunit] = useState([])
   const [dataunit, setDataunit] = useState(
     [
       {
@@ -82,7 +106,6 @@ const Index = props => {
 
       },
     ]
-
   )
 
 
@@ -99,12 +122,28 @@ const Index = props => {
     Swal.showLoading()
   }
 
-  const onSubmit = data => {
-    showLoadingAlert()
+  const fetchKelas = (id_unit) => {
+    return axios.get(`${process.env.APP_API}kelas/getbyUnit/${id_unit}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+      }
+    }, {
+      params: {
+        id_unit: id_unit
+      }
+    }).then((res) => {
+      setKelas(res.data)
 
+    }).catch((err) => {
+      Swal.fire('error', err, 'error')
+    })
+  }
+
+  const onSubmit = (data) => {
+    showLoadingAlert()
     const config = {
       method: 'post',
-      url: `${process.env.APP_API}/tagihan/terbit`,
+      url: `${process.env.APP_API}pembayaran/terbitkanPembayaran`,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
@@ -113,23 +152,56 @@ const Index = props => {
     }
     axios(config)
       .then((res) => {
+        Swal.fire('info', 'data tagihan berhasil di terbitkan', 'info')
         route.push('/keuangan/tagihan/list/');
       })
       .catch((err) => {
-        Swal.fire("info", "insert data gagal", "info")
-
+        Swal.fire("info", err, "info")
       });
-    reset()
+    // reset()
   }
   const handleClose = () => {
     reset()
     route.push('/keuangan/tagihan/list/');
   }
 
+  useEffect(() => {
+  }, [])
 
+  const Swicthbayar = () => {
+    fetchKelas()
+    if (id_kelas) {
+      fetchSiswa()
+    }
+  }
+
+  const handlekelas = (e) => {
+    console.log(e, 'detail data')
+    fetchKelas(e.target.value)
+    setIdunit(e.target.value)
+  }
+  const handleSiswa = (e) => {
+    const id_unit = idunit
+    const id_kelas = e.target.value
+
+    return axios.get(`${process.env.APP_API}siswa/getBykelas/${id_unit}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+      }
+    }, {
+      params: {
+        id_unit: id_unit
+      }
+    }).then((res) => {
+      setDataSiswa(res.data)
+    }).catch((err) => {
+      Swal.fire('error', err, 'error')
+    })
+
+  }
 
   const { register, reset, handleSubmit, setValue, formState: { errors } } = useForm();
-
+  console.log(datasiswa, 'list siswa')
   return (
     <>
       <Headtitle title={`Tambah halaman`} />
@@ -169,7 +241,12 @@ const Index = props => {
                       className={`form-select tomselected ts-hidden-accessible ${errors.unit ? 'is-invalid' : ''}`}
                       id="unit"
                       name="unit"
-                      {...register('unit', { required: true })}
+                      {...register('unit', {
+                        required: false,
+                        onChange: (e) => {
+                          handlekelas(e)
+                        }
+                      })}
                     >
                       <option value="">Pilih Unit</option>
                       {dataunit.map((data, i) => {
@@ -183,58 +260,37 @@ const Index = props => {
                     {errors.unit && <div className="invalid-feedback">Please select a unit.</div>}
                     <p id="unit-feedback" className="mt-2" />
                   </div>
-                  <div id="select-classroom" className="mb-4" >
-                    <label className="form-label">
-                      Daftar Kelas
+
+                  <div className="mb-4">
+                    <label className="form-label required">
+                      Pilih Kelas
                     </label>
-                    <label className="form-check form-switch">
-                      <input type="checkbox" id="input-select-classroom" className="form-check-input" />
-                      <span className="form-check-label">Memilih</span>
-                    </label>
-                    <small className="form-hint">
-                      Memilih daftar kelas untuk menambahkan tagihan terhadap kelas yang dipilih
-                    </small>
-                    <div id="table-select-classroom" className="mt-3 p-2" style={{ border: '1px solid #d9dbde', borderRadius: 4 }}>
-                      <table className="table table-sm table-hover">
-                        <thead>
-                          <tr>
-                            <th className="col-1 text-center">
-                              <input type="checkbox" id="classroom-checks" className="form-check-input" />
-                            </th>
-                            <th className="col-1 text-center">#</th>
-                            <th className="col-2">
-                              Nama Unit
-                            </th>
-                            <th className="col-2">
-                              Kode Kelas
-                            </th>
-                            <th className="col-2">
-                              Nama Kelas
-                            </th>
-                            <th className="col-2">
-                              Tahun Ajaran
-                            </th>
-                            <th className="col-1">
-                              Jml. Siswa
-                            </th>
-                            <th className="col-1">
-                              Status
-                            </th>
-                          </tr>
-                        </thead>
-                      </table>
-                      <div className="table-responsive" style={{ maxHeight: 3 }}>
-                        <table className="table table-sm table-hover">
-                          <tbody id="classroom-list">
-                            <tr>
-                              <td colSpan={6} />
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
+                    <select
+                      className={`form-select tomselected ts-hidden-accessible ${errors.kelas ? 'is-invalid' : ''}`}
+                      id="kelas"
+                      name="kelas"
+                      {...register('kelas', {
+                        required: false,
+                        onChange: (e) => {
+                          handleSiswa(e)
+                        }
+                      })}
+                    >
+                      <option value="">Pilih Kelas</option>
+                      {kelas.map((data, i) => {
+                        return (<option value={`${data.id}`}>
+                          {data.kelas} - {data.nama_unit}
+                        </option>)
+
+                      })
+                      }
+                    </select>
+                    {errors.kelas && <div className="invalid-feedback">Please select a unit.</div>}
+                    <p id="unit-feedback" className="mt-2" />
                   </div>
-                  <div id="select-student" className="mb-4" style={{ display: 'none' }}>
+
+
+                  <div id="select-student" className="mb-4">
                     <label className="form-label">
                       Daftar Siswa
                     </label>
@@ -245,35 +301,57 @@ const Index = props => {
                     <small className="form-hint">
                       Memilih daftar siswa untuk menambahkan tagihan terhadap siswa dari kelas yang dipilih
                     </small>
-                    <div id="table-select-student" className="mt-3 p-2" style={{ border: '1px solid #d9dbde', borderRadius: 4, display: 'none' }}>
-                      <table className="table table-sm table-hover">
-                        <thead>
-                          <tr>
-                            <th className="col-1 text-center">
-                              <input type="checkbox" id="student-checks" className="form-check-input" />
-                            </th>
-                            <th className="col-1 text-center">#</th>
-                            <th className="col-2">
-                              Nama Kelas
-                            </th>
-                            <th className="col-2">
-                              Nomor Induk
-                            </th>
-                            <th className="col-5">
-                              Nama Lengkap
-                            </th>
-                            <th className="col-1">
-                              Status
-                            </th>
-                          </tr>
-                        </thead>
-                      </table>
-                      <div className="table-responsive" style={{ maxHeight: 3 }}>
+                    <div id="table-select-student" className="mt-3 p-2">
+
+                      <div className="table-responsive">
                         <table className="table table-sm table-hover">
-                          <tbody id="student-list">
+
+                          <thead>
                             <tr>
-                              <td colSpan={7} />
+                              <th className="col-1 text-center">
+                                <input type="checkbox" id="student-checks" className="form-check-input" />
+                              </th>
+                              <th className="col-1 text-center">#</th>
+                              <th className="col-2">
+                                Nama Kelas
+                              </th>
+                              <th className="col-2">
+                                Nomor Induk
+                              </th>
+                              <th className="col-5">
+                                Nama Lengkap
+                              </th>
+                              <th className="col-1">
+                                Status
+                              </th>
                             </tr>
+                          </thead>
+                          <tbody>
+                            {
+
+                              datasiswa.map((datasisw, j) => {
+                                return (
+                                  <tr>
+                                    <td className="col-1 text-center">
+                                      <input type="checkbox" id="student-checks" className="form-check-input" />
+                                    </td>
+                                    <td className="col-1 text-center">#</td>
+                                    <td className="col-2">
+                                      {datasisw.id_kelas}
+                                    </td>
+                                    <td className="col-2">
+                                      {datasisw.nik}
+                                    </td>
+                                    <td className="col-5">
+                                      {datasisw.nama}
+                                    </td>
+                                    <td className="col-1">
+                                      {datasisw.kelas}
+                                    </td>
+                                  </tr>
+                                )
+                              })
+                            }
                           </tbody>
                         </table>
                       </div>
@@ -288,7 +366,7 @@ const Index = props => {
                       className={`form-select ${errors.bill_time ? 'is-invalid' : ''}`}
                       id="bill_time"
                       name="bill_time"
-                      {...register('bill_time', { required: true })}
+                      {...register('bill_time', { required: false })}
 
                     >
                       <option value />
@@ -330,7 +408,7 @@ const Index = props => {
                           className={`form-select ${errors.bill_month ? 'is-invalid' : ''}`}
                           id="bill_month"
                           name="bill_month"
-                          {...register('bill_month', { required: true })}
+                          {...register('bill_month', { required: false })}
 
                         >
                           <option value=""></option>
@@ -347,16 +425,16 @@ const Index = props => {
                           <option value={11}>November</option>
                           <option value={12}>Desember</option>
                         </select>
-                        <p id="bill-month-feedback" className="mt-2" style={{ display: 'none' }} />
+                        <p id="bill-month-feedback" className="mt-2" />
                         {errors.bill_month && <div className="invalid-feedback">Please select a bill_time.</div>}
 
                       </div>
                       <div className="col-6">
                         <input type="number" className={`form-control ${errors.bill_year ? 'is-invalid' : ''}`}
                           id="bill_year" name="bill_year" defaultValue=""
-                          {...register('bill_year', { required: true })}
+                          {...register('bill_year', { required: false })}
                         />
-                        {errors.bill_year && <div className="invalid-feedback">bill_year wajid diisi.</div>}
+                        {errors.bill_year && <div className="invalid-feedback">Bill wajid diisi.</div>}
 
 
                       </div>

@@ -15,7 +15,7 @@ import axios from 'axios'
 import CustomTextField from 'src/@core/components/mui/text-field'
 import CustomChip from 'src/@core/components/mui/chip'
 import CustomAvatar from 'src/@core/components/mui/avatar'
-import CardStatsHorizontalWithDetails from 'src/@core/components/card-statistics/card-stats-horizontal-with-details'
+// import CardStatsHorizontalWithedits from 'src/@core/components/card-statistics/card-stats-horizontal-with-edits'
 
 
 import { getInitials } from 'src/@core/utils/get-initials'
@@ -33,7 +33,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 
 const fetchDivisi = (setDivisi) => {
-  axios.post(`${process.env.APP_API}/divisi/list`).then((data) => {
+  axios.post(`${process.env.APP_API}divisi/list`).then((data) => {
     setDivisi(data.data)
   }).then((err) => {
     toast.error('data divisi tidak bisa di tampilkan')
@@ -100,7 +100,7 @@ const RowOptions = ({ id, onDeleteSuccess }) => {
         <MenuItem
           component={Link}
           sx={{ '& svg': { mr: 2 } }}
-          href={`/promo/edit/${id}`}
+          href={`/keuangan/tagihan/edit/${id}`}
           onClick={handleRowOptionsClose}
         >
           <Icon icon='tabler:eye' fontSize={20} />
@@ -109,7 +109,7 @@ const RowOptions = ({ id, onDeleteSuccess }) => {
         <MenuItem
           component={Link}
           onClick={handleRowOptionsClose}
-          href={`/promo/edit/${id}`}
+          href={`/keuangan/tagihan/edit/${id}`}
           sx={{ '& svg': { mr: 2 } }}>
           <Icon icon='tabler:edit' fontSize={20} />
           {`Edit`}
@@ -208,7 +208,7 @@ const Index = () => {
   const fetchTableData = useCallback(
     async (sort, q, column) => {
       await axios
-        .get(`${process.env.APP_API}karyawan/list`, {
+        .get(`${process.env.APP_API}pembayaran/list`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`
           }
@@ -266,9 +266,9 @@ const Index = () => {
       <Headtitle title="Tagihan Siswa" />
 
 
-      <Grid container spacing={2}>
+      {/* <Grid container spacing={2}>
         <Grid item xs={12} sm={3}>
-          <CardStatsHorizontalWithDetails
+          <CardStatsHorizontalWithedits
             stats={`${total}`}
             // trend='negative'
             title='Total Dibayar'
@@ -278,7 +278,7 @@ const Index = () => {
           />
         </Grid>
         <Grid item xs={12} sm={3}>
-          <CardStatsHorizontalWithDetails
+          <CardStatsHorizontalWithedits
             stats={`${total}`}
             // trend='negative'
             title='Total Dibayar'
@@ -288,7 +288,7 @@ const Index = () => {
           />
         </Grid>
         <Grid item xs={12} sm={3}>
-          <CardStatsHorizontalWithDetails
+          <CardStatsHorizontalWithedits
             stats='19,860'
             // trend='negative'
             title='Total Tunggakan'
@@ -298,7 +298,7 @@ const Index = () => {
           />
         </Grid>
         <Grid item xs={12} sm={3}>
-          <CardStatsHorizontalWithDetails
+          <CardStatsHorizontalWithedits
 
             stats='19,860'
             // trend='negative'
@@ -308,110 +308,110 @@ const Index = () => {
           // subtitle='Last week analytics'
           />
         </Grid>
-      </Grid>
+      </Grid> */}
       <br /><br />
-
-      <div className="accordion bg-white mb-3">
-        <div className="accordion-item">
-          <div className="accordion-header">
-            <h2 className="accordion-button" data-bs-toggle="collapse" data-bs-target="#tab-filter" aria-expanded="true" style={{ cursor: 'pointer' }} onClick={() => setShow((show) => !show)}>
-              <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-filter" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M5.5 5h13a1 1 0 0 1 .5 1.5l-5 5.5l0 7l-4 -3l0 -4l-5 -5.5a1 1 0 0 1 .5 -1.5" />
-              </svg>
-              Filter Data
-            </h2>
-          </div>
-          <div id="tab-filter" className={`accordion-collapse collapse ${show ? '' : 'show'}`} style={{}}>
-            <div className="accordion-body pt-0">
-              <form id="filter-form" action="javascript:void(0)">
-                <div className="row">
-                  <div className="col-sm-6 col-md-2 mb-3">
-                    <label className="form-label">Kata Kunci</label>
-                    <input type="text" name="keyword" id="keyword" className="form-control" placeholder="Masukan kata kunci pencarian" maxLength={64} />
+      <Card>
+        <div className="accordion mb-3">
+          <div className="accordion-item">
+            <div className="accordion-header">
+              <h2 className="accordion-button" data-bs-toggle="collapse" data-bs-target="#tab-filter" aria-expanded="true" style={{ cursor: 'pointer' }} onClick={() => setShow((show) => !show)}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-filter" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M5.5 5h13a1 1 0 0 1 .5 1.5l-5 5.5l0 7l-4 -3l0 -4l-5 -5.5a1 1 0 0 1 .5 -1.5" />
+                </svg>
+                Filter Data
+              </h2>
+            </div>
+            <div id="tab-filter" className={`accordion-collapse collapse ${show ? '' : 'show'}`} style={{}}>
+              <div className="accordion-body pt-0">
+                <form id="filter-form" action="javascript:void(0)">
+                  <div className="row">
+                    <div className="col-sm-6 col-md-2 mb-3">
+                      <label className="form-label">Kata Kunci</label>
+                      <input type="text" name="keyword" id="keyword" className="form-control" placeholder="Masukan kata kunci pencarian" maxLength={64} />
+                    </div>
+                    <div className="col-sm-6 col-md-2 mb-3">
+                      <label className="form-label">
+                        Pilih Unit
+                      </label>
+                      <select name="unit" id="filter-unit" className="form-select">
+                        <option value />
+                        <option value="MU1iSCtrTSs4amFmQmlYcCtIampNQT09">
+                          MA
+                        </option>
+                        <option value="bkIzcUI0UlNWcmp6NmQxUnBTTklJZz09">
+                          MTS
+                        </option>
+                        <option value="ZzhhN3BLc3luWGRmNW1HZzVhdExPdz09">
+                          PAUD AA
+                        </option>
+                      </select>
+                    </div>
+                    <div className="col-sm-6 col-md-2 mb-3">
+                      <label className="form-label">
+                        Pilih Kelas
+                      </label>
+                      <select name="class_name" id="class-name" className="form-select">
+                        <option value />
+                        <option value="10 - A">
+                          10 - A
+                        </option>
+                        <option value="10 - B">
+                          10 - B
+                        </option>
+                        <option value="11 - A">
+                          11 - A
+                        </option>
+                        <option value="TES KELAS">
+                          TES KELAS
+                        </option>
+                        <option value="7 - A">
+                          7 - A
+                        </option>
+                        <option value="7 - B">
+                          7 - B
+                        </option>
+                      </select>
+                    </div>
+                    <div className="col-sm-6 col-md-2 mb-4">
+                      <label className="form-label">
+                        Tahun Ajaran
+                      </label>
+                      <select name="class_year" id="class-year" className="form-select">
+                        <option />
+                        <option value="2022/2023">2022/2023</option>
+                        <option value="2023/2024">2023/2024</option>
+                      </select>
+                    </div>
+                    <div className="col-sm-6 col-md-2 mb-4">
+                      <label className="form-label">
+                        Status Siswa
+                      </label>
+                      <select name="status" id="status" className="form-select">
+                        <option />
+                        <option value="A" selected>Aktif</option>
+                        <option value="L">Lulus</option>
+                        <option value="K">Keluar</option>
+                        <option value="D">Dihapus</option>
+                        <option value="all">Semua</option>
+                      </select>
+                    </div>
+                    <div className="col-12">
+                      <button type="button" id="btn-apply-filter" className="btn btn-primary">
+                        Terapkan Filter
+                      </button>
+                      <button type="button" id="btn-reset-filter" className="btn btn-default ms-2">
+                        Reset Filter
+                      </button>
+                    </div>
                   </div>
-                  <div className="col-sm-6 col-md-2 mb-3">
-                    <label className="form-label">
-                      Pilih Unit
-                    </label>
-                    <select name="unit" id="filter-unit" className="form-select">
-                      <option value />
-                      <option value="MU1iSCtrTSs4amFmQmlYcCtIampNQT09">
-                        MA
-                      </option>
-                      <option value="bkIzcUI0UlNWcmp6NmQxUnBTTklJZz09">
-                        MTS
-                      </option>
-                      <option value="ZzhhN3BLc3luWGRmNW1HZzVhdExPdz09">
-                        PAUD AA
-                      </option>
-                    </select>
-                  </div>
-                  <div className="col-sm-6 col-md-2 mb-3">
-                    <label className="form-label">
-                      Pilih Kelas
-                    </label>
-                    <select name="class_name" id="class-name" className="form-select">
-                      <option value />
-                      <option value="10 - A">
-                        10 - A
-                      </option>
-                      <option value="10 - B">
-                        10 - B
-                      </option>
-                      <option value="11 - A">
-                        11 - A
-                      </option>
-                      <option value="TES KELAS">
-                        TES KELAS
-                      </option>
-                      <option value="7 - A">
-                        7 - A
-                      </option>
-                      <option value="7 - B">
-                        7 - B
-                      </option>
-                    </select>
-                  </div>
-                  <div className="col-sm-6 col-md-2 mb-4">
-                    <label className="form-label">
-                      Tahun Ajaran
-                    </label>
-                    <select name="class_year" id="class-year" className="form-select">
-                      <option />
-                      <option value="2022/2023">2022/2023</option>
-                      <option value="2023/2024">2023/2024</option>
-                    </select>
-                  </div>
-                  <div className="col-sm-6 col-md-2 mb-4">
-                    <label className="form-label">
-                      Status Siswa
-                    </label>
-                    <select name="status" id="status" className="form-select">
-                      <option />
-                      <option value="A" selected>Aktif</option>
-                      <option value="L">Lulus</option>
-                      <option value="K">Keluar</option>
-                      <option value="D">Dihapus</option>
-                      <option value="all">Semua</option>
-                    </select>
-                  </div>
-                  <div className="col-12">
-                    <button type="button" id="btn-apply-filter" className="btn btn-primary">
-                      Terapkan Filter
-                    </button>
-                    <button type="button" id="btn-reset-filter" className="btn btn-default ms-2">
-                      Reset Filter
-                    </button>
-                  </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-
+      </Card>
+      <br /><br />
       <Card>
         <CardHeader title={
           (<>
@@ -437,16 +437,34 @@ const Index = () => {
           rows={rows}
           rowCount={total}
           columns={[
-            { field: 'id', headerName: '#', width: 90 },
-            { field: 'Nama Unit', headerName: 'Nama Unit', width: 150 },
-            { field: 'Nomor Induk', headerName: 'Nomor Induk', width: 150 },
-            { field: 'Nama Lengkap', headerName: 'Nama Lengkap', width: 200 },
-            { field: 'Kelas Sekarang', headerName: 'Kelas Sekarang', width: 150 },
-            { field: 'Tahun Ajaran', headerName: 'Tahun Ajaran', width: 150 },
-            { field: 'Status', headerName: 'Status', width: 100 },
-            { field: 'Total Tagihan', headerName: 'Total Tagihan', width: 150 },
-            { field: 'Total Dibayar', headerName: 'Total Dibayar', width: 150 },
-            { field: 'Total Tunggakan', headerName: 'Total Tunggakan', width: 200 },
+            { field: 'id', headerName: '#' },
+            { field: 'tingkat', headerName: 'Nama Unit' },
+            { field: 'nis', headerName: 'Nomor Induk' },
+            { field: 'nama', headerName: 'Nama Lengkap' },
+            {
+              field: 'kelas', headerName: 'Kelas Sekarang',
+              renderCell: ({ row }) => {
+                if (row.kelas) {
+                  return (<b>{row.kelas}</b>)
+                } else {
+                  return 'Kosong'
+                }
+              }
+
+            },
+            { field: 'tahun_ajaran', headerName: 'Tahun Ajaran' },
+            { field: 'status', headerName: 'Status' },
+            { field: 'total_tagihan', headerName: 'Total Tagihan' },
+            { field: 'total_dibayar', headerName: 'Total Dibayar' },
+            { field: 'total_tunggakan', headerName: 'Total Tunggakan' },
+            {
+              flex: 0.1,
+              minWidth: 100,
+              sortable: false,
+              // field: 'actions',
+              headerName: 'Actions',
+              renderCell: ({ row }) => <RowOptions id={row.id} setLoading={setLoading} />
+            }
           ]}
           loading={loading}
           checkboxSelection
