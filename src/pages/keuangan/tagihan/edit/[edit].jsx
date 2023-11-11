@@ -434,7 +434,7 @@ const Index = (props) => {
                             1
                           </td>
                           <td>
-                            Arsipatra Narpati
+                            {datasiswa.nama}
                           </td>
                           <td>
                             Rp 500,000

@@ -438,7 +438,16 @@ const Index = () => {
           rowCount={total}
           columns={[
             { field: 'id', headerName: '#' },
-            { field: 'tingkat', headerName: 'Nama Unit' },
+            {
+              field: 'tingkat', headerName: 'Nama Unit',
+              renderCell: ({ row }) => {
+                if (row.tingkat) {
+                  return (<b>{row.tingkat}</b>)
+                } else {
+                  return 'Kosong'
+                }
+              }
+            },
             { field: 'nis', headerName: 'Nomor Induk' },
             { field: 'nama', headerName: 'Nama Lengkap' },
             {
@@ -452,11 +461,47 @@ const Index = () => {
               }
 
             },
-            { field: 'tahun_ajaran', headerName: 'Tahun Ajaran' },
+            {
+              field: 'tahun_ajaran', headerName: 'Tahun Ajaran',
+              renderCell: ({ row }) => {
+                if (row.tahun_ajaran) {
+                  return (<b>{row.tahun_ajaran}</b>)
+                } else {
+                  return 'Kosong'
+                }
+              }
+
+            },
             { field: 'status', headerName: 'Status' },
-            { field: 'total_tagihan', headerName: 'Total Tagihan' },
-            { field: 'total_dibayar', headerName: 'Total Dibayar' },
-            { field: 'total_tunggakan', headerName: 'Total Tunggakan' },
+            {
+              field: 'total_tagihan', headerName: 'Total Tagihan', renderCell: ({ row }) => {
+                if (row.total_tagihan) {
+                  return (<b>{row.total_tagihan}</b>)
+                } else {
+                  return 'Kosong'
+                }
+              }
+            },
+            {
+              field: 'total_dibayar', headerName: 'Total Dibayar',
+              renderCell: ({ row }) => {
+                if (row.total_dibayar) {
+                  return (<b>{row.total_dibayar}</b>)
+                } else {
+                  return 'Kosong'
+                }
+              }
+            },
+            {
+              field: 'total_tunggakan', headerName: 'Total Tunggakan',
+              renderCell: ({ row }) => {
+                if (row.total_tunggakan) {
+                  return (<b>{row.total_tunggakan}</b>)
+                } else {
+                  return 'Kosong'
+                }
+              }
+            },
             {
               flex: 0.1,
               minWidth: 100,
