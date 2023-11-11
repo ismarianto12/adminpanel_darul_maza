@@ -133,7 +133,7 @@ const Index = (props) => {
                 <div style={{ minHeight: 680 }}>
                   <div className="card-header">
                     <p className="card-title text-uppercase text-muted">
-                      Detail Info Siswa
+                      Sekolah Islam Terpadu Darul Maza
                     </p>
                   </div>
                   <div className="card-body pb-1">
@@ -207,7 +207,7 @@ const Index = (props) => {
                           </tr>
                           <tr>
                             <td className="pt-3 align-middle text-center" colSpan={3} style={{ borderBottom: 'none' }}>
-                              <Link href="/keuangan/tagihan/list" className="btn btn-primary btn-sm">
+                              <Link href={`/keuangan/tagihan/${props.id}`} className="btn btn-primary btn-sm">
                                 Lihat Detail
                               </Link>
 

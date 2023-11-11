@@ -15,11 +15,14 @@ const printdetail = (props) => {
     Calldetailbayar()
   }, [])
   const Callsiswa = async () => {
-    await axios.post(`${process.env.APP_API}/siswa/edit/${props.id}`, {
-      id_siswa: props.id
-    }, {
+    await axios.get(`${process.env.APP_API}siswa/edit/${props.id}`, {
       headers: {
         Authorization: `bearer ${localStorage.getItem("accessToken")}`
+      },
+
+    }, {
+      params: {
+        id_siswa: props.id
       }
     }).then((data) => {
       setDataSiswa(data.data)
@@ -155,6 +158,8 @@ tbody>tr>td {
               SIAKAD AKADEMIK
             </h1>
             <p>
+              Sekolah Islam Terpadu Darul Maza
+              <br />
               Jl. Nusantara Raya No.17 DKI Jakarta
             </p>
           </td>
