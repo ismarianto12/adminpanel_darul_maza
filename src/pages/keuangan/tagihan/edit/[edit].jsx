@@ -27,6 +27,8 @@ import { addUser } from 'src/store/apps/user'
 import { Card, CardContent } from '@mui/material'
 import axios from 'axios'
 import Link from 'next/link'
+import { getparamPend } from 'src/@core/utils/encp'
+import Swal from 'sweetalert2'
 
 const showErrors = (field, valueLen, min) => {
   if (valueLen === 0) {
@@ -56,8 +58,8 @@ const Index = (props) => {
 
   const dispatch = useDispatch()
   const store = useSelector(state => state.user)
-  const [data, setData] = useState([]);
-
+  const [datasiswa, setDatasiswa] = useState([])
+  const [detailtagihan, setDetailTagihan] = useState([])
   const { params } = useRouter();
 
   const {
@@ -69,62 +71,56 @@ const Index = (props) => {
     formState: { errors }
   } = useForm({
     defaultValues: {
-      title: data?.title,
-      seotitle: data?.seotitle,
-      active: data?.active,
+      title: '', //data?.title,
+      seotitle: '', // data?.seotitle,
+      active: '' // data?.active,
     },
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
 
   useEffect(() => {
-    calledit()
-  }, []);
-  const calledit = () => {
-    const config = {
-      method: 'get',
-      url: '/admin/api/category/' + props.id,
-      headers: {
-        'Content-Type': 'application/json',
-        'token': '123'
-      },
-    }
-    axios(config)
-      .then((res) => {
-        setData(res.data)
-        reset(res.data)
-
+    const CallSiswa = async () => {
+      await axios.get(`${process.env.APP_API}siswa/edit/${props.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        }
+      }, {
+        params: { siswa_id: props.id },
+      }).then(data => {
+        setDatasiswa(data.data)
+      }).catch(errr => {
+        setDatasiswa([])
+        Swal.fire('error', 'gagal mendapatkan data siswa', 'error')
       })
-      .catch((err) => {
-        console.error(err);
-      });
+    }
+
+    CallSiswa()
+    callTagihan()
+  }, [])
+
+
+  const callTagihan = async () => {
+    await axios.post(`${process.env.APP_API}keuangan/detail/${props.id}`, {
+      siswa_id: props.id,
+    }, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+      }
+    }).then((data) => {
+      setDetailTagihan(data.data)
+    }).catch((err) => {
+      Swal.fire('Error', 'tidak data passing data', 'error')
+      setDetailTagihan([])
+    })
+
   }
 
-
-  const onSubmit = data => {
-    const config = {
-      method: 'post',
-      url: '/admin/api/category/insert',
-      headers: {
-        'Content-Type': 'application/json',
-        'token': '123'
-      },
-      data: data
-    }
-    axios(config)
-      .then((res) => {
-        route.push('/category/list');
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-    reset()
-  }
   const handleClose = () => {
     reset()
-    route.push('/category/list');
+    route.push('/keuangan/tagihan/list')
   }
-  console.log(data?.active, 'datail data')
+  console.log(datasiswa, 'datail data')
   return (
     <>
       <Card>
@@ -155,32 +151,35 @@ const Index = (props) => {
                           <tr>
                             <th className="align-middle" style={{ background: 'none' }}>Nama Lengkap</th>
                             <td className="align-middle">:</td>
-                            <td className="align-middle"><span id="student-name">Arsipatra Narpati</span></td>
+                            <td className="align-middle"><span id="student-name">{datasiswa.nama}</span></td>
                           </tr>
                           <tr>
                             <th className="col-4 align-middle" style={{ background: 'none' }}>Nomor Induk</th>
                             <td className="col-1 align-middle">:</td>
-                            <td className="align-middle"><span id="student-number">23071600029</span></td>
+                            <td className="align-middle"><span id="student-number">{datasiswa.nis}</span></td>
                           </tr>
                           <tr>
                             <th className="align-middle" style={{ background: 'none' }}>Jenis Kelamin</th>
                             <td className="align-middle">:</td>
-                            <td className="align-middle"><span id="student-gender">Laki-Laki</span></td>
+                            <td className="align-middle"><span id="student-gender">{datasiswa.jk === '1' ? 'Laki' : 'Perempuan'}</span></td>
                           </tr>
                           <tr>
                             <th className="align-middle" style={{ background: 'none' }}>Tempat Lahir</th>
                             <td className="align-middle">:</td>
-                            <td className="align-middle"><span id="student-pob">Bandung</span></td>
+                            <td className="align-middle"><span id="student-pob">{datasiswa.ttl}</span></td>
                           </tr>
                           <tr>
                             <th className="align-middle" style={{ background: 'none' }}>Tanggal Lahir</th>
                             <td className="align-middle">:</td>
-                            <td className="align-middle"><span id="student-dob">22 Januari 1998</span></td>
+                            <td className="align-middle"><span id="student-dob">{datasiswa.ttl}</span></td>
                           </tr>
                           <tr>
                             <th className="align-middle" style={{ background: 'none' }}>Unit Sekarang</th>
                             <td className="align-middle">:</td>
-                            <td className="align-middle"><span id="student-unit">MA</span></td>
+                            <td className="align-middle"><span id="student-unit">
+
+                              {getparamPend(datasiswa.id_majors)}
+                            </span></td>
                           </tr>
                           <tr>
                             <th className="align-middle" style={{ background: 'none' }}>Kelas Sekarang</th>
@@ -208,7 +207,7 @@ const Index = (props) => {
                           </tr>
                           <tr>
                             <td className="pt-3 align-middle text-center" colSpan={3} style={{ borderBottom: 'none' }}>
-                              <Link href="/keuangan/tagihan/list" className="btn btn-default btn-sm">
+                              <Link href="/keuangan/tagihan/list" className="btn btn-primary btn-sm">
                                 Lihat Detail
                               </Link>
 
@@ -413,59 +412,52 @@ const Index = (props) => {
                     </div>
                   </div>
                 </div>
-                <div className="card">
-                  <div className="card-header border-0 pb-0">
-                    <div className="card-title text-muted text-uppercase">
-                      Riwayat Pembayaran
-                    </div>
-                  </div>
-                  <div className="card-body">
-                    <div className="table-responsive">
-                      <form id="multiple-print" method="POST" action="https://live.aplikasi-spa.com/admin/transactions/print?ps=Rlh1NmhHRDhjNFJHOStZNExnNDZSQT09" target="_blank">
-                        <input type="hidden" name="_token" defaultValue="BckOk2CHDsNY4KMfzZGlx4VT4rcytxSln25mjds4" />
-                        <table className="table table-bordered table-vcenter">
-                          <thead>
-                            <tr>
-                              <th className="text-center">#</th>
-                              <th>Nama Lengkap</th>
-                              <th>Jumlah Pembayaran</th>
-                              <th>Kode Pembayaran</th>
-                              <th>Waktu Pembayaran</th>
-                              <th>Status</th>
-                              <th />
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td className="text-center">
-                                1
-                              </td>
-                              <td>
-                                Arsipatra Narpati
-                              </td>
-                              <td>
-                                Rp 500,000
-                              </td>
-                              <td>
-                                23110823NRW7ZIMK8H1028
-                              </td>
-                              <td>
-                                08/11/2023 23:03
-                              </td>
-                              <td>
-                                <span className="text-success">Lunas</span>
-                              </td>
-                              <td className="text-center">
-                                <Link href="/keuangan/tagihan" className="btn btn-default btn-sm" target="_blank">
-                                  Lihat Detail
-                                </Link>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </form>
-                    </div>
-                  </div>
+                Riwayat Pembayaran
+                <div className="table-responsive">
+                  <form id="multiple-print" method="POST" action="https://live.aplikasi-spa.com/admin/transactions/print?ps=Rlh1NmhHRDhjNFJHOStZNExnNDZSQT09" target="_blank">
+                    <input type="hidden" name="_token" defaultValue="BckOk2CHDsNY4KMfzZGlx4VT4rcytxSln25mjds4" />
+                    <table className="table table-bordered table-vcenter">
+                      <thead>
+                        <tr>
+                          <th className="text-center">#</th>
+                          <th>Nama Lengkap</th>
+                          <th>Jumlah Pembayaran</th>
+                          <th>Kode Pembayaran</th>
+                          <th>Waktu Pembayaran</th>
+                          <th>Status</th>
+                          <th />
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td className="text-center">
+                            1
+                          </td>
+                          <td>
+                            Arsipatra Narpati
+                          </td>
+                          <td>
+                            Rp 500,000
+                          </td>
+                          <td>
+                            23110823NRW7ZIMK8H1028
+                          </td>
+                          <td>
+                            08/11/2023 23:03
+                          </td>
+                          <td>
+                            <span className="text-success">Lunas</span>
+                          </td>
+                          <td className="text-center">
+                            <Link href={`/keuangan/tagihana/printdetail/${props.id}`} className="btn btn-default btn-sm" target="_blank">
+                              Lihat Detail
+                            </Link>
+
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </form>
                 </div>
               </div>
             </div>
