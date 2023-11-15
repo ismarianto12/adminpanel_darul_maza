@@ -86,6 +86,7 @@ const styles = {
     color: '#fff',
     textAlign: 'center',
     margin: '0',
+    width: '100%'
   },
   img: {
     width: '80%',
@@ -263,7 +264,7 @@ const Index = props => {
                 </tbody>
               </table>
 
-              <h3 style={styles.h3}>ppdbdata Siswa</h3>
+              <h3 style={styles.h3}>Data Siswa</h3>
 
               <table className='table' style={styles.cstable}>
                 <tbody>
@@ -320,7 +321,7 @@ const Index = props => {
                 </tbody>
               </table>
 
-              <h3 style={styles.h3}>ppdbdata Alamat</h3>
+              <h3 style={styles.h3}>Data Alamat</h3>
 
               <table className='table' style={styles.cstable}>
                 <tbody>
@@ -352,7 +353,7 @@ const Index = props => {
                 </tbody>
               </table>
 
-              <h3 style={styles.h3}>ppdbdata Sekolah</h3>
+              <h3 style={styles.h3}>Data Sekolah</h3>
 
 
               <table className='table' style={styles.cstable}>
@@ -390,7 +391,7 @@ const Index = props => {
                 </tbody>
               </table>
 
-              <h3 style={styles.h3}>ppdbdata Orang Tua</h3>
+              <h3 style={styles.h3}>Data Orang Tua</h3>
               <table className='table'>
                 <tbody>
                   <tr>
