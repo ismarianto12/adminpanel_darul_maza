@@ -112,9 +112,43 @@ const getparamPend = (params) => {
   };
 
   return listdata[params] || 'Nilai tidak ditemukan';
-};
+}
+// acceess data
+const GetUnit = async (props) => {
+  axios.get(`${process.env.APP_API}tingkat/list`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+    }
+  }).then((data) => {
+    props.setUnitdata([data.data])
+    console.log(data.data, 'result as tingkat')
+  }).then((err) => {
+    toast.error('tidak dapat memanggil data');
+  })
+}
+const GetTahunAkademik = async (props) => {
+  axios.get(`${process.env.APP_API}tahunakademik/list`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+    }
+  }).then((data) => {
+    props.setTahunajaran([data.data])
+  }).then((err) => {
+    toast.error('tidak dapat memanggil data');
+  })
+}
 
-
+const GetKelas = async (props) => {
+  axios.get(`${process.env.APP_API}kelas/list`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+    }
+  }).then((data) => {
+    props.setKelas([data.data])
+  }).then((err) => {
+    toast.error('tidak dapat memanggil data');
+  })
+}
 export {
   getparamPend,
   generateMD5Hash,
@@ -124,8 +158,14 @@ export {
   getCookie,
   deleteCookie,
   calluserEdit,
-  prosesPpdb
+  prosesPpdb,
+  GetUnit,
+  GetTahunAkademik,
+  GetKelas
 }
+
+
+
 
 
 

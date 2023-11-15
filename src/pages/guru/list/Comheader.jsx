@@ -28,7 +28,7 @@ const Comheader = props => {
     >
       <Button variant='contained' sx={{ '& svg': { mr: 2 } }}
         onClick={() =>
-          route.push('/pegawai/create')
+          route.push('/guru/create')
         }
       >
         <Icon fontSize='1.125rem' icon='tabler:plus' />

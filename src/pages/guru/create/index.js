@@ -70,6 +70,7 @@ const Index = props => {
     control,
     setValue,
     setError,
+    register,
     handleSubmit,
     formState: { errors }
   } = useForm({
@@ -81,20 +82,20 @@ const Index = props => {
   const onSubmit = data => {
     const config = {
       method: 'post',
-      url: '/admin/api/category/insert',
+      url: `${process.env.APP_API}guru/insert`,
       headers: {
         'Content-Type': 'application/json',
-        'token': '123'
+        Authorization: `${localStorage.getItem('accessToken')}`
       },
       data: data
     }
     axios(config)
       .then((res) => {
-        route.push('/category/list');
+        route.push('/guru/list');
       })
       .catch((err) => {
-        console.error(err);
-      });
+        console.error(err)
+      })
     reset()
   }
   const handleClose = () => {
@@ -111,7 +112,7 @@ const Index = props => {
           <Header>
             <Typography variant='h5'>
               <Icon icon='tabler:edit' />
-              Tambah Pegawai</Typography>
+              Tambah Pengajar.</Typography>
             <IconButton
               size='small'
               onClick={handleClose}
@@ -129,508 +130,117 @@ const Index = props => {
             </IconButton>
           </Header>
           <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
+
             <form onSubmit={handleSubmit(onSubmit)}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='id_fingerprint'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="ID FINGERPRINT"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.id_fingerprint)}
-                        helperText={errors.id_fingerprint?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='nik'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="NIK"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.nik)}
-                        helperText={errors.nik?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
+              <div className="row">
+                <div className="col-md-6">
+                  <h4>Data Pribadi Guru</h4>
+                  <hr />
+                  <div className="form-group mb-4">
+                    <label>NIK</label>
+                    <input
+                      type="number"
+                      className={`form-control ${errors.nik ? 'is-invalid' : ''}`}
+                      id="nik"
+                      name="nik"
+                      placeholder="Nomor Induk Kependudukan"
+                      defaultValue=""
+                      {...register('nik', { required: true })}
+                    />
+                    {errors.nik && <div className="invalid-feedback">This field is required.</div>}
 
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='nama'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="NAMA"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.nama)}
-                        helperText={errors.nama?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='jk'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="JK"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.jk)}
-                        helperText={errors.jk?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
+                  </div>
 
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='ttl'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="Tempat Tanggal lahir"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.ttl)}
-                        helperText={errors.ttl?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='email'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="EMAIL"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.email)}
-                        helperText={errors.email?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
+                  <div className="form-group mb-4">
+                    <label>Nama</label>
+                    <input
+                      type="text"
+                      className={`form-control ${errors.nis ? 'is-invalid' : ''}`}
+                      id="nama"
+                      name="Nama"
+                      placeholder="Nama"
+                      defaultValue=""
+                      {...register('nama', { required: true })}
+                    />
+                    {errors.nama && <div className="invalid-feedback">This field is required.</div>}
+                  </div>
 
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='password'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="PASSWORD"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.password)}
-                        helperText={errors.password?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='alamat'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="ALAMAT"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.alamat)}
-                        helperText={errors.alamat?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
+                  <div className="form-group mb-4">
+                    <label htmlFor="jk" className="col-form-label">Jenis Kelamin:</label>
+                    <select
+                      className={`form-control ${errors.jk ? 'is-invalid' : ''}`}
+                      id="jk"
+                      name="jk"
+                      {...register('jk', { required: true })}
+                    >
+                      <option value="">- Jenis Kelamin -</option>
+                      <option value="L">Laki-Laki</option>
+                      <option value="P">Perempuan</option>
+                    </select>
+                    {errors.jk && <div className="invalid-feedback">Please select a gender.</div>}
+                  </div>
 
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='telp'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="TELP"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.telp)}
-                        helperText={errors.telp?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='id_divisi'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="ID DIVISI"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.id_divisi)}
-                        helperText={errors.id_divisi?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
+                  <div className="form-group mb-4">
+                    <label>Tempat tanggal lahir</label>
+                    <input
+                      type="text"
+                      className={`form-control ${errors.ttl ? 'is-invalid' : ''}`}
+                      id="ttl"
+                      name="ttl"
+                      placeholder="Tempat tanggal lahir"
+                      defaultValue=""
+                      {...register('ttl', { required: true })}
+                    />
+                    {errors.ttl && <div className="invalid-feedback">Tempat tanggal lahir is required.</div>}
+                  </div>
 
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='dept'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="DEPT"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.dept)}
-                        helperText={errors.dept?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='intensif'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="INTENSIF"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.intensif)}
-                        helperText={errors.intensif?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
+                  <div className="form-group mb-4">
+                    <label>Email</label>
+                    <input
+                      type="email"
+                      className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                      id="email"
+                      name="email"
+                      placeholder="Email"
+                      defaultValue=""
+                      {...register('email', { required: true })}
+                    />
+                    {errors.email && <div className="invalid-feedback">Email is required.</div>}
+                  </div>
+                  <div className="form-group mb-4">
+                    <label>Alamat</label>
+                    <textarea
+                      className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                      id="alamat"
+                      name="alamat"
+                      defaultValue=""
+                      {...register('alamat', { required: true })}
+                    />
+                    {errors.alamat && <div className="invalid-feedback">Email is required.</div>}
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <h4>Data Data Alamat </h4>
+                  <hr />
+                  <h4>Data Pendidikan</h4>
 
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='jam_mengajar'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="JAM MENGAJAR"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.jam_mengajar)}
-                        helperText={errors.jam_mengajar?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='nominal_jam'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="NOMINAL JAM"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.nominal_jam)}
-                        helperText={errors.nominal_jam?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
 
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='bpjs'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="BPJS"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.bpjs)}
-                        helperText={errors.bpjs?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='koperasi'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="KOPERASI"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.koperasi)}
-                        helperText={errors.koperasi?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
+                </div>
 
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='simpanan'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="SIMPANAN"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.simpanan)}
-                        helperText={errors.simpanan?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='tabungan'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="TABUNGAN"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.tabungan)}
-                        helperText={errors.tabungan?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='id_pend'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="ID PEND"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.id_pend)}
-                        helperText={errors.id_pend?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='kode_reff'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="KODE REFF"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.kode_reff)}
-                        helperText={errors.kode_reff?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='jumlah_reff'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="JUMLAH REFF"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.jumlah_reff)}
-                        helperText={errors.jumlah_reff?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='role_id'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="ROLE ID"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.role_id)}
-                        helperText={errors.role_id?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='status'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="STATUS"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.status)}
-                        helperText={errors.status?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Controller
-                    name='date_created'
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <CustomTextField
-                        fullWidth
-                        value={value}
-                        sx={{ mb: 4 }}
-                        label="DATE CREATED"
-                        onChange={onChange}
-                        placeholder="Field Required"
-                        error={Boolean(errors.date_created)}
-                        helperText={errors.date_created?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
-              <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
-                <Button type='submit' variant='contained' sx={{ mr: 10, width: '50%' }} >
-                  Save
-                </Button>
-                <Button variant='tonal' color='secondary' sx={{ mr: 0, width: '50%' }} onClick={handleClose}>
-                  Cancel
-                </Button>
-              </Box>
-
+              </div>
+              <div className="_stepbackgroundalkdmsaldkma exssubmitform pt-3 form-group mb-4 row" >
+                <div className="col-md-12 text-center">
+                  <button type="submit" className="btn-block btn btn-success" style={{
+                    'width': '40%', 'marginRight': '15px'
+                  }}>Daftar</button>
+                  <button type="reset" onClick={() => confirmbatal()} className="btn-block btn btn-danger" style={{
+                    'width': '40%'
+                  }}>Batal</button>
+                </div>
+              </div>
+              {/* <Comodal handleClose={handleClose} show={show} setConfirm={setConfirm} /> */}
             </form>
+
           </Box>
         </CardContent>
       </Card>

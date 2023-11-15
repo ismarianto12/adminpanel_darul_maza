@@ -105,7 +105,7 @@ const Index = props => {
 
   return (
     <>
-      <Headtitle title={`Tambah halaman`} />
+      <Headtitle title={`Tambah Pegawai`} />
       <Card>
         <CardContent>
           <Header>

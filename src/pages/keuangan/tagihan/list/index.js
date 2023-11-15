@@ -26,6 +26,11 @@ import Headtitle from 'src/@core/components/Headtitle'
 import toast from 'react-hot-toast'
 import CardStatsVertical from 'src/@core/components/card-statistics/card-stats-vertical'
 import { useForm, Controller } from 'react-hook-form'
+import {
+  GetUnit,
+  GetTahunAkademik,
+  GetKelas
+} from 'src/@core/utils/encp'
 
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -129,14 +134,16 @@ const Index = () => {
   const [sort, setSort] = useState('asc')
   const [rows, setRows] = useState([])
   const [searchValue, setSearchValue] = useState('')
-  const [sortColumn, setSortColumn] = useState('nama_siswa')
+  const [sortColumn, setSortColumn] = useState('unit_id')
   const [status, setStatus] = useState('')
   const [loading, setLoading] = useState(true)
   const [divis, setDivisi] = useState([])
   const [datadivisi, setDatadivisi] = useState([])
   const [show, setShow] = useState(false)
 
-
+  const [unitdata, setUnitdata] = useState([])
+  const [kelas, setKelas] = useState([])
+  const [tahunajaaran, setTahunajaran] = useState([])
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 7 })
   function loadServerRows(currentPage, data) {
     return data.slice(currentPage * paginationModel.pageSize, (currentPage + 1) * paginationModel.pageSize)
@@ -240,6 +247,11 @@ const Index = () => {
     [paginationModel]
   )
   useEffect(() => {
+
+    GetUnit(setUnitdata())
+    GetTahunAkademik(setTahunajaran())
+    GetKelas(setKelas())
+
     fetchTableData(sort, searchValue, sortColumn)
     fetchDivisi(setDivisi)
 
@@ -335,16 +347,12 @@ const Index = () => {
                         Pilih Unit
                       </label>
                       <select name="unit" id="filter-unit" className="form-select">
-                        <option value />
-                        <option value="MU1iSCtrTSs4amFmQmlYcCtIampNQT09">
-                          MA
-                        </option>
-                        <option value="bkIzcUI0UlNWcmp6NmQxUnBTTklJZz09">
-                          MTS
-                        </option>
-                        <option value="ZzhhN3BLc3luWGRmNW1HZzVhdExPdz09">
-                          PAUD AA
-                        </option>
+                        {unitdata?.map((data) => {
+                          return (
+                            <option value=""></option>
+                          )
+                        }
+                        )}
                       </select>
                     </div>
                     <div className="col-sm-6 col-md-2 mb-3">
@@ -352,25 +360,12 @@ const Index = () => {
                         Pilih Kelas
                       </label>
                       <select name="class_name" id="class-name" className="form-select">
-                        <option value />
-                        <option value="10 - A">
-                          10 - A
-                        </option>
-                        <option value="10 - B">
-                          10 - B
-                        </option>
-                        <option value="11 - A">
-                          11 - A
-                        </option>
-                        <option value="TES KELAS">
-                          TES KELAS
-                        </option>
-                        <option value="7 - A">
-                          7 - A
-                        </option>
-                        <option value="7 - B">
-                          7 - B
-                        </option>
+                        {kelas?.map((data) => {
+                          return (
+                            <option value=""></option>
+                          )
+                        }
+                        )}
                       </select>
                     </div>
                     <div className="col-sm-6 col-md-2 mb-4">
@@ -378,9 +373,12 @@ const Index = () => {
                         Tahun Ajaran
                       </label>
                       <select name="class_year" id="class-year" className="form-select">
-                        <option />
-                        <option value="2022/2023">2022/2023</option>
-                        <option value="2023/2024">2023/2024</option>
+                        {tahunajaaran?.map((data) => {
+                          return (
+                            <option value={data.id} key={data.id}>{data.tahun}</option>
+                          )
+                        }
+                        )}
                       </select>
                     </div>
                     <div className="col-sm-6 col-md-2 mb-4">

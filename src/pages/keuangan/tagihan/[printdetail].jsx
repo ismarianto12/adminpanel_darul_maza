@@ -269,7 +269,7 @@ tbody>tr>td {
               Metode Bayar
             </td>
             <td className="font-auto">
-              : Tunai
+              : {datasiswa.pembayaran_method}
             </td>
           </tr>
           <tr>
@@ -277,13 +277,13 @@ tbody>tr>td {
               Waktu Bayar
             </td>
             <td className="font-auto">
-              : 10/11/23 21:09
+              :  {datasiswa.pembayaran_date}
             </td>
           </tr>
         </tbody>
       </table>
       <p style={{ paddingRight: 12, fontSize: 9, textAlign: 'right' }}>
-        10 November 2023
+        {datasiswa.pembayaran_date}
       </p>
       <p style={{ marginTop: 45, paddingRight: 12, fontSize: 9, textAlign: 'right' }}>
         (Admin Operator)

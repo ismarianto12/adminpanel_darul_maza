@@ -62,6 +62,37 @@ const schema = yup.object().shape({
 })
 
 
+const styles = {
+  table: {
+    width: '100%',
+    textAlign: 'left',
+  },
+  cstable: {
+    border: '0.1px solid #ddd',
+    borderCollapse: 'collapse',
+  },
+  th: {
+    border: '0.1px solid #ddd',
+    borderCollapse: 'collapse',
+    padding: '10px',
+  },
+  td: {
+    border: '0.1px solid #ddd',
+    borderCollapse: 'collapse',
+    padding: '10px',
+  },
+  h3: {
+    background: 'green',
+    color: '#fff',
+    textAlign: 'center',
+    margin: '0',
+  },
+  img: {
+    width: '80%',
+    maxWidth: '100%',
+  },
+};
+
 const parsingStatus = [
   { 'Y': 'Approve' },
   { 'N': 'Reject' }
@@ -216,209 +247,206 @@ const Index = props => {
             </IconButton>
           </Header>
           <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
-            <table style={{ width: '100%' }}>
-              <tbody>
-                <tr>
-                  <td className="header" style={{ textAlign: 'center' }}>
-                    <img
-                      className="logo"
-                      src="https://darulmaza.sch.id/wp-content/uploads/2019/08/Header-SIT-512-1030x258.png"
-                      alt="Logo Surat"
-                      style={{ width: '200px', height: 'auto', marginBottom: '20px' }}
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td className="alamat" style={{ textAlign: 'center' }}>
-                    <b> Jl. Gapin, Jatisari, Jatiasih, Kota Bekasi, Jawa Barat 17426</b>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <hr />
+
 
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6} style={{
-                'marginLeft': '-14px'
-              }}
-              >
-                <Table>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell
-                        style={{
-                          verticalAlign: 'top',
-                        }}
-                      >
-                        <TableRow>
-                          <TableCell>Kelas:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.id_kelas}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Img Siswa:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell><img src={`${process.env.ASSETS_API}/gambar/${ppdbdata.img_siswa}`} style={{ width: '50%' }} /></TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Img KK:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell><img src={`${process.env.ASSETS_API}/kk/${ppdbdata.img_kk}`} style={{ width: '50%' }} /></TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>No :</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.no_daftar}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>NIK:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.nik}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>NIS:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.nis}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Nama:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.nama}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Email:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.email}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>No HP:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.no_hp}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Jenis Kelamin:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.jk === 'P' ? 'Perempuan' : 'Laki - laki'}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>TTL:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.ttl}</TableCell>
-                        </TableRow>
-                      </TableCell>
 
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </Grid>
-              <Grid item xs={12} sm={6} style={{
-                'marginLeft': '-14px'
-              }}>
-                <Table>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell>
-                        <TableRow>
-                          <TableCell>Provinsi:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.prov}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Kabupaten:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.kab}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Kecamatan:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.kec}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Kelurahan:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.kel}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Alamat:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.alamat}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Nama Ayah:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.nama_ayah}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Nama Ibu:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.nama_ibu}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Pekerjaan Ayah:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.pek_ayah}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Pekerjaan Ibu:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.pek_ibu}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Nama Wali:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.pek_ayah}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Pekerjaan Wali:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.pek_wali}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Penghasilan Orang Tua:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.peng_ortu}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>No Telp:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.no_telp}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Tahun Masuk:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.thn_msk}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Sekolah Asal:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.sekolah_asal}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Tahun Lulus:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.thn_lls}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Kelas:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{ppdbdata.kelas} </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>ID Pendidikan:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{getparamPend(ppdbdata.id_pend)}</TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>ID Majors:</TableCell>
-                          <TableCell>:</TableCell>
-                          <TableCell>{getparamPend(ppdbdata.id_majors)}</TableCell>
-                        </TableRow>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
+              <table className='table table-striped' style={styles.table}>
+                <tbody>
+                  <tr>
+                    <td></td>
+                    <td>
+                      <h4>Formulir PPDB</h4>
+                      <tt> Jl. Gapin, Jatisari, Jatiasih, Kota Bekasi, Jawa Barat 17426</tt>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
 
-              </Grid>
+              <h3 style={styles.h3}>ppdbdata Siswa</h3>
+
+              <table className='table' style={styles.cstable}>
+                <tbody>
+                  <tr>
+                    <td style={{ width: '60%', textAlign: 'center' }}>
+                      <img
+                        className="logo"
+                        src="https://darulmaza.sch.id/wp-content/uploads/2019/08/Header-SIT-512-1030x258.png"
+                        alt="Logo Surat"
+                        style={{ width: '200px', height: 'auto', marginBottom: '20px' }}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><b>No Pendaftaran:</b></td>
+                    <td>:</td>
+                    <td>{ppdbdata.no_daftar}</td>
+                  </tr>
+                  <tr>
+                    <td><b>NIK:</b></td>
+                    <td>:</td>
+                    <td>{ppdbdata.nik}</td>
+                  </tr>
+                  <tr>
+                    <td>NIS:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.nis}</td>
+                  </tr>
+                  <tr>
+                    <td>Nama:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.nama}</td>
+                  </tr>
+                  <tr>
+                    <td>Email:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.email}</td>
+                  </tr>
+                  <tr>
+                    <td>No HP:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.no_hp}</td>
+                  </tr>
+                  <tr>
+                    <td>Jenis Kelamin:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.jk === 'P' ? 'Perempuan' : 'Laki-laki'}</td>
+                  </tr>
+                  <tr>
+                    <td>TTL:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.ttl}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3 style={styles.h3}>ppdbdata Alamat</h3>
+
+              <table className='table' style={styles.cstable}>
+                <tbody>
+                  <tr>
+                    <td>Provinsi:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.prov}</td>
+                  </tr>
+                  <tr>
+                    <td>Kabupaten:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.kab}</td>
+                  </tr>
+                  <tr>
+                    <td>Kecamatan:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.kec}</td>
+                  </tr>
+                  <tr>
+                    <td>Kelurahan:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.kel}</td>
+                  </tr>
+                  <tr>
+                    <td>Alamat:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.alamat}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3 style={styles.h3}>ppdbdata Sekolah</h3>
+
+
+              <table className='table' style={styles.cstable}>
+                <tbody>
+                  <tr>
+                    <td>Sekolah Asal:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.sekolah_asal}</td>
+                  </tr>
+                  <tr>
+                    <td>Tahun Lulus:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.thn_lls}</td>
+                  </tr>
+                  <tr>
+                    <td>Kelas:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.kelas}</td>
+                  </tr>
+                  <tr>
+                    <td>ID Pendidikan:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.id_pend}</td>
+                  </tr>
+                  <tr>
+                    <td>ID Majors:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.id_majors}</td>
+                  </tr>
+                  <tr>
+                    <td>ID Kelas:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.id_kelas}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3 style={styles.h3}>ppdbdata Orang Tua</h3>
+              <table className='table'>
+                <tbody>
+                  <tr>
+                    <td>Nama Ayah:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.nama_ayah}</td>
+                  </tr>
+                  <tr>
+                    <td>Nama Ibu:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.nama_ibu}</td>
+                  </tr>
+                  <tr>
+                    <td>Pekerjaan Ayah:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.pek_ayah}</td>
+                  </tr>
+                  <tr>
+                    <td>Pekerjaan Ibu:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.pek_ibu}</td>
+                  </tr>
+                  <tr>
+                    <td>Nama Wali:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.nama_wali}</td>
+                  </tr>
+                  <tr>
+                    <td>Pekerjaan Wali:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.pek_wali}</td>
+                  </tr>
+                  <tr>
+                    <td>Penghasilan Orang Tua:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.peng_ortu}</td>
+                  </tr>
+                  <tr>
+                    <td>No Telp:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.no_telp}</td>
+                  </tr>
+                  <tr>
+                    <td>Tahun Masuk:</td>
+                    <td>:</td>
+                    <td>{ppdbdata.thn_msk}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div className="float:right">
+                <br />
+                <h4>Panitia PPDB</h4>
+                (ADMIN)
+              </div>
+
             </Grid>
             <h4>Bukti bayar</h4>
             <img

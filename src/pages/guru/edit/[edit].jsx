@@ -26,6 +26,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addUser } from 'src/store/apps/user'
 import { Card, CardContent } from '@mui/material'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 const showErrors = (field, valueLen, min) => {
   if (valueLen === 0) {
@@ -99,11 +100,10 @@ const Index = (props) => {
       });
   }
 
-
   const onSubmit = data => {
     const config = {
       method: 'post',
-      url: '/admin/api/category/insert',
+      url: `${process.env.APP_API}guru/insert`,
       headers: {
         'Content-Type': 'application/json',
         'token': '123'
@@ -112,10 +112,11 @@ const Index = (props) => {
     }
     axios(config)
       .then((res) => {
-        route.push('/category/list');
+        route.push('/guru/list');
       })
       .catch((err) => {
         console.error(err);
+        Swal.fire('error', 'gagal memparsing data', 'error')
       });
     reset()
   }
@@ -147,69 +148,114 @@ const Index = (props) => {
             </IconButton>
           </Header>
           <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Controller
-                name='title'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    value={value}
-                    sx={{ mb: 4 }}
-                    label=''
-                    onChange={onChange}
-                    placeholder='Judul'
-                    error={Boolean(errors.title)}
-                    {...(errors.title && { helperText: errors.title.message })}
-                  />
-                )}
-              />
-              <Controller
-                name='seotitle'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    value={value}
-                    sx={{ mb: 4 }}
-                    label=''
-                    onChange={onChange}
-                    placeholder='Seotitle'
-                    error={Boolean(errors.seotitle)}
-                    {...(errors.seotitle && { helperText: errors.seotitle.message })}
-                  />
-                )}
-              />
-              <Controller
-                name='active'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
 
-                  <Grid item xs={12} sm={6}>
-                    <CustomTextField select fullWidth label='Active' id='form-layouts-tabs-select'
-                      value={value}
-                      onChange={onChange}
-                      error={Boolean(errors.active)}
-                      placeholder='Active'
-                      {...(errors.active && { helperText: errors.active.message })}
+
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="row">
+                <div className="col-md-6">
+                  <h4>Data Pribadi Guru</h4>
+                  <hr />
+                  <div className="form-group mb-4">
+                    <label>NIK</label>
+                    <input
+                      type="number"
+                      className={`form-control ${errors.nik ? 'is-invalid' : ''}`}
+                      id="nik"
+                      name="nik"
+                      placeholder="Nomor Induk Kependudukan"
+                      defaultValue=""
+                      {...register('nik', { required: true })}
+                    />
+                    {errors.nik && <div className="invalid-feedback">This field is required.</div>}
+
+                  </div>
+
+                  <div className="form-group mb-4">
+                    <label>Nama</label>
+                    <input
+                      type="text"
+                      className={`form-control ${errors.nis ? 'is-invalid' : ''}`}
+                      id="nama"
+                      name="Nama"
+                      placeholder="Nama"
+                      defaultValue=""
+                      {...register('nama', { required: true })}
+                    />
+                    {errors.nama && <div className="invalid-feedback">This field is required.</div>}
+                  </div>
+
+                  <div className="form-group mb-4">
+                    <label htmlFor="jk" className="col-form-label">Jenis Kelamin:</label>
+                    <select
+                      className={`form-control ${errors.jk ? 'is-invalid' : ''}`}
+                      id="jk"
+                      name="jk"
+                      {...register('jk', { required: true })}
                     >
-                      <MenuItem value='Y'>Active</MenuItem>
-                      <MenuItem value='N'>Non active</MenuItem>
-                    </CustomTextField>
-                  </Grid>
-                )}
-              />
-              <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '30px' }}>
-                <Button type='submit' variant='contained' sx={{ mr: 10, width: '50%' }} >
-                  Save
-                </Button>
-                <Button variant='tonal' color='secondary' sx={{ mr: 0, width: '50%' }} onClick={handleClose}>
-                  Cancel
-                </Button>
-              </Box>
+                      <option value="">- Jenis Kelamin -</option>
+                      <option value="L">Laki-Laki</option>
+                      <option value="P">Perempuan</option>
+                    </select>
+                    {errors.jk && <div className="invalid-feedback">Please select a gender.</div>}
+                  </div>
+
+                  <div className="form-group mb-4">
+                    <label>Tempat tanggal lahir</label>
+                    <input
+                      type="text"
+                      className={`form-control ${errors.ttl ? 'is-invalid' : ''}`}
+                      id="ttl"
+                      name="ttl"
+                      placeholder="Tempat tanggal lahir"
+                      defaultValue=""
+                      {...register('ttl', { required: true })}
+                    />
+                    {errors.ttl && <div className="invalid-feedback">Tempat tanggal lahir is required.</div>}
+                  </div>
+
+                  <div className="form-group mb-4">
+                    <label>Email</label>
+                    <input
+                      type="email"
+                      className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                      id="email"
+                      name="email"
+                      placeholder="Email"
+                      defaultValue=""
+                      {...register('email', { required: true })}
+                    />
+                    {errors.email && <div className="invalid-feedback">Email is required.</div>}
+                  </div>
+                  <div className="form-group mb-4">
+                    <label>Alamat</label>
+                    <textarea
+                      className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                      id="alamat"
+                      name="alamat"
+                      defaultValue=""
+                      {...register('alamat', { required: true })}
+                    />
+                    {errors.alamat && <div className="invalid-feedback">Email is required.</div>}
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <h4>Data Data Alamat </h4>
+                  <hr />
+                  <h4>Data Pendidikan</h4>
+
+                </div>
+
+              </div>
+              <div className="_stepbackgroundalkdmsaldkma exssubmitform pt-3 form-group mb-4 row" >
+                <div className="col-md-12 text-center">
+                  <button type="submit" className="btn-block btn btn-success" style={{
+                    'width': '40%', 'marginRight': '15px'
+                  }}>Daftar</button>
+                  <button type="reset" onClick={() => confirmbatal()} className="btn-block btn btn-danger" style={{
+                    'width': '40%'
+                  }}>Batal</button>
+                </div>
+              </div>
             </form>
           </Box>
         </CardContent>

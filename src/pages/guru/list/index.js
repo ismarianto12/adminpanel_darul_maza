@@ -39,13 +39,13 @@ const RowOptions = ({ id, onDeleteSuccess }) => {
     setAnchorEl(null)
   }
   const DeleteCat = (id) => {
-    axios.delete(`${process.env.APP_API}promo/${id}`, {
+    axios.delete(`${process.env.APP_API}guru/destroy/${id}`, {
       headers: {
         Authorization: `Bearer :${localStorage.getItem('accessToken')}`
       }
     })
       .then(e => {
-        toast.success('Data Kategory Berhasil di hapus')
+        toast.success('Data Guru Berhasil di hapus')
         onDeleteSuccess()
       })
       .catch(error => {

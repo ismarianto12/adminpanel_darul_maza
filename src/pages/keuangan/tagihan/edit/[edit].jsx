@@ -52,6 +52,13 @@ const schema = yup.object().shape({
   active: yup.string().required(),
 })
 
+const GetDataTagihan = async (props) => {
+  await axios.post(`${proces.env.APP_API}/tagihan/detaildata/${props.id}`).then((data) => {
+    props.setdataTagihan(data.data)
+  }).catch((err) => {
+    console.log(err, 'can\'t passing data')
+  })
+}
 
 const Index = (props) => {
   const route = useRouter();
@@ -60,8 +67,8 @@ const Index = (props) => {
   const store = useSelector(state => state.user)
   const [datasiswa, setDatasiswa] = useState([])
   const [detailtagihan, setDetailTagihan] = useState([])
-  const { params } = useRouter();
-
+  const [dataTagihan, setdataTagihan] = useState([])
+  const { params } = useRouter()
   const {
     reset,
     control,
@@ -284,35 +291,28 @@ const Index = (props) => {
                             <th className="align-middle">
                               Diskon Tagihan
                             </th>
+
                           </tr>
-                          <tr>
-                            <td>
-                              SPP
-                            </td>
-                            <td>
-                              SPP
-                            </td>
-                            <td>
-                              Rp 250,000
-                            </td>
-                            <td>
-                              Rp 250,000
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              SPP
-                            </td>
-                            <td>
-                              SPP
-                            </td>
-                            <td>
-                              Rp 250,000
-                            </td>
-                            <td>
-                              Rp 250,000
-                            </td>
-                          </tr>
+                          {dataTagihan?.map((data, list) => {
+                            return (
+                              <tr>
+                                <td>
+                                  SPP
+                                </td>
+                                <td>
+                                  SPP
+                                </td>
+                                <td>
+                                  Rp 250,000
+                                </td>
+                                <td>
+                                  Rp 250,000
+                                </td>
+                              </tr>
+
+                            )
+                          })}
+
                         </thead>
                       </table>
                       <table className="table table-bordered">
