@@ -43,7 +43,7 @@ const RowOptions = ({ id, onDeleteSuccess, setLoading }) => {
       }
     })
       .then((response) => {
-        toast.success('Data Kategory Berhasil di hapus')
+        toast.success('Data Galery Berhasil di hapus')
         onDeleteSuccess()
       })
       .catch(error => {

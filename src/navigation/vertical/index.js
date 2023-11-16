@@ -117,12 +117,12 @@ const navigation = () => {
           },
           {
             title: 'ACARA',
-            path: '/award/list',
+            path: '/acara/list',
             auth: false,
           },
           {
             title: 'GALERY',
-            path: '/statistik/list',
+            path: '/galery/list',
             auth: false,
           }
         ]

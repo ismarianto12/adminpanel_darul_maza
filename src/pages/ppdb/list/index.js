@@ -455,32 +455,27 @@ const List = () => {
               },
               {
                 flex: 0.25,
-                minWidth: 290,
                 field: 'date_inv',
                 headerName: 'Tgl & Jam'
               },
               {
                 flex: 0.25,
-                minWidth: 290,
                 field: 'nama',
                 headerName: 'Nama'
               },
               {
                 flex: 0.25,
-                minWidth: 290,
                 field: 'no_telp',
                 headerName: 'Handphone'
               },
               {
                 flex: 0.25,
-                minWidth: 290,
                 field: 'nis',
                 headerName: 'Nis',
               },
 
               {
                 flex: 0.25,
-                minWidth: 290,
                 field: 'jk',
                 headerName: 'JK',
                 renderCell: ({ row }) => {
@@ -493,7 +488,6 @@ const List = () => {
               },
               {
                 flex: 0.25,
-                minWidth: 290,
                 field: 'id_majors',
                 headerName: 'Majors',
                 renderCell: ({ row }) => {
@@ -502,7 +496,6 @@ const List = () => {
               },
               {
                 flex: 0.25,
-                minWidth: 290,
                 field: 'status',
                 headerName: 'Status',
                 renderCell: ({ row }) => {
@@ -538,13 +531,11 @@ const List = () => {
               },
               {
                 flex: 0.25,
-                minWidth: 290,
                 field: 'username',
                 headerName: 'User id'
               },
               {
                 flex: 0.1,
-                minWidth: 100,
                 sortable: false,
                 field: 'staff_konfirmasi',
                 headerName: 'Actions',
