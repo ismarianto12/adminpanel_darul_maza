@@ -11,8 +11,8 @@ import { Box, Card, CardContent } from '@mui/material'
 
 function showLoadingAlert() {
   Swal.fire({
-    title: 'Login Berhasil',
-    html: 'Sedang Mengalihakn...',
+    title: 'Berhasil',
+    html: 'Sedang Menyimpan...',
     allowOutsideClick: false,
 
   });
@@ -21,7 +21,7 @@ function showLoadingAlert() {
     Swal.close();
   }, 3000);
 }
-export default function ppdb() {
+export default function ppdb(props) {
   const [formData, setFormData] = useState({});
 
   const [selectedFile, setSelectedFile] = useState(null)
@@ -36,28 +36,73 @@ export default function ppdb() {
   const [nodaftar, setNodaftar] = useState('')
 
   const route = useRouter()
+  const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm({
+    defaultValues: {
+      nodaftar: '',
+      nik: '',
+      nis: '',
+      password: '',
+      nama: '',
+      email: '',
+      no_hp: '',
+      jk: '',
+      ttl: '',
+      alamat: '',
+      nama_ayah: '',
+      nama_ibu: '',
+      nama_wali: '',
+      pek_ayah: '',
+      pek_ibu: '',
+      pek_wali: '',
+      peng_ortu: '',
+      no_telp: '',
+      sekolah_asal: '',
+      kelas_old: '',
+      thn_lls: '',
+      file1: '',
+      file2: '',
+      file3: '',
+      file4: '',
+      thn_msk: '',
+      pendidikan: '',
+      provinsi: '',
+      kabupaten: '',
+      kecamatan: '',
+      kelurahan: '',
+    }
+  });
 
   useEffect(() => {
-
+    const calledit = async () => {
+      const url = `${process.env.APP_API}ppdb/siswadetail/${props.id}`
+      await axios.post(url, {}, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        },
+      })
+        .then(response => {
+          reset(response.data)
+        })
+        .catch(error => {
+          Swal.fire('success', 'berhasil', 'success')
+          console.error('Terjadi kesalahan:', error);
+        });
+    }
     const getdata = async () => {
-      const url = `${process.env.BACKEND_API}/api/v1/ppdb_nomor`
+      const url = `${process.env.APP_API}/api/v1/ppdb_nomor`
       await axios.get(url)
         .then(response => {
           setNodaftar(response.data)
         })
         .catch(error => {
-          // Menangani kesalahan jika ada
           console.error('Terjadi kesalahan:', error);
         });
     }
     getdata()
+    calledit()
   }, []);
 
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm({
-    defaultValues: {
-      nik: '13132'
-    }
-  });
+
 
   const handleBrowseClick = () => {
     document.getElementById('imgInp').click();
@@ -130,13 +175,11 @@ export default function ppdb() {
   };
 
   const onSubmit = async (data) => {
-
     event.preventDefault();
-
     Swal.fire({
       title: 'Anda yakin?',
-      text: "Semua data yang sudah di etnrikan sudah benar dan sesuai",
-      icon: 'warning',
+      text: "Akan merubah data yang ada.",
+      icon: 'info',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
@@ -176,9 +219,13 @@ export default function ppdb() {
         formdata.append("kabupaten", data.kabupaten)
         formdata.append("kecamatan", data.kecamatan)
         formdata.append("kelurahan", data.kelurahan)
-        await axios.post(`${process.env.BACKEND_API}/api/v1/ppdb`, formdata).then((data) => {
+        await axios.post(`${process.env.APP_API}ppdb/update/${props.id}`, formdata, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+          },
+        }).then((data) => {
           localStorage.setItem('no_daftar', nodaftar)
-          return route.push(`/berhasil`)
+          return route.push(`/ppdb/list`)
         }).catch((error) => {
           Swal.fire('Info', error + 'maaf proses pendaftaran tidak berhasil silahkan di ulangi', 'info')
         })
@@ -217,23 +264,10 @@ export default function ppdb() {
 
       <Card>
         <CardContent>
+          <h4>Edit PPDB </h4>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="row">
               <div className="col-md-6">
-                <div className="form-group mb-4">
-                  <label>NIK</label>
-                  <input
-                    type="number"
-                    className={`form-control ${errors.nik ? 'is-invalid' : ''}`}
-                    id="nik"
-                    name="nik"
-                    placeholder="Nomor Induk Kependudukan"
-                    defaultValue=""
-                    {...register('nik', { required: true })}
-                  />
-                  {errors.nik && <div className="invalid-feedback">This field is required.</div>}
-
-                </div>
                 <div className="form-group mb-4">
                   <label>NIS</label>
                   <input
@@ -256,7 +290,7 @@ export default function ppdb() {
                       id="password"
                       name="password"
                       placeholder="Password"
-                      defaultValue=""
+                      // defaultValue=""
                       {...register('password', { required: true })}
                     />
                   </div>

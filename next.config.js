@@ -3,7 +3,7 @@ module.exports = {
   trailingSlash: true,
   reactStrictMode: false,
   env: {
-    APP_API: 'https://api.darulmaza.sch.id/api/v1/',  //https://api.darulmaza.sch.id
+    APP_API: 'http://localhost/siakad_sdit/public/api/v1/',  //https://api.darulmaza.sch.id
     ASSETS_API: 'https://api.darulmaza.sch.id',
     DEV_USER_WEB: 'https://api.darulmaza.sch.id',
     // APP_API: 'http://localhost/siakad_sdit/public/api/v1/',  // 'https://api.darulmaza.sch.id/api/v1/',  //https://api.darulmaza.sch.id
@@ -12,7 +12,6 @@ module.exports = {
 
     DEV_USER_PROD: '',
   },
-
 
   crossOrigin: 'anonymous',
   // basePath: '/admin',

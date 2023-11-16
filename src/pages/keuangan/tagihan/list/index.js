@@ -114,9 +114,9 @@ const RowOptions = ({ id, onDeleteSuccess }) => {
         <MenuItem
           component={Link}
           onClick={handleRowOptionsClose}
-          href={`/keuangan/tagihan/edit/${id}`}
+          href={`/keuangan/tagihan/bayar/${id}`}
           sx={{ '& svg': { mr: 2 } }}>
-          <Icon icon='tabler:edit' fontSize={20} />
+          <Icon icon='tabler:list' fontSize={20} />
           {`Edit`}
         </MenuItem>
         <MenuItem onClick={() => handleDelete(id)}
