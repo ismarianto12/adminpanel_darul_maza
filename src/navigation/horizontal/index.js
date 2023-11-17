@@ -77,8 +77,6 @@ const navigation = () => {
           title: 'Tag Berita',
           path: '/tag/list'
         },
-
-
       ]
     },
     {

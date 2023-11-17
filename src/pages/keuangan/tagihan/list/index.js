@@ -278,50 +278,6 @@ const Index = () => {
       <Headtitle title="Tagihan Siswa" />
 
 
-      {/* <Grid container spacing={2}>
-        <Grid item xs={12} sm={3}>
-          <CardStatsHorizontalWithedits
-            stats={`${total}`}
-            // trend='negative'
-            title='Total Dibayar'
-            avatarColor='info'
-            icon='tabler:file-dollar'
-            subtitle='Keseluruhan'
-          />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <CardStatsHorizontalWithedits
-            stats={`${total}`}
-            // trend='negative'
-            title='Total Dibayar'
-            avatarColor='success'
-            icon='tabler:file-dollar'
-            subtitle='Periode Bulan Ini (November 2023)'
-          />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <CardStatsHorizontalWithedits
-            stats='19,860'
-            // trend='negative'
-            title='Total Tunggakan'
-            avatarColor='success'
-            icon='tabler:user-check'
-          // subtitle='Last week analytics'
-          />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <CardStatsHorizontalWithedits
-
-            stats='19,860'
-            // trend='negative'
-            title='Total Tunggakan'
-            avatarColor='success'
-            icon='tabler:user-check'
-          // subtitle='Last week analytics'
-          />
-        </Grid>
-      </Grid> */}
-      <br /><br />
       <Card>
         <div className="accordion mb-3">
           <div className="accordion-item">

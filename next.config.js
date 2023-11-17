@@ -9,10 +9,8 @@ module.exports = {
     // APP_API: 'http://localhost/siakad_sdit/public/api/v1/',  // 'https://api.darulmaza.sch.id/api/v1/',  //https://api.darulmaza.sch.id
     // ASSETS_API: 'http://localhost/siakad_sdit/public',
     // DEV_USER_WEB: 'https://api.darulmaza.sch.id',
-
     DEV_USER_PROD: '',
   },
-
   crossOrigin: 'anonymous',
   // basePath: '/admin',
   headers: () => {
