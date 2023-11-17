@@ -259,7 +259,6 @@ const Siswa = () => {
     {
       flex: 0.2,
       field: 'id',
-      minWidth: 100,
       headerName: 'ID',
       renderCell: ({ row }) => (
         <Typography href={`/siswa/preview/${row.id}`}>{`#${row.id}`}</Typography>
@@ -267,13 +266,11 @@ const Siswa = () => {
     },
     {
       flex: 0.25,
-      minWidth: 290,
-      field: 'nik',
-      headerName: 'Nik siswa'
+      field: 'email',
+      headerName: 'Email'
     },
     {
       flex: 0.25,
-      minWidth: 290,
       field: 'nama',
       headerName: 'Nama',
     },
@@ -291,14 +288,13 @@ const Siswa = () => {
     },
     {
       flex: 0.25,
-      minWidth: 290,
-      field: 'kelas',
+      field: 'kelas_id',
       headerName: 'Kelas'
     },
     {
       flex: 0.25,
       minWidth: 290,
-      field: 'Jenjang',
+      field: 'tingkat_id',
       headerName: 'Jenjang'
     },
     {
@@ -314,7 +310,6 @@ const Siswa = () => {
     setSearchValue(value)
     fetchTableData(sort, value, sortColumn)
   }
-
 
 
   const fhandleRoleChange = (e) => {
@@ -334,46 +329,30 @@ const Siswa = () => {
       <Grid container spacing={6}>
         <Grid item xs={6} sm={4} lg={3}>
           <CardStatsVertical
-            stats='1.28k'
             chipText={rows.length}
-            chipColor='default'
             avatarColor='success'
-            title='Total PPDB'
-            subtitle='Last week'
-            avatarIcon='tabler:currency-dollar'
-          />
-        </Grid>
-        <Grid item xs={6} sm={4} lg={3}>
-          <CardStatsVertical
-            stats='1.28k'
-            chipText='-12.2%'
-            chipColor='default'
-            avatarColor='info'
             title='Total Siswa'
-            subtitle='Last week'
-            avatarIcon='tabler:currency-dollar'
           />
         </Grid>
         <Grid item xs={6} sm={4} lg={3}>
           <CardStatsVertical
-            stats='1.28k'
-            chipText='-12.2%'
-            chipColor='default'
-            avatarColor='error'
-            title='Total PPDB'
-            subtitle='Last week'
-            avatarIcon='tabler:currency-dollar'
-          />
-        </Grid>
-        <Grid item xs={6} sm={4} lg={3}>
-          <CardStatsVertical
-            stats='24.67k'
-            chipText='+25.2%'
-            avatarColor='info'
-            chipColor='default'
+            avatarColor='success'
             title='Total Siswa'
-            subtitle='Last week'
-            avatarIcon='tabler:chart-bar'
+
+          />
+        </Grid>
+        <Grid item xs={6} sm={4} lg={3}>
+          <CardStatsVertical
+            avatarColor='success'
+            title='Total Siswa'
+
+          />
+        </Grid>
+        <Grid item xs={6} sm={4} lg={3}>
+          <CardStatsVertical
+            avatarColor='success'
+            title='Total Siswa'
+
           />
         </Grid>
       </Grid>
@@ -423,10 +402,7 @@ const Siswa = () => {
                     </MenuItem>
                   ))}
                 </CustomTextField>
-
-
               </Grid>
-
 
               <Grid item xs={12} sm={6}>
                 <Comheader addUserOpen={null} setAddUserOpen={null}

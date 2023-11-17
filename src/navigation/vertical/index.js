@@ -99,6 +99,20 @@ const navigation = () => {
         ]
       },
       {
+        title: 'E-learning',
+        icon: 'tabler:file-list',
+        children: [
+          {
+            title: 'Data Absensi',
+            path: '/absensi'
+          },
+          {
+            title: 'Elearning',
+            path: '/elearning'
+          },
+        ]
+      },
+      {
         title: 'MASTER',
         icon: 'tabler:news',
         auth: false,
