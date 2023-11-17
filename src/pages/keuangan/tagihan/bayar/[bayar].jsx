@@ -57,6 +57,7 @@ const Bayar = (props) => {
     setValue,
     setError,
     handleSubmit,
+    register,
     formState: { errors }
   } = useForm({
     defaultValues: {
@@ -155,6 +156,7 @@ const Bayar = (props) => {
                 <div className="col-md-6">
                   <div className="form-group mb-4">
                     <label>Jenis Tagihan</label>
+
 
                     <select
                       className={`form-control ${errors.jenis_tagihan ? 'is-invalid' : ''}`}

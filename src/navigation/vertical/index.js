@@ -100,14 +100,18 @@ const navigation = () => {
       },
       {
         title: 'E-learning',
+        auth: false,
+
         icon: 'tabler:file-list',
         children: [
           {
             title: 'Data Absensi',
+            auth: false,
             path: '/absensi'
           },
           {
             title: 'Elearning',
+            auth: false,
             path: '/elearning'
           },
         ]
