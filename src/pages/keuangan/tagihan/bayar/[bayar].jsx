@@ -24,7 +24,6 @@ const showErrors = (field, valueLen, min) => {
     return ''
   }
 }
-
 const Header = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -32,9 +31,10 @@ const Header = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between'
 }))
 const schema = yup.object().shape({
-  title: yup.string().required(),
-  seotitle: yup.string().required(),
-  active: yup.string().required(),
+  jenis_tagihan: yup.string().required(),
+  type_pembayaran: yup.string().required(),
+  jumlah_bayar: yup.string().required(),
+  type_pembayaran: yup.string().required(),
 })
 
 const GetDataTagihan = async (props) => {
@@ -86,8 +86,23 @@ const Bayar = (props) => {
 
     CallSiswa()
     callTagihan()
+
   }, [])
 
+  useEffect(() => {
+    const jenisTagihan = async () => {
+      axios.get(`${process.env.APP_API}/api/v1/jenistagihan`, {
+        headers: {
+          Authorization: `${localStorage.getItem('accessToken')}`
+        }
+      },).then((data) => {
+        setdataTagihan(data.data)
+      }).catch(err => {
+        Swal.fire('error', 'gagal mengambil data tagihan', 'error')
+      })
+    }
+    jenisTagihan()
+  }, [])
 
   const callTagihan = async () => {
     await axios.post(`${process.env.APP_API}keuangan/detail/${props.id}`, {
@@ -104,10 +119,28 @@ const Bayar = (props) => {
     })
 
   }
+  const onSubmit = async (data) => {
+    try {
+      await axios.post(`${process.env.APP_API}/api/v1/update_pembayaran`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        }
+      }).then(data => {
+        Swal.fire('success', 'berhasil menambahkan data tagihan siswa', 'success')
+      }).catch(err => {
+        Swal.fire('gagal', 'gagal menambahkan data tagihan siswa', 'error')
+      })
+    } catch (error) {
+    }
+  }
 
   const handleClose = () => {
     reset()
     route.push('/keuangan/tagihan/list')
+  }
+  const jenisBayar = {
+    1: 'Cash',
+    2: 'Anggsuran',
   }
   console.log(datasiswa, 'datail data')
   return (
@@ -122,15 +155,7 @@ const Bayar = (props) => {
                 <div className="col-md-6">
                   <div className="form-group mb-4">
                     <label>Jenis Tagihan</label>
-                    {/* <input
-                      type="text"
-                      className={`form-control ${errors.nis ? 'is-invalid' : ''}`}
-                      id="jenis_tagihan"
-                      name="jenis_tagihan"
-                      placeholder="Jenis Tagihan"
-                      defaultValue=""
-                      {...register('jenis_tagihan', { required: true })}
-                    /> */}
+
                     <select
                       className={`form-control ${errors.jenis_tagihan ? 'is-invalid' : ''}`}
                       id="jenis_tagihan"
@@ -147,7 +172,29 @@ const Bayar = (props) => {
 
                     {errors.jenis_tagihan && <div className="invalid-feedback">This field is required.</div>}
                   </div>
+
                   <div className="form-group mb-4">
+                    <label>Tyope Pembayaran</label>
+                    <select
+                      className={`form-control ${errors.type_pembayaran ? 'is-invalid' : ''}`}
+                      id="type_pembayaran"
+                      name="type_pembayaran"
+                      defaultValue=""
+                      {...register('type_pembayaran', { required: true })}
+                    >
+                      {Object.entries(jenisBayar).map(([key, value]) => (
+                        <option value={`${key}`}>{value}</option>
+                      ))}
+                    </select>
+                    {errors.type_pembayaran && <div className="invalid-feedback">This field is required.</div>}
+
+                  </div>
+
+
+                  <div className="form-group mb-4">
+
+
+
                     <label>Nama Siswa</label>
                     <input
                       type="text"
@@ -160,11 +207,12 @@ const Bayar = (props) => {
                     />
                     {errors.nis && <div className="invalid-feedback">This field is required.</div>}
                   </div>
+
                   <div className="form-group mb-4">
                     <label>Jumlah Bayar</label>
                     <input
                       type="text"
-                      className={`form-control ${errors.nis ? 'is-invalid' : ''}`}
+                      className={`form-control ${errors.jumlah_bayar ? 'is-invalid' : ''}`}
                       id="jumlah_bayar"
                       name="jumlah_bayar"
                       placeholder="Jumlah Bayar"
