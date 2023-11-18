@@ -86,7 +86,7 @@ const Bayar = (props) => {
 
   useEffect(() => {
     const jenisTagihan = async () => {
-      axios.get(`${process.env.APP_API}/parameterbiaya/list`, {
+      axios.get(`${process.env.APP_API}parameterbiaya/list`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
         }
@@ -102,6 +102,7 @@ const Bayar = (props) => {
 
 
   const callTagihan = async () => {
+    // console.log(props.id, 'detail id')
     await axios.post(`${process.env.APP_API}keuangan/detail/${props.id}`, {
       siswa_id: props.id,
     }, {
@@ -132,23 +133,28 @@ const Bayar = (props) => {
           'Pendaftaran berhasil di batalkan.',
           'success'
         )
-        return route.push('/tagihan/list')
+        return route.push('/keuangan/tagihan/list')
       }
     })
   }
   const onSubmit = async (data) => {
-    try {
-      await axios.post(`${process.env.APP_API}/api/v1/update_pembayaran`, data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-        }
-      }).then(data => {
-        Swal.fire('success', 'berhasil menambahkan data tagihan siswa', 'success')
-      }).catch(err => {
-        Swal.fire('gagal', 'gagal menambahkan data tagihan siswa', 'error')
-      })
-    } catch (error) {
-    }
+    // console.log(data, 'sumit')
+
+    await axios.post(`${process.env.APP_API}pembayaran/update/${props.id}`, {
+      id_siswa: props.id,
+      jenis_tagihan: data.jenis_tagihan,
+      jumlah_bayar: data.jumlah_bayar,
+      type_pembayaran: data.type_pembayaran
+    }, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+      }
+    }).then(data => {
+      Swal.fire('success', 'berhasil menambahkan data tagihan siswa', 'success')
+    }).catch(err => {
+      console.info(err)
+      Swal.fire('gagal', err?.response?.data?.msg, 'error')
+    })
   }
 
   const handleClose = () => {
@@ -192,7 +198,7 @@ const Bayar = (props) => {
                   </div>
 
                   <div className="form-group mb-4">
-                    <label>Tyope Pembayaran</label>
+                    <label>Type Pembayaran</label>
                     <select
                       className={`form-control ${errors.type_pembayaran ? 'is-invalid' : ''}`}
                       id="type_pembayaran"
@@ -210,14 +216,12 @@ const Bayar = (props) => {
 
 
                   <div className="form-group mb-4">
-
-
-
                     <label>Nama Siswa</label>
                     <input
                       type="text"
                       className={`form-control ${errors.nis ? 'is-invalid' : ''}`}
                       id="nis"
+                      value={datasiswa.nama}
                       name="nis"
                       placeholder="Nama Siswa"
                       defaultValue=""
@@ -238,20 +242,36 @@ const Bayar = (props) => {
                       {...register('jumlah_bayar', { required: true })}
                     />
                     {errors.jumlah_bayar && <div className="invalid-feedback">This field is required.</div>}
-                    <div className="_stepbackgroundalkdmsaldkma exssubmitform pt-3 form-group mb-4 row" >
-                      <div className="col-md-12 text-center">
-                        <button type="submit" className="btn-block btn btn-success">Proses Pembayaran</button>
-                        <button type="reset" onClick={() => confirmbatal()} className="btn-block btn btn-danger">Batal</button>
-                      </div>
-                    </div>
+
+                  </div>
+                  <div className="form-group mb-4">
+                    <label>Catatan Bayar</label>
+                    <textarea
+                      type="text"
+                      className={`form-control ${errors.catatan ? 'is-invalid' : ''}`}
+                      id="catatan"
+                      name="catatan"
+                      placeholder="Catatn Bayar"
+                      defaultValue=""
+                      {...register('catatan', { required: true })}
+                    />
+                    {errors.catatan && <div className="invalid-feedback">This field is required.</div>}
+                  </div>
+                </div>
+                <br /> <br />
+                <div className="_stepbackgroundalkdmsaldkma exssubmitform pt-3 form-group mb-4 row" >
+                  <div className="col-md-12 text-center">
+                    <button type="submit" className="btn-block btn btn-success" style={{ 'width': '40%' }}>Proses Pembayaran</button>&nbsp;&nbsp;
+                    <button type="reset" onClick={() => confirmbatal()} className="btn-block btn btn-danger" style={{ 'width': '40%' }}>Batal</button>
                   </div>
                 </div>
               </div>
+
             </form>
 
           </Box>
         </CardContent>
-      </Card>
+      </Card >
     </>
   )
 }
@@ -264,6 +284,5 @@ export async function getServerSideProps(context) {
     },
   };
 }
-
 
 export default Bayar
