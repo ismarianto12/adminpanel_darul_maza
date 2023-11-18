@@ -37,19 +37,13 @@ const schema = yup.object().shape({
   type_pembayaran: yup.string().required(),
 })
 
-const GetDataTagihan = async (props) => {
-  await axios.post(`${proces.env.APP_API}/tagihan/detaildata/${props.id}`).then((data) => {
-    props.setdataTagihan(data.data)
-  }).catch((err) => {
-    console.log(err, 'can\'t passing data')
-  })
-}
+
 
 const Bayar = (props) => {
   const route = useRouter()
   const [datasiswa, setDatasiswa] = useState([])
-  const [datatagihan, setdataTagihan] = useState([])
-
+  const [jenistagihan, setJenisTagihan] = useState([])
+  const [detialtagihan, setDetailTagihan] = useState([])
   const { params } = useRouter()
   const {
     reset,
@@ -92,18 +86,20 @@ const Bayar = (props) => {
 
   useEffect(() => {
     const jenisTagihan = async () => {
-      axios.get(`${process.env.APP_API}/api/v1/jenistagihan`, {
+      axios.get(`${process.env.APP_API}/parameterbiaya/list`, {
         headers: {
-          Authorization: `${localStorage.getItem('accessToken')}`
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
         }
       },).then((data) => {
-        setdataTagihan(data.data)
+        setJenisTagihan(data.data)
       }).catch(err => {
         Swal.fire('error', 'gagal mengambil data tagihan', 'error')
       })
     }
     jenisTagihan()
   }, [])
+
+
 
   const callTagihan = async () => {
     await axios.post(`${process.env.APP_API}keuangan/detail/${props.id}`, {
@@ -119,6 +115,26 @@ const Bayar = (props) => {
       setDetailTagihan([])
     })
 
+  }
+  const confirmbatal = () => {
+    Swal.fire({
+      title: 'Anda yakin?',
+      text: "Proses PPBD Akan di batalkan!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Iya'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Batal!',
+          'Pendaftaran berhasil di batalkan.',
+          'success'
+        )
+        return route.push('/tagihan/list')
+      }
+    })
   }
   const onSubmit = async (data) => {
     try {
@@ -166,8 +182,8 @@ const Bayar = (props) => {
                       defaultValue=""
                       {...register('jenis_tagihan', { required: true })}
                     >
-                      {datatagihan.map((data, i) => (
-                        <option value={`${data.id}`}>{data.tagihan}</option>
+                      {jenistagihan.map((data, i) => (
+                        <option value={`${data.id}`}>{data.nama_biaya} -  {data.tingkat}</option>
                       ))}
 
                     </select>
@@ -222,17 +238,13 @@ const Bayar = (props) => {
                       {...register('jumlah_bayar', { required: true })}
                     />
                     {errors.jumlah_bayar && <div className="invalid-feedback">This field is required.</div>}
+                    <div className="_stepbackgroundalkdmsaldkma exssubmitform pt-3 form-group mb-4 row" >
+                      <div className="col-md-12 text-center">
+                        <button type="submit" className="btn-block btn btn-success">Proses Pembayaran</button>
+                        <button type="reset" onClick={() => confirmbatal()} className="btn-block btn btn-danger">Batal</button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div className="_stepbackgroundalkdmsaldkma exssubmitform pt-3 form-group mb-4 row" >
-                <div className="col-md-12 text-center">
-                  <button type="submit" className="btn-block btn btn-success" style={{
-                    'width': '40%', 'marginRight': '15px'
-                  }}>Proses Pembayaran</button>
-                  <button type="reset" onClick={() => confirmbatal()} className="btn-block btn btn-danger" style={{
-                    'width': '40%'
-                  }}>Batal</button>
                 </div>
               </div>
             </form>
@@ -245,7 +257,7 @@ const Bayar = (props) => {
 }
 
 export async function getServerSideProps(context) {
-  const id = context.query.edit;
+  const id = context.query.bayar;
   return {
     props: {
       id

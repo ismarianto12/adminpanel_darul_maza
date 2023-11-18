@@ -372,18 +372,14 @@ const Index = props => {
                       <option value />
                       <optgroup label="Bulanan">
                         <option value=""></option>
+                        {
+                          () => {
+                            for (let index = 0; index <= 11; index++) {
+                              return (<option value={i}>{i} Bulan</option>)
+                            }
+                          }
+                        }
 
-                        <option value={1}>1 Bulan</option>
-                        <option value={2}>2 Bulan</option>
-                        <option value={3}>3 Bulan</option>
-                        <option value={4}>4 Bulan</option>
-                        <option value={5}>5 Bulan</option>
-                        <option value={6}>6 Bulan</option>
-                        <option value={7}>7 Bulan</option>
-                        <option value={8}>8 Bulan</option>
-                        <option value={9}>9 Bulan</option>
-                        <option value={1}>1 Bulan</option>
-                        <option value={11}>11 Bulan</option>
                       </optgroup>
                       <optgroup label="Tahunan">
                         <option value=""></option>

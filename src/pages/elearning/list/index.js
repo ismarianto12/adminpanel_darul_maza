@@ -178,7 +178,7 @@ const elearning = () => {
       fetchTableData(newModel[0].sort, searchValue, newModel[0].field)
     } else {
       setSort('asc')
-      setSortColumn('nik')
+      setSortColumn('id')
     }
   }
 
@@ -199,16 +199,14 @@ const elearning = () => {
       if (params === 'edit') {
         router.push(`/elearning/edit/${id}`)
       } else if (params === 'view') {
-        router.push(`/elearning/edit/${id}`)
+        router.push(`/elearning/view/${id}`)
       } else if (params === 'delete') {
         router.push(`/elearning/edit/${id}`)
 
       }
       setAnchorEl(null)
     }
-
     const handleDelete = () => {
-      // dispatch(deleteUser(id))
       handleRowOptionsClose(id, 'delete')
     }
 
