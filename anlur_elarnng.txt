@@ -1,0 +1,30 @@
+1. alur sistem elarning adalah :
+
+
+create table Mapel(
+    id int(15) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    unit_id int(14) NOT NULL,
+    kelas_id int(14) NOT NULL,
+    kode varchar(30) NULL,
+    nama_mapel varchar(40) NULL,
+    created_at datetime NULL,
+    updated_at datetime NULL,
+);
+
+create table Jadwal(
+  id INT(14) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  unit_id  int(14) NOT NULL,
+  kelas_id  int(14) NOT NULL,
+  siswa_id int(14) NOT NULL,
+  kode_mapel int(14) NoT NULL,
+  approve_status enum('Y','N') NULL,
+  nilai int(14) NULL,
+  bobot varchar(40) NULL,
+  guru_id int(14) NULL,
+  created_at  datetime NULL,
+  updated_at  datetime NULL,
+  user_id  int(15) NULL
+);
+
+
+

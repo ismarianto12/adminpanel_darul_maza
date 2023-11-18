@@ -55,6 +55,11 @@ const navigation = () => {
         auth: false,
         children: [
           {
+            title: 'Data Mata Pelajaran',
+            auth: false,
+            path: '/mapel'
+          },
+          {
             title: 'MASTER SISWA',
             path: '/siswa/list',
             auth: false,
@@ -101,7 +106,6 @@ const navigation = () => {
       {
         title: 'E-learning',
         auth: false,
-
         icon: 'tabler:file-list',
         children: [
           {
