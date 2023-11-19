@@ -24,7 +24,44 @@ function showLoadingAlert() {
 export default function Index() {
 
   const [formData, setFormData] = useState({});
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+  const { register, reset, handleSubmit, setValue, formState: { errors } } = useForm(
+
+    {
+      defaultValues: {
+        nodaftar: '',
+        nik: '',
+        nis: '',
+        password: '',
+        nama: '',
+        email: '',
+        no_hp: '',
+        jk: '',
+        ttl: '',
+        alamat: '',
+        nama_ayah: '',
+        nama_ibu: '',
+        nama_wali: '',
+        pek_ayah: '',
+        pek_ibu: '',
+        pek_wali: '',
+        peng_ortu: '',
+        no_telp: '',
+        sekolah_asal: '',
+        kelas_old: '',
+        thn_lls: '',
+        file1: '',
+        file2: '',
+        file3: '',
+        file4: '',
+        thn_msk: '',
+        pendidikan: '',
+        provinsi: '',
+        kabupaten: '',
+        kecamatan: '',
+        kelurahan: '',
+      }
+    }
+  );
   const [selectedFile, setSelectedFile] = useState(null)
   const [file1, setfile1] = useState('')
   const [file2, setfile2] = useState('')
@@ -41,10 +78,10 @@ export default function Index() {
   useEffect(() => {
 
     const getdata = async () => {
-      const url = `${process.env.BACKEND_API}/api/v1/ppdb_nomor`
+      const url = `${process.env.BACKEND_API}/edit/siswa/${props.id}`
       await axios.get(url)
         .then(response => {
-          setNodaftar(response.data)
+          reset(response.data)
         })
         .catch(error => {
           // Menangani kesalahan jika ada
