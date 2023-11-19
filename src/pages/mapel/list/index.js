@@ -295,8 +295,8 @@ const Index = () => {
               {
                 flex: 0.25,
                 minWidth: 290,
-                field: 'nama',
-                headerName: 'Nama',
+                field: 'kode',
+                headerName: 'Kode Mapel',
                 renderCell: ({ row }) => {
                   if (row.nama === null) {
                     return (<b>Kosong</b>)
@@ -309,22 +309,28 @@ const Index = () => {
               {
                 flex: 0.25,
                 minWidth: 290,
-                field: 'jk',
-                headerName: 'Jenis Kelamin',
+                field: 'kelas',
+                headerName: 'Kelas',
                 renderCell: ({ row }) => {
-                  if (row.jk === 'P') {
-                    return (<b>Perempuan</b>)
+                  if (row.kelas) {
+                    return (<b>Kosong</b>)
                   } else {
-                    return 'Laki - laki'
+                    return row.kelas
                   }
                 }
+              },
+              {
+                flex: 0.25,
+                minWidth: 290,
+                field: 'nama_mapel',
+                headerName: 'Nama Mapel'
 
               },
               {
                 flex: 0.25,
                 minWidth: 290,
-                field: 'email',
-                headerName: 'Email'
+                field: 'kkm',
+                headerName: 'Nama Mapel'
 
               },
               {
