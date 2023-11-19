@@ -134,7 +134,7 @@ const Index = () => {
   const fetchTableData = useCallback(
     async (sort, q, column) => {
       await axios
-        .get(`${process.env.APP_API}karyawan/list`, {
+        .get(`${process.env.APP_API}mapel/list`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`
           }
@@ -207,7 +207,7 @@ const Index = () => {
                     <label className="form-label">Kata Kunci</label>
                     <input type="text" name="keyword" id="keyword" className="form-control" placeholder="Masukan kata kunci pencarian" maxLength={64} />
                   </div>
-                  <div className="col-sm-6 col-md-2 mb-3">
+                  <div className="col-sm-6 col-md-4 mb-3">
                     <label className="form-label">
                       Pilih Unit
                     </label>
@@ -220,7 +220,7 @@ const Index = () => {
                       )}
                     </select>
                   </div>
-                  <div className="col-sm-6 col-md-2 mb-3">
+                  <div className="col-sm-6 col-md-4 mb-3">
                     <label className="form-label">
                       Pilih Kelas
                     </label>
@@ -233,7 +233,7 @@ const Index = () => {
                       )}
                     </select>
                   </div>
-                  <div className="col-sm-6 col-md-2 mb-4">
+                  <div className="col-sm-6 col-md-4 mb-4">
                     <label className="form-label">
                       Tahun Ajaran
                     </label>
@@ -246,19 +246,7 @@ const Index = () => {
                       )}
                     </select>
                   </div>
-                  <div className="col-sm-6 col-md-2 mb-4">
-                    <label className="form-label">
-                      Status Siswa
-                    </label>
-                    <select name="status" id="status" className="form-select">
-                      <option />
-                      <option value="A" selected>Aktif</option>
-                      <option value="L">Lulus</option>
-                      <option value="K">Keluar</option>
-                      <option value="D">Dihapus</option>
-                      <option value="all">Semua</option>
-                    </select>
-                  </div>
+
                   <div className="col-12">
                     <button type="button" id="btn-apply-filter" className="btn btn-primary">
                       Terapkan Filter
