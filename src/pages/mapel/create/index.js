@@ -1,11 +1,6 @@
 // ** React Imports
 import { useState, useEffect } from 'react'
 
-// ** MUI Imports
-import Drawer from '@mui/material/Drawer'
-import Button from '@mui/material/Button'
-import MenuItem from '@mui/material/MenuItem'
-import Grid from '@mui/material/Grid'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
@@ -30,7 +25,7 @@ import { addUser } from 'src/store/apps/user'
 import { Card, CardContent } from '@mui/material'
 import axios from 'axios'
 import Headtitle from 'src/@core/components/Headtitle'
-
+import Swal from 'sweetalert2'
 const showErrors = (field, valueLen, min) => {
   if (valueLen === 0) {
     return `${field} field is required`
@@ -48,20 +43,24 @@ const Header = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between'
 }))
 const schema = yup.object().shape({
-  title: yup.string().required(),
-  seotitle: yup.string().required(),
-  active: yup.string().required(),
+  kode_mapel: yup.string().required(),
+  nama: yup.string().required(),
+  tingkat: yup.string().required(),
 
 })
 const defaultValues = {
-  title: '',
-  seotitle: '',
-  active: '',
+  kode_mapel: '',
+  nama: '',
+  tingkat: '',
+  kelas: '',
 }
 const Index = props => {
   // ** Props
   const route = useRouter();
   const { open, toggle } = props
+
+  const [datatingkat, setDatatingkat] = useState([])
+  const [datakelas, setDataKelas] = useState([])
 
   const dispatch = useDispatch()
   const store = useSelector(state => state.user)
@@ -79,10 +78,48 @@ const Index = props => {
     resolver: yupResolver(schema)
   })
 
+  useEffect(() => {
+    const callUnit = async (
+      id, setData, reset
+    ) => {
+      await axios.get(`${process.env.APP_API}tingkat/list`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        }
+      }).then((data) => {
+        setDatatingkat(data.data)
+      }).catch((err) => {
+        Swal.fire('error', 'gagal mengambil', 'error')
+        // setData([])
+      })
+    }
+
+    const callKelas = async (
+      id, setData, reset
+    ) => {
+      await axios.get(`${process.env.APP_API}kelas/list`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        }
+      }).then((data) => {
+        setDataKelas(data.data)
+      }).catch((err) => {
+        Swal.fire('error', 'gagal mengambil', 'error')
+        // setData([])
+      })
+    }
+
+    callUnit()
+    callKelas()
+
+
+  }, []);
+
   const onSubmit = data => {
+    console.info(data, 'passig  data to server ..')
     const config = {
       method: 'post',
-      url: `${process.env.APP_API}guru/insert`,
+      url: `${process.env.APP_API}mapel/insert`,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `${localStorage.getItem('accessToken')}`
@@ -91,7 +128,7 @@ const Index = props => {
     }
     axios(config)
       .then((res) => {
-        route.push('/guru/list');
+        route.push('/mapel/list');
       })
       .catch((err) => {
         console.error(err)
@@ -100,19 +137,19 @@ const Index = props => {
   }
   const handleClose = () => {
     reset()
-    route.push('/category/list');
+    route.push('/mapel/list');
   }
 
 
   return (
     <>
-      <Headtitle title={`Tambah halaman`} />
+      <Headtitle title={`Tambah Mapel`} />
       <Card>
         <CardContent>
           <Header>
             <Typography variant='h5'>
               <Icon icon='tabler:edit' />
-              Tambah Pengajar.</Typography>
+              Tambah Mata Pelajaran.</Typography>
             <IconButton
               size='small'
               onClick={handleClose}
@@ -134,31 +171,30 @@ const Index = props => {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="row">
                 <div className="col-md-6">
-                  <h4>Data Pribadi Guru</h4>
-                  <hr />
+
                   <div className="form-group mb-4">
-                    <label>NIK</label>
+                    <label>Kode Mapel</label>
                     <input
-                      type="number"
-                      className={`form-control ${errors.nik ? 'is-invalid' : ''}`}
-                      id="nik"
-                      name="nik"
-                      placeholder="Nomor Induk Kependudukan"
+                      type="text"
+                      className={`form-control ${errors.kode_mapel ? 'is-invalid' : ''}`}
+                      id="kode_mapel"
+                      name="kode_mapel"
+                      placeholder="Kode Mapel"
                       defaultValue=""
-                      {...register('nik', { required: true })}
+                      {...register('kode_mapel', { required: true })}
                     />
-                    {errors.nik && <div className="invalid-feedback">This field is required.</div>}
+                    {errors.kode_mapel && <div className="invalid-feedback">This field is required.</div>}
 
                   </div>
 
                   <div className="form-group mb-4">
-                    <label>Nama</label>
+                    <label>Nama Mapel</label>
                     <input
                       type="text"
-                      className={`form-control ${errors.nis ? 'is-invalid' : ''}`}
+                      className={`form-control ${errors.nama ? 'is-invalid' : ''}`}
                       id="nama"
                       name="Nama"
-                      placeholder="Nama"
+                      placeholder="Nama Mata Pelajaran"
                       defaultValue=""
                       {...register('nama', { required: true })}
                     />
@@ -166,63 +202,47 @@ const Index = props => {
                   </div>
 
                   <div className="form-group mb-4">
-                    <label htmlFor="jk" className="col-form-label">Jenis Kelamin:</label>
+                    <label htmlFor="jk" className="col-form-label">Tingkat :</label>
                     <select
-                      className={`form-control ${errors.jk ? 'is-invalid' : ''}`}
-                      id="jk"
-                      name="jk"
-                      {...register('jk', { required: true })}
+                      className={`form-control ${errors.tingkat ? 'is-invalid' : ''}`}
+                      id="tingkat"
+                      name="tingkat"
+                      {...register('tingkat', { required: true })}
                     >
-                      <option value="">- Jenis Kelamin -</option>
-                      <option value="L">Laki-Laki</option>
-                      <option value="P">Perempuan</option>
+                      {
+                        datatingkat.map(units => (
+                          <option value={`${units.id}`}>{units.kode} {units.tingkat}</option>
+                        ))
+
+                      }
+
                     </select>
-                    {errors.jk && <div className="invalid-feedback">Please select a gender.</div>}
+                    {errors.tingkat && <div className="invalid-feedback">Please select a gender.</div>}
                   </div>
 
                   <div className="form-group mb-4">
-                    <label>Tempat tanggal lahir</label>
-                    <input
-                      type="text"
-                      className={`form-control ${errors.ttl ? 'is-invalid' : ''}`}
-                      id="ttl"
-                      name="ttl"
-                      placeholder="Tempat tanggal lahir"
-                      defaultValue=""
-                      {...register('ttl', { required: true })}
-                    />
-                    {errors.ttl && <div className="invalid-feedback">Tempat tanggal lahir is required.</div>}
+                    <label htmlFor="jk" className="col-form-label">Kelas :</label>
+                    <select
+                      className={`form-control ${errors.kelas ? 'is-invalid' : ''}`}
+                      id="kelas"
+                      name="kelas"
+                      {...register('kelas', { required: true })}
+                    >
+                      {
+                        datakelas.map(kelasdata => (
+                          <option value={`${kelasdata.id}`}>{kelasdata.kode} {kelasdata.tingkat}</option>
+                        ))
+
+                      }
+
+                    </select>
+                    {errors.tingkat && <div className="invalid-feedback">Please select a gender.</div>}
                   </div>
 
-                  <div className="form-group mb-4">
-                    <label>Email</label>
-                    <input
-                      type="email"
-                      className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-                      id="email"
-                      name="email"
-                      placeholder="Email"
-                      defaultValue=""
-                      {...register('email', { required: true })}
-                    />
-                    {errors.email && <div className="invalid-feedback">Email is required.</div>}
-                  </div>
-                  <div className="form-group mb-4">
-                    <label>Alamat</label>
-                    <textarea
-                      className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-                      id="alamat"
-                      name="alamat"
-                      defaultValue=""
-                      {...register('alamat', { required: true })}
-                    />
-                    {errors.alamat && <div className="invalid-feedback">Email is required.</div>}
-                  </div>
+
                 </div>
                 <div className="col-md-6">
-                  <h4>Data Data Alamat </h4>
-                  <hr />
-                  <h4>Data Pendidikan</h4>
+
 
 
                 </div>
@@ -243,7 +263,7 @@ const Index = props => {
 
           </Box>
         </CardContent>
-      </Card>
+      </Card >
     </>
   )
 }
