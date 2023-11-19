@@ -203,10 +203,7 @@ const Index = () => {
             <div className="accordion-body pt-0">
               <form id="filter-form" action="javascript:void(0)">
                 <div className="row">
-                  <div className="col-sm-6 col-md-2 mb-3">
-                    <label className="form-label">Kata Kunci</label>
-                    <input type="text" name="keyword" id="keyword" className="form-control" placeholder="Masukan kata kunci pencarian" maxLength={64} />
-                  </div>
+
                   <div className="col-sm-6 col-md-4 mb-3">
                     <label className="form-label">
                       Pilih Unit
