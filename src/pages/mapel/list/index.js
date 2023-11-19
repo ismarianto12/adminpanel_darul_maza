@@ -111,12 +111,18 @@ const RowOptions = ({ id, onDeleteSuccess }) => {
 const Index = () => {
   const [total, setTotal] = useState(0)
   const [sort, setSort] = useState('asc')
+  const [show, setShow] = useState()
   const [rows, setRows] = useState([])
   const [searchValue, setSearchValue] = useState('')
   const [sortColumn, setSortColumn] = useState('title')
   const [value, setValue] = useState('')
   const [status, setStatus] = useState('')
   const [loading, setLoading] = useState(true)
+
+  const [unitdata, setUnitdata] = useState([])
+  const [kelas, setKelas] = useState([])
+  const [tahunajaaran, setTahunajaran] = useState([])
+
 
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 7 })
   function loadServerRows(currentPage, data) {
@@ -182,13 +188,97 @@ const Index = () => {
     <>
       <Headtitle title="List Data pegawai" />
 
-
+      <div className="accordion mb-3">
+        <div className="accordion-item">
+          <div className="accordion-header">
+            <h2 className="accordion-button" data-bs-toggle="collapse" data-bs-target="#tab-filter" aria-expanded="true" style={{ cursor: 'pointer' }} onClick={() => setShow((show) => !show)}>
+              <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-filter" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M5.5 5h13a1 1 0 0 1 .5 1.5l-5 5.5l0 7l-4 -3l0 -4l-5 -5.5a1 1 0 0 1 .5 -1.5" />
+              </svg>
+              Filter Data
+            </h2>
+          </div>
+          <div id="tab-filter" className={`accordion-collapse collapse ${show ? '' : 'show'}`} style={{}}>
+            <div className="accordion-body pt-0">
+              <form id="filter-form" action="javascript:void(0)">
+                <div className="row">
+                  <div className="col-sm-6 col-md-2 mb-3">
+                    <label className="form-label">Kata Kunci</label>
+                    <input type="text" name="keyword" id="keyword" className="form-control" placeholder="Masukan kata kunci pencarian" maxLength={64} />
+                  </div>
+                  <div className="col-sm-6 col-md-2 mb-3">
+                    <label className="form-label">
+                      Pilih Unit
+                    </label>
+                    <select name="unit" id="filter-unit" className="form-select">
+                      {unitdata?.map((data) => {
+                        return (
+                          <option value=""></option>
+                        )
+                      }
+                      )}
+                    </select>
+                  </div>
+                  <div className="col-sm-6 col-md-2 mb-3">
+                    <label className="form-label">
+                      Pilih Kelas
+                    </label>
+                    <select name="class_name" id="class-name" className="form-select">
+                      {kelas?.map((data) => {
+                        return (
+                          <option value=""></option>
+                        )
+                      }
+                      )}
+                    </select>
+                  </div>
+                  <div className="col-sm-6 col-md-2 mb-4">
+                    <label className="form-label">
+                      Tahun Ajaran
+                    </label>
+                    <select name="class_year" id="class-year" className="form-select">
+                      {tahunajaaran?.map((data) => {
+                        return (
+                          <option value={data.id} key={data.id}>{data.tahun}</option>
+                        )
+                      }
+                      )}
+                    </select>
+                  </div>
+                  <div className="col-sm-6 col-md-2 mb-4">
+                    <label className="form-label">
+                      Status Siswa
+                    </label>
+                    <select name="status" id="status" className="form-select">
+                      <option />
+                      <option value="A" selected>Aktif</option>
+                      <option value="L">Lulus</option>
+                      <option value="K">Keluar</option>
+                      <option value="D">Dihapus</option>
+                      <option value="all">Semua</option>
+                    </select>
+                  </div>
+                  <div className="col-12">
+                    <button type="button" id="btn-apply-filter" className="btn btn-primary">
+                      Terapkan Filter
+                    </button>
+                    <button type="button" id="btn-reset-filter" className="btn btn-default ms-2">
+                      Reset Filter
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
       <br /><br />
       <Card>
         <CardHeader title={
           (<>
             <Icon fontSize='1.25rem' icon='tabler:list' />
-            {`Data Karyawan`}
+            {`Mata Pelajaran`}
           </>)
         } />
         <Comheader

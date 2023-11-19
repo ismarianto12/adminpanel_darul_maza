@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
-import Alert from '@mui/material/Alert'
+
 import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
 import IconButton from '@mui/material/IconButton'
@@ -53,16 +53,14 @@ const Category = () => {
   const [status, setStatus] = useState('')
   const [loading, setLoading] = useState(true)
   const [show, setShow] = useState(false)
-
+  const [unitdata, setUnitdata] = useState([])
   const [kelas, setKelas] = useState([])
-  const [unit, setUnit] = useState([])
+
 
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 7 })
   function loadServerRows(currentPage, data) {
     return data.slice(currentPage * paginationModel.pageSize, (currentPage + 1) * paginationModel.pageSize)
   }
-
-
 
   const onDeleteSuccess = () => {
     fetchTableData();
@@ -84,11 +82,15 @@ const Category = () => {
         })
         .then(res => {
           setTotal(res.data.length)
+
           const search = q.toLowerCase()
           const resdata = res.data[0]
           const filteredData = res.data?.filter(galery => (
             galery.nama_biaya?.toLowerCase().includes(search) || galery.nominal?.toLowerCase().includes(search) || galery.tingkat?.toLowerCase().includes(search)
           ))
+          // nama_biaya
+          // nominal
+          // tingkat
           setRows(loadServerRows(paginationModel.page, filteredData))
         }).finally(() => {
           setLoading(false)
@@ -97,41 +99,16 @@ const Category = () => {
     [paginationModel]
   )
   useEffect(() => {
-
     fetchTableData(sort, searchValue, sortColumn)
-
   }, [fetchTableData, searchValue, sort, sortColumn])
-
-  useEffect(() => {
-    const fetchKelas = async () => {
-      await axios.get(`${process.env.APP_API}/v1/kelas/list`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-        }
-      }).then(data => {
-        setKelas(data.data)
-      }).catch(err => {
-        Swal.fire('error', 'gagal mengambil data server unit', 'error')
-      })
-    }
-    const fetchUnit = async () => {
-      await axios.get(`${process.env.APP_API}/v1/kelas/list`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.get('item')}`
-        }
-      }).then(data => {
-        setKelas(data.data)
-      }).catch(err => {
-        Swal.fire('error', 'gagal mendapatkan dfata', 'error')
-      })
-    }
-    fetchUnit()
-    fetchKelas()
-  }, [])
-
   const RowOptions = ({ id, setLoading }) => {
+    // ** Hooks
+    // const dispatch = useDispatch()
+
+    // ** State
     const [anchorEl, setAnchorEl] = useState(null)
     const rowOptionsOpen = Boolean(anchorEl)
+
     const handleRowOptionsClick = event => {
       setAnchorEl(event.currentTarget)
     }
@@ -227,37 +204,25 @@ const Category = () => {
   }
 
   return (
-    <Card>
-      <div style={{ 'display': 'inline' }}>
-        <Headtitle title="Master parameterbiaya" />
-        <CardHeader title={
-          (<>
-            <Grid container alignItems="center" spacing={1}>
-              <Grid item>
-                <Icon fontSize='3.25rem' icon='tabler:list' />
+    <>
 
-              </Grid>
-              <Grid item>
-                <Alert type={'success'}>
-                  <Typography variant="h6">Master parameterbiaya</Typography>
-                </Alert>
-              </Grid>
-            </Grid>
-
-          </>)
-        }
-          style={{ display: 'inline' }}
-        />
-      </div>
       <Card>
         <div className="accordion mb-3">
           <div className="accordion-item">
             <div className="accordion-header">
               <h2 className="accordion-button" data-bs-toggle="collapse" data-bs-target="#tab-filter" aria-expanded="true" style={{ cursor: 'pointer' }} onClick={() => setShow((show) => !show)}>
-                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-filter" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                {show ? <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-filter" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                   <path d="M5.5 5h13a1 1 0 0 1 .5 1.5l-5 5.5l0 7l-4 -3l0 -4l-5 -5.5a1 1 0 0 1 .5 -1.5" />
                 </svg>
+
+                  :
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+
+
+                }
                 Filter Data
               </h2>
             </div>
@@ -265,11 +230,8 @@ const Category = () => {
               <div className="accordion-body pt-0">
                 <form id="filter-form" action="javascript:void(0)">
                   <div className="row">
-                    <div className="col-sm-6 col-md-2 mb-3">
-                      <label className="form-label">Kata Kunci</label>
-                      <input type="text" name="keyword" id="keyword" className="form-control" placeholder="Masukan kata kunci pencarian" maxLength={64} />
-                    </div>
-                    <div className="col-sm-6 col-md-2 mb-3">
+
+                    <div className="col-sm-6 col-md-6 mb-3">
                       <label className="form-label">
                         Pilih Unit
                       </label>
@@ -282,7 +244,7 @@ const Category = () => {
                         )}
                       </select>
                     </div>
-                    <div className="col-sm-6 col-md-2 mb-3">
+                    <div className="col-sm-6 col-md-6 mb-3">
                       <label className="form-label">
                         Pilih Kelas
                       </label>
@@ -311,75 +273,99 @@ const Category = () => {
           </div>
         </div>
       </Card>
-      <Comheader
-        value={searchValue}
-        handleFilter={handleSearch}
+      <br />
+      <Card>
+        <div style={{ 'display': 'inline' }}>
+          <Headtitle title="Master parameterbiaya" />
+          <CardHeader title={
+            (<>
+              <Grid container alignItems="center" spacing={1}>
+                <Grid item>
+                  <Icon fontSize='3.25rem' icon='tabler:list' />
 
-      />
-      <DataGrid
-        autoHeight
-        pagination
-        rows={rows}
-        rowCount={total}
-        columns={
-          [
-            {
-              flex: 0.2,
-              field: 'id',
-              minWidth: 100,
-              headerName: 'ID',
-              renderCell: ({ row }) => (
-                <Typography href={`/parameterbiaya/edit/${row.id}`}>{`#${row.id}`}</Typography>
-              )
-            },
-            {
-              flex: 0.25,
-              field: 'nama_biaya',
-              headerName: 'Nama Biaya'
-            },
-            {
-              flex: 0.25,
-              field: 'nominal',
-              headerName: 'Nominal'
-            },
-            {
-              flex: 0.25,
-              field: 'tingkat',
-              headerName: 'Tingkat',
-              renderCell: ({ row }) => {
-                return getparamPend(row.tingkat)
-              }
-            },
-            {
-              flex: 0.1,
-              sortable: false,
-              field: 'id',
-              headerName: 'Actions',
-              renderCell: ({ row }) => <RowOptions id={row.id} setLoading={setLoading} />
-            }
-          ]
-        }
-        loading={loading}
-        checkboxSelection
-        sortingMode='server'
-        paginationMode='server'
-        pageSizeOptions={[7, 10, 25, 50]}
-        paginationModel={paginationModel}
-        onSortModelChange={handleSortModel}
-        onPaginationModelChange={setPaginationModel}
-        slotProps={{
-          baseButton: {
-            size: 'medium',
-            variant: 'tonal'
-          },
-          toolbar: {
-            value: searchValue,
-            clearSearch: () => handleSearch(''),
-            onChange: event => handleSearch(event.target.value)
+                </Grid>
+                <Grid item>
+                  <Typography variant="h6">Master parameterbiaya</Typography>
+                </Grid>
+              </Grid>
+
+            </>)
           }
-        }}
-      />
-    </Card>
+            style={{ display: 'inline' }}
+          />
+        </div>
+
+
+
+        <Comheader
+          value={searchValue}
+          handleFilter={handleSearch}
+
+        />
+        <DataGrid
+          autoHeight
+          pagination
+          rows={rows}
+          rowCount={total}
+          columns={
+            [
+              {
+                flex: 0.2,
+                field: 'id',
+                headerName: 'ID',
+                renderCell: ({ row }) => (
+                  <Typography href={`/parameterbiaya/edit/${row.id}`}>{`#${row.id}`}</Typography>
+                )
+              },
+              {
+                flex: 0.25,
+                field: 'nama_biaya',
+                headerName: 'Nama Biaya'
+              },
+              {
+                flex: 0.25,
+                field: 'nominal',
+                headerName: 'Nominal'
+              },
+              {
+                flex: 0.25,
+                field: 'tingkat',
+                headerName: 'Tingkat',
+                renderCell: ({ row }) => {
+                  return getparamPend(row.tingkat)
+                }
+              },
+              {
+                flex: 0.1,
+                sortable: false,
+                // field: 'actions',
+                headerName: 'Actions',
+                renderCell: ({ row }) => <RowOptions id={row.id} setLoading={setLoading} />
+              }
+            ]
+          }
+          loading={loading}
+          checkboxSelection
+          sortingMode='server'
+          paginationMode='server'
+          pageSizeOptions={[7, 10, 25, 50]}
+          paginationModel={paginationModel}
+          onSortModelChange={handleSortModel}
+          onPaginationModelChange={setPaginationModel}
+          slotProps={{
+            baseButton: {
+              size: 'medium',
+              variant: 'tonal'
+            },
+            toolbar: {
+              value: searchValue,
+              clearSearch: () => handleSearch(''),
+              onChange: event => handleSearch(event.target.value)
+            }
+          }}
+        />
+      </Card>
+    </>
   )
 }
 

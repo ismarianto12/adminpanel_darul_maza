@@ -250,7 +250,7 @@ export default function Index() {
 
         <Card>
           <CardContent>
-
+            <br />
             <h4>Edit data siswa</h4>
             <hr />
             <form onSubmit={handleSubmit(onSubmit)}>
