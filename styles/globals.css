@@ -58,3 +58,15 @@ label {
   padding: 20px 20px 20px;
   margin: 0 auto;
 }
+
+
+
+
+.accordion-item {
+  border: unset;
+}
+
+
+.accordion-header {
+  border: unset;
+}

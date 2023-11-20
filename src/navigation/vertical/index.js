@@ -57,7 +57,7 @@ const navigation = () => {
           {
             title: 'Data Mata Pelajaran',
             auth: false,
-            path: '/mapel'
+            path: '/mapel/list'
           },
           {
             title: 'MASTER SISWA',
@@ -106,7 +106,7 @@ const navigation = () => {
       {
         title: 'E-learning',
         auth: false,
-        icon: 'tabler:file-list',
+        icon: 'tabler:document',
         children: [
           {
             title: 'Data Absensi',

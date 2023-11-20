@@ -95,7 +95,7 @@ const navigation = () => {
     },
     {
       title: 'E-learning',
-      icon: 'tabler:file-list',
+      icon: 'tabler:file',
       children: [
         {
           title: 'Data Absensi',

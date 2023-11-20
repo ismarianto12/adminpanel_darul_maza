@@ -122,7 +122,7 @@ const Index = props => {
       url: `${process.env.APP_API}mapel/insert`,
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `${localStorage.getItem('accessToken')}`
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
       },
       data: data
     }
@@ -133,7 +133,7 @@ const Index = props => {
       .catch((err) => {
         console.error(err)
       })
-    reset()
+    // reset()
   }
   const handleClose = () => {
     reset()

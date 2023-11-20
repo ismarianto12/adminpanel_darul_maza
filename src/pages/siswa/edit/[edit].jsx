@@ -11,7 +11,7 @@ import { Box, Card, CardContent } from '@mui/material'
 
 function showLoadingAlert() {
   Swal.fire({
-    title: 'Login Berhasil',
+    title: 'Sedang Menyimpan',
     html: 'Sedang Mengalihakn...',
     allowOutsideClick: false,
 
@@ -21,7 +21,7 @@ function showLoadingAlert() {
     Swal.close();
   }, 3000);
 }
-export default function Index() {
+export default function Index(props) {
 
   const [formData, setFormData] = useState({});
   const { register, reset, handleSubmit, setValue, formState: { errors } } = useForm(
@@ -78,8 +78,12 @@ export default function Index() {
   useEffect(() => {
 
     const getdata = async () => {
-      const url = `${process.env.BACKEND_API}/edit/siswa/${props.id}`
-      await axios.get(url)
+      const url = `${process.env.APP_API}siswa/edit/${props.id}`
+      await axios.get(url, {
+        headers: {
+          Authorization: `bearer ${localStorage.getItem('accessToken')}`
+        }
+      })
         .then(response => {
           reset(response.data)
         })
@@ -208,7 +212,11 @@ export default function Index() {
         formdata.append("kabupaten", data.kabupaten)
         formdata.append("kecamatan", data.kecamatan)
         formdata.append("kelurahan", data.kelurahan)
-        await axios.post(`${process.env.BACKEND_API}/api/v1/ppdb`, formdata).then((data) => {
+        await axios.post(`${process.env.APP_API}siswa/update/${props.id}`, formdata, {
+          headers: {
+            Authorization: `bearer ${localStorage.getItem('accessToken')}`
+          }
+        }).then((data) => {
           localStorage.setItem('no_daftar', nodaftar)
           return route.push(`/berhasil`)
         }).catch((error) => {
@@ -282,21 +290,6 @@ export default function Index() {
                       {...register('nis', { required: true })}
                     />
                     {errors.nis && <div className="invalid-feedback">This field is required.</div>}
-                  </div>
-                  <div className="form-group mb-4 form-box">
-                    <label>Password</label>
-                    <div className="input-group">
-                      <input
-                        type="password"
-                        className={`form-control ${errors.password ? 'is-invalid' : ''}`}
-                        id="password"
-                        name="password"
-                        placeholder="Password"
-                        defaultValue=""
-                        {...register('password', { required: true })}
-                      />
-                    </div>
-                    {errors.password && <div className="invalid-feedback">This field is required.</div>}
                   </div>
 
                   <div className="form-group mb-4">
@@ -707,41 +700,30 @@ export default function Index() {
                     {errors.thn_msk && <div className="invalid-feedback">Please select a year.</div>}
                   </div>
 
+
                   <div className="form-group mb-4">
-                    <div className="card shadow mb-4">
-
-                      <div className="card-body">
-                        <div className="row">
-                          <div className="col-md-12">
-                            <div className="form-group mb-4">
-                              <label>Pendidikan</label>
-                              <select
-                                className={`form-control ${errors.pendidikan ? 'is-invalid' : ''}`}
-                                id="pendidikan"
-                                name="pendidikan"
-                                {...register('pendidikan', { required: true })}
-                              >
-                                <option value="- Pilih pendidikan -">- Pilih pendidikan -</option>
-                                <option value={1}>SD</option>
-                                <option value={9}>TK</option>
-                                <option value={10}>SMP</option>
-                                <option value={12}>KB</option>
-                              </select>
-                              {errors.pendidikan && <div className="invalid-feedback">Please select a level of education.</div>}
-                            </div>
-                          </div>
-
-                        </div>
-                      </div>
-                    </div>
+                    <label>Pendidikan</label>
+                    <select
+                      className={`form-control ${errors.pendidikan ? 'is-invalid' : ''}`}
+                      id="pendidikan"
+                      name="pendidikan"
+                      {...register('pendidikan', { required: true })}
+                    >
+                      <option value="- Pilih pendidikan -">- Pilih pendidikan -</option>
+                      <option value={1}>SD</option>
+                      <option value={9}>TK</option>
+                      <option value={10}>SMP</option>
+                      <option value={12}>KB</option>
+                    </select>
+                    {errors.pendidikan && <div className="invalid-feedback">Please select a level of education.</div>}
                   </div>
                 </div>
               </div>
-              <div className="_stepbackgroundalkdmsaldkma exssubmitform pt-3 form-group mb-4 row" >
+              <div className="pt-3 form-group mb-4 row" >
                 <div className="col-md-12 text-center">
                   <button type="submit" className="btn-block btn btn-success" style={{
                     'width': '40%', 'marginRight': '15px'
-                  }}>Edit Data Siswa</button>
+                  }}>Edit</button>
                   <button type="reset" onClick={() => confirmbatal()} className="btn-block btn btn-danger" style={{
                     'width': '40%'
                   }}>Batal</button>
@@ -751,7 +733,7 @@ export default function Index() {
             </form>
           </CardContent>
         </Card>
-      </Box>
+      </Box >
 
     </>
   )

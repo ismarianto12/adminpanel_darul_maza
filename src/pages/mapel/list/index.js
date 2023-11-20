@@ -294,28 +294,21 @@ const Index = () => {
               {
                 flex: 0.25,
                 minWidth: 290,
-                field: 'kelas',
-                headerName: 'Kelas',
+                field: 'nama_mapel',
+                headerName: 'Nama',
                 renderCell: ({ row }) => {
-                  if (row.kelas) {
+                  if (row.nama_mapel) {
                     return (<b>Kosong</b>)
                   } else {
-                    return row.kelas
+                    return row.nama_mapel
                   }
                 }
               },
               {
                 flex: 0.25,
                 minWidth: 290,
-                field: 'nama_mapel',
-                headerName: 'Nama Mapel'
-
-              },
-              {
-                flex: 0.25,
-                minWidth: 290,
-                field: 'kkm',
-                headerName: 'Nama Mapel'
+                field: 'tingkat',
+                headerName: 'Tingkat'
 
               },
               {
