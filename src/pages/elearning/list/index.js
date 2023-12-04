@@ -102,12 +102,14 @@ const Comheader = props => {
       <Box sx={{ rowGap: 2, display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
         <CustomTextField
           value={value}
-          sx={{ mr: 10 }}
+          sx={{ mr: 8 }}
           placeholder='Search'
           onChange={e => handleFilter(e.target.value)}
         />
         <Button variant='contained' sx={{ '& svg': { mr: 2 } }}
-          onClick={() => updateAction()}
+          onClick={() =>
+            router.push('/elarning/create')
+          }
         >
           <Icon fontSize='1.125rem' icon='tabler:plus' />
           Tambah
