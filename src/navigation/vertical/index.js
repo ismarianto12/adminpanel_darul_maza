@@ -111,12 +111,12 @@ const navigation = () => {
           {
             title: 'Data Absensi',
             auth: false,
-            path: '/absensi'
+            path: '/absensi/list'
           },
           {
             title: 'Elearning',
             auth: false,
-            path: '/elearning'
+            path: '/elearning/list'
           },
         ]
       },

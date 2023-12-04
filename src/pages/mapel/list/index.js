@@ -23,90 +23,9 @@ import Headtitle from 'src/@core/components/Headtitle'
 import toast from 'react-hot-toast'
 import CardStatsVertical from 'src/@core/components/card-statistics/card-stats-vertical'
 import CardStatsHorizontalWithDetails from 'src/@core/components/card-statistics/card-stats-horizontal-with-details'
+import Action from 'src/@core/utils/action'
 
-const RowOptions = ({ id, onDeleteSuccess }) => {
-  // ** Hooks
-  // const dispatch = useDispatch()
-  // ** State
-  const [anchorEl, setAnchorEl] = useState(null)
-  const rowOptionsOpen = Boolean(anchorEl)
 
-  const handleRowOptionsClick = event => {
-    setAnchorEl(event.currentTarget)
-  }
-
-  const handleRowOptionsClose = () => {
-    setAnchorEl(null)
-  }
-  const DeleteCat = (id) => {
-    axios.delete(`${process.env.APP_API}guru/destroy/${id}`, {
-      headers: {
-        Authorization: `Bearer :${localStorage.getItem('accessToken')}`
-      }
-    })
-      .then(e => {
-        toast.success('Data Guru Berhasil di hapus')
-        onDeleteSuccess()
-      })
-      .catch(error => {
-        toast.error(`gagal di hapus ${error}`)
-        onDeleteSuccess()
-      }).finally(() => {
-        setLoading(false)
-      });
-  }
-
-  const handleDelete = (id) => {
-    DeleteCat(id)
-    handleRowOptionsClose()
-  }
-
-  return (
-    <>
-      <IconButton size='small' onClick={handleRowOptionsClick}>
-        <Icon icon='tabler:dots-vertical' />
-      </IconButton>
-      <Menu
-        keepMounted
-        anchorEl={anchorEl}
-        open={rowOptionsOpen}
-        onClose={handleRowOptionsClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right'
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
-        }}
-        PaperProps={{ style: { minWidth: '8rem' } }}
-      >
-        <MenuItem
-          component={Link}
-          sx={{ '& svg': { mr: 2 } }}
-          href={`/promo/edit/${id}`}
-          onClick={handleRowOptionsClose}
-        >
-          <Icon icon='tabler:eye' fontSize={20} />
-          {`View`}
-        </MenuItem>
-        <MenuItem
-          component={Link}
-          onClick={handleRowOptionsClose}
-          href={`/promo/edit/${id}`}
-          sx={{ '& svg': { mr: 2 } }}>
-          <Icon icon='tabler:edit' fontSize={20} />
-          {`Edit`}
-        </MenuItem>
-        <MenuItem onClick={() => handleDelete(id)}
-          sx={{ '& svg': { mr: 2 } }}>
-          <Icon icon='tabler:trash' fontSize={20} />
-          {`Delete`}
-        </MenuItem>
-      </Menu>
-    </>
-  )
-}
 
 const Index = () => {
   const [total, setTotal] = useState(0)
@@ -123,6 +42,89 @@ const Index = () => {
   const [kelas, setKelas] = useState([])
   const [tahunajaaran, setTahunajaran] = useState([])
 
+
+
+
+  const RowOptions = ({ id, onDeleteSuccess }) => {
+    const [anchorEl, setAnchorEl] = useState(null)
+    const rowOptionsOpen = Boolean(anchorEl)
+
+    const handleRowOptionsClick = event => {
+      setAnchorEl(event.currentTarget)
+    }
+
+    const handleRowOptionsClose = () => {
+      setAnchorEl(null)
+    }
+    const DeleteCat = (id) => {
+      axios.delete(`${process.env.APP_API}guru/destroy/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        }
+      })
+        .then(e => {
+          toast.success('Data Guru Berhasil di hapus')
+          onDeleteSuccess()
+        })
+        .catch(error => {
+          toast.error(`gagal di hapus ${error}`)
+          onDeleteSuccess()
+        }).finally(() => {
+          setLoading(false)
+        });
+    }
+
+    const handleDelete = (id) => {
+      DeleteCat(id)
+      handleRowOptionsClose()
+    }
+
+    return (
+      <>
+        <IconButton size='small' onClick={handleRowOptionsClick}>
+          <Icon icon='tabler:dots-vertical' />
+        </IconButton>
+        <Menu
+          keepMounted
+          anchorEl={anchorEl}
+          open={rowOptionsOpen}
+          onClose={handleRowOptionsClose}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right'
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'right'
+          }}
+          PaperProps={{ style: { minWidth: '8rem' } }}
+        >
+          <MenuItem
+            component={Link}
+            sx={{ '& svg': { mr: 2 } }}
+            href={`/promo/edit/${id}`}
+            onClick={handleRowOptionsClose}
+          >
+            <Icon icon='tabler:eye' fontSize={20} />
+            {`View`}
+          </MenuItem>
+          <MenuItem
+            component={Link}
+            onClick={handleRowOptionsClose}
+            href={`/promo/edit/${id}`}
+            sx={{ '& svg': { mr: 2 } }}>
+            <Icon icon='tabler:edit' fontSize={20} />
+            {`Edit`}
+          </MenuItem>
+          <MenuItem onClick={() => handleDelete(id)}
+            sx={{ '& svg': { mr: 2 } }}>
+            <Icon icon='tabler:trash' fontSize={20} />
+            {`Delete`}
+          </MenuItem>
+        </Menu>
+      </>
+    )
+  }
 
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 7 })
   function loadServerRows(currentPage, data) {
@@ -152,10 +154,11 @@ const Index = () => {
 
           // const
           const search = q.toLowerCase()
-          const resdata = res.data[0]
+          const resdata = res.data.data
+          // console.log(resdata, 'passing data')
 
           const filteredData = res.data.filter(galery => (
-            galery.nama?.toLowerCase().includes(search) || galery.deskripsiId?.toLowerCase().includes(search) || galery.deskripsiEn?.toLowerCase().includes(search)
+            galery.kelas?.toLowerCase().includes(search) || galery.kode?.toLowerCase().includes(search) || galery.mapel?.toLowerCase().includes(search)
           ))
 
           setRows(loadServerRows(paginationModel.page, filteredData))
@@ -167,7 +170,21 @@ const Index = () => {
   )
   useEffect(() => {
     fetchTableData(sort, searchValue, sortColumn)
-  }, [fetchTableData, searchValue, sort, sortColumn])
+    const id = 12
+    Action().FUnit({
+      setUnitdata
+    })
+    Action().FKelas({
+      setKelas,
+      id
+    })
+
+
+    Action().FtahunAkademik({
+      setTahunajaran
+    })
+
+  }, [fetchTableData, searchValue, sort, sortColumn, unitdata])
 
   const handleSortModel = newModel => {
     if (newModel.length) {
@@ -211,7 +228,7 @@ const Index = () => {
                     <select name="unit" id="filter-unit" className="form-select">
                       {unitdata?.map((data) => {
                         return (
-                          <option value=""></option>
+                          <option value={`${data.id}`}>{data.unit}</option>
                         )
                       }
                       )}
@@ -283,10 +300,10 @@ const Index = () => {
                 field: 'kode',
                 headerName: 'Kode Mapel',
                 renderCell: ({ row }) => {
-                  if (row.nama === null) {
-                    return (<b>Kosong</b>)
+                  if (row.kode) {
+                    return row.kode
                   } else {
-                    return row.nama
+                    return (<b>Kosong</b>)
                   }
                 }
 
@@ -298,9 +315,9 @@ const Index = () => {
                 headerName: 'Nama',
                 renderCell: ({ row }) => {
                   if (row.nama_mapel) {
-                    return (<b>Kosong</b>)
-                  } else {
                     return row.nama_mapel
+                  } else {
+                    return (<b>Kosong</b>)
                   }
                 }
               },
@@ -308,7 +325,14 @@ const Index = () => {
                 flex: 0.25,
                 minWidth: 290,
                 field: 'tingkat',
-                headerName: 'Tingkat'
+                headerName: 'Tingkat',
+                renderCell: ({ row }) => {
+                  if (row.tingkat) {
+                    return row.tingkat
+                  } else {
+                    return (<b>Kosong</b>)
+                  }
+                }
 
               },
               {

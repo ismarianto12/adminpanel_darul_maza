@@ -51,7 +51,50 @@ const Action = () => {
       Swal.fire('error', err, 'error')
     })
   }
+  // fucntion return and render master data
+  const FUnit = async props => {
+    axios.get(`${process.env.APP_API}/unit/list`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+      }
+    }, {
+
+    }).then((res) => {
+      props.setUnitdata(res.data.data)
+    }).catch(err => {
+      Swal.fire('error', err.date.messages, 'error')
+    })
+  }
+  const FKelas = async (props) => {
+    try {
+      const response = await axios.get(`${process.env.APP_API}/kelas/masterchain`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+        params: {
+          id: props.id,
+        },
+      });
+
+      props.setKelasData(response.data.data);
+    } catch (err) {
+      Swal.fire('error', err.response.data.messages, 'error');
+    }
+  }
+  const FtahunAkademik = async (props) => {
+    try {
+      const response = await axios.get(`${process.env.APP_API}/tahun/list`);
+      props.setTahunData(response.data.data);
+    } catch (err) {
+      Swal.fire('error', err.response.data.messages, 'error');
+    }
+  };
+
+
   return {
+    FUnit,
+    FKelas,
+    FtahunAkademik,
     activenewsNews,
     DetailNews,
     fetchSlider,

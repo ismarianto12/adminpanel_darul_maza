@@ -52,16 +52,14 @@ const Header = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between'
 }))
 const schema = yup.object().shape({
-  nama_biaya: yup.string().required(),
-  nominal: yup.string().required(),
+  // nama_biaya: yup.string().required(),
+  // nominal: yup.string().required(),
   // description: yup.string().required(),
-  tingkat: yup.string().required()
+  // tingkat: yup.string().required()
 })
 const defaultValues = {
-  nama_biaya: '',
-  nominal: '',
+  nama: '',
   tingkat: '',
-  catatan: ''
 }
 const Index = props => {
   const route = useRouter();
@@ -85,19 +83,19 @@ const Index = props => {
   useEffect(() => {
   }, [])
   const onSubmit = async (data) => {
-    await axios.post(`${process.env.APP_API}parameterbiaya/update/${props.id}`, data, {
+    await axios.post(`${process.env.APP_API}kelas/insert`, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
     }).then(() => {
-      toast.success('Data berita berhasil ditambahkan')
-      route.push('/parameterbiaya/list')
+      toast.success('Data berita berhasil update')
+      route.push('/kelas/list')
     })
     reset()
   }
   const handleClose = () => {
     reset()
-    route.push('/parameterbiaya/list');
+    route.push('/kelas/list');
   }
   const Jenjang = [
     {

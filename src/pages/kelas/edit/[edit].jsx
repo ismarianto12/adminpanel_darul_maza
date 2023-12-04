@@ -58,10 +58,9 @@ const schema = yup.object().shape({
   tingkat: yup.string().required()
 })
 const defaultValues = {
-  nama_biaya: '',
-  nominal: '',
+  nama: '',
   tingkat: '',
-  catatan: ''
+
 }
 const calledit = async (
   id, setData, reset
@@ -102,19 +101,19 @@ const Index = props => {
   }, [])
 
   const onSubmit = async (data) => {
-    await axios.post(`${process.env.APP_API}parameterbiaya/update/${props.id}`, data, {
+    await axios.post(`${process.env.APP_API}kelas/update/${props.id}`, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
     }).then(() => {
-      toast.success('Data berita berhasil ditambahkan')
-      route.push('/parameterbiaya/list')
+      toast.success('Data Kelas berhasil update')
+      route.push('/kelas/list')
     })
     reset()
   }
   const handleClose = () => {
     reset()
-    route.push('/parameterbiaya/list');
+    route.push('/kelas/list');
   }
   const Jenjang = [
     {

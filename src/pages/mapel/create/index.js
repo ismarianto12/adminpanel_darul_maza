@@ -116,7 +116,6 @@ const Index = props => {
   }, []);
 
   const onSubmit = data => {
-    console.info(data, 'passig  data to server ..')
     const config = {
       method: 'post',
       url: `${process.env.APP_API}mapel/insert`,
@@ -246,14 +245,13 @@ const Index = props => {
 
 
                 </div>
-
               </div>
-              <div className="_stepbackgroundalkdmsaldkma exssubmitform pt-3 form-group mb-4 row" >
+              <div className="pt-3 form-group row">
                 <div className="col-md-12 text-center">
                   <button type="submit" className="btn-block btn btn-success" style={{
                     'width': '40%', 'marginRight': '15px'
                   }}>Daftar</button>
-                  <button type="reset" onClick={() => confirmbatal()} className="btn-block btn btn-danger" style={{
+                  <button type="reset" onClick={() => route.push('/mapel')} className="btn-block btn btn-danger" style={{
                     'width': '40%'
                   }}>Batal</button>
                 </div>

@@ -128,7 +128,7 @@ const Index = () => {
   const fetchTableData = useCallback(
     async (sort, q, column) => {
       await axios
-        .get(`${process.env.APP_API}karyawan/list`, {
+        .get(`${process.env.APP_API}absensi/list`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`
           }
@@ -180,15 +180,13 @@ const Index = () => {
 
   return (
     <>
-      <Headtitle title="List Data pegawai" />
-
-
+      <Headtitle title="List Data Presensi" />
       <br /><br />
       <Card>
         <CardHeader title={
           (<>
             <Icon fontSize='1.25rem' icon='tabler:list' />
-            {`Data Karyawan`}
+            {`Data Presensi`}
           </>)
         } />
         <Comheader

@@ -12,7 +12,6 @@ module.exports = {
 
     DEV_USER_PROD: '',
   },
-
   crossOrigin: 'anonymous',
   // basePath: '/admin',
   headers: () => {
