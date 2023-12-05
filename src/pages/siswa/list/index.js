@@ -127,8 +127,8 @@ const Siswa = () => {
   const [value, setValue] = useState('')
   const [status, setStatus] = useState('')
 
-  const [filjenjang, , setJenjang] = useState('');
-  const [filkelas, setFilkelas] = useState('');
+  const [filjenjang, , setJenjang] = useState('')
+  const [filkelas, setFilkelas] = useState('')
 
   const [searchValue, setSearchValue] = useState('')
   const [sortColumn, setSortColumn] = useState('nama')
@@ -257,26 +257,28 @@ const Siswa = () => {
 
   const columns = [
     {
-      flex: 0.2,
       field: 'id',
       headerName: 'ID',
       renderCell: ({ row }) => (
-        <Typography href={`/siswa/preview/${row.id}`}>{`#${row.id}`}</Typography>
+        <Typography href={`/siswa/preview/${row.id}`}></Typography>
       )
     },
     {
-      flex: 0.25,
+      minWidth: 200,
       field: 'email',
       headerName: 'Email'
     },
     {
       flex: 0.25,
+      minWidth: 200,
       field: 'nama',
       headerName: 'Nama',
+
     },
     {
       flex: 0.25,
       field: 'jk',
+      minWidth: 200,
       headerName: 'Jk',
       renderCell: ({ row }) => {
         if (row.jk === 'P') {
@@ -288,6 +290,7 @@ const Siswa = () => {
     },
     {
       flex: 0.25,
+      minWidth: 200,
       field: 'kelas_id',
       headerName: 'Kelas'
     },

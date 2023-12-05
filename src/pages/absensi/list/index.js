@@ -25,9 +25,6 @@ import CardStatsVertical from 'src/@core/components/card-statistics/card-stats-v
 import CardStatsHorizontalWithDetails from 'src/@core/components/card-statistics/card-stats-horizontal-with-details'
 
 const RowOptions = ({ id, onDeleteSuccess }) => {
-  // ** Hooks
-  // const dispatch = useDispatch()
-  // ** State
   const [anchorEl, setAnchorEl] = useState(null)
   const rowOptionsOpen = Boolean(anchorEl)
 
@@ -45,7 +42,7 @@ const RowOptions = ({ id, onDeleteSuccess }) => {
       }
     })
       .then(e => {
-        toast.success('Data Guru Berhasil di hapus')
+        toast.success('Data Absensi Berhasil di hapus')
         onDeleteSuccess()
       })
       .catch(error => {

@@ -120,7 +120,7 @@ const Bayar = (props) => {
   const confirmbatal = () => {
     Swal.fire({
       title: 'Anda yakin?',
-      text: "Proses PPBD Akan di batalkan!",
+      text: "Proses Pembayaran Akan di batalkan.",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -138,7 +138,6 @@ const Bayar = (props) => {
     })
   }
   const onSubmit = async (data) => {
-    // console.log(data, 'sumit')
 
     await axios.post(`${process.env.APP_API}pembayaran/update/${props.id}`, {
       id_siswa: props.id,
@@ -259,7 +258,7 @@ const Bayar = (props) => {
                   </div>
                 </div>
                 <br /> <br />
-                <div className="_stepbackgroundalkdmsaldkma exssubmitform pt-3 form-group mb-4 row" >
+                <div className="pt-3 form-group mb-4 row" >
                   <div className="col-md-12 text-center">
                     <button type="submit" className="btn-block btn btn-success" style={{ 'width': '40%' }}>Proses Pembayaran</button>&nbsp;&nbsp;
                     <button type="reset" onClick={() => confirmbatal()} className="btn-block btn btn-danger" style={{ 'width': '40%' }}>Batal</button>

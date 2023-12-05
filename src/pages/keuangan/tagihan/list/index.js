@@ -26,21 +26,21 @@ import Headtitle from 'src/@core/components/Headtitle'
 import toast from 'react-hot-toast'
 import CardStatsVertical from 'src/@core/components/card-statistics/card-stats-vertical'
 import { useForm, Controller } from 'react-hook-form'
-import {
-  GetUnit,
-  GetTahunAkademik,
-  GetKelas
-} from 'src/@core/utils/encp'
+
 
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-
-
+import Filterdata from 'src/@core/components/Filterdata'
 
 const fetchDivisi = (setDivisi) => {
-  axios.post(`${process.env.APP_API}divisi/list`).then((data) => {
+  axios.get(`${process.env.APP_API}divisi/list`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+    }
+  }).then((data) => {
     setDivisi(data.data)
-  }).then((err) => {
+  }).catch((err) => {
+    console.log(err, 'console log error')
     toast.error('data divisi tidak bisa di tampilkan')
   })
 }
@@ -181,10 +181,9 @@ const Index = () => {
     resolver: yupResolver(schema)
   })
 
-
-
-
-
+  const handleFilter = () => {
+    fetchTableData()
+  }
   const onSubmit = async (data) => {
     const queryParams = {
       divisi: data.divisi
@@ -223,16 +222,17 @@ const Index = () => {
           params: {
             q,
             sort,
-            column
+            column,
+            datadivisi,
+            unitdata,
+            kelas,
+            tahunajaaran,
           }
         })
         .then(res => {
-          console.log(res.data[0], 'response server')
+
           setTotal(res.data.length)
-
-
-          // const
-          const search = q.toLowerCase()
+          const search = q?.toLowerCase()
           const resdata = res.data[0]
 
           const filteredData = res.data.filter(galery => (
@@ -244,17 +244,16 @@ const Index = () => {
           setLoading(false)
         })
     },
-    [paginationModel]
+    [
+      paginationModel,
+      tahunajaaran,
+      datadivisi,
+      unitdata,
+      kelas
+    ]
   )
   useEffect(() => {
-
-    GetUnit(setUnitdata())
-    GetTahunAkademik(setTahunajaran())
-    GetKelas(setKelas())
-
     fetchTableData(sort, searchValue, sortColumn)
-    fetchDivisi(setDivisi)
-
   }, [fetchTableData, searchValue, sort, sortColumn])
 
   const handleSortModel = newModel => {
@@ -276,96 +275,25 @@ const Index = () => {
   return (
     <>
       <Headtitle title="Tagihan Siswa" />
-
-
       <Card>
-        <div className="accordion mb-3">
-          <div className="accordion-item">
-            <div className="accordion-header">
-              <h2 className="accordion-button" data-bs-toggle="collapse" data-bs-target="#tab-filter" aria-expanded="true" style={{ cursor: 'pointer' }} onClick={() => setShow((show) => !show)}>
-                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-filter" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                  <path d="M5.5 5h13a1 1 0 0 1 .5 1.5l-5 5.5l0 7l-4 -3l0 -4l-5 -5.5a1 1 0 0 1 .5 -1.5" />
-                </svg>
-                Filter Data
-              </h2>
-            </div>
-            <div id="tab-filter" className={`accordion-collapse collapse ${show ? '' : 'show'}`} style={{}}>
-              <div className="accordion-body pt-0">
-                <form id="filter-form" action="javascript:void(0)">
-                  <div className="row">
-                    <div className="col-sm-6 col-md-2 mb-3">
-                      <label className="form-label">Kata Kunci</label>
-                      <input type="text" name="keyword" id="keyword" className="form-control" placeholder="Masukan kata kunci pencarian" maxLength={64} />
-                    </div>
-                    <div className="col-sm-6 col-md-2 mb-3">
-                      <label className="form-label">
-                        Pilih Unit
-                      </label>
-                      <select name="unit" id="filter-unit" className="form-select">
-                        {unitdata?.map((data) => {
-                          return (
-                            <option value=""></option>
-                          )
-                        }
-                        )}
-                      </select>
-                    </div>
-                    <div className="col-sm-6 col-md-2 mb-3">
-                      <label className="form-label">
-                        Pilih Kelas
-                      </label>
-                      <select name="class_name" id="class-name" className="form-select">
-                        {kelas?.map((data) => {
-                          return (
-                            <option value=""></option>
-                          )
-                        }
-                        )}
-                      </select>
-                    </div>
-                    <div className="col-sm-6 col-md-2 mb-4">
-                      <label className="form-label">
-                        Tahun Ajaran
-                      </label>
-                      <select name="class_year" id="class-year" className="form-select">
-                        {tahunajaaran?.map((data) => {
-                          return (
-                            <option value={data.id} key={data.id}>{data.tahun}</option>
-                          )
-                        }
-                        )}
-                      </select>
-                    </div>
-                    <div className="col-sm-6 col-md-2 mb-4">
-                      <label className="form-label">
-                        Status Siswa
-                      </label>
-                      <select name="status" id="status" className="form-select">
-                        <option />
-                        <option value="A" selected>Aktif</option>
-                        <option value="L">Lulus</option>
-                        <option value="K">Keluar</option>
-                        <option value="D">Dihapus</option>
-                        <option value="all">Semua</option>
-                      </select>
-                    </div>
-                    <div className="col-12">
-                      <button type="button" id="btn-apply-filter" className="btn btn-primary">
-                        Terapkan Filter
-                      </button>
-                      <button type="button" id="btn-reset-filter" className="btn btn-default ms-2">
-                        Reset Filter
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Filterdata
+
+          divis={divis}
+          datadivisi={datadivisi}
+          show={show}
+          unitdata={unitdata}
+          kelas={kelas}
+          tahunajaaran={tahunajaaran}
+          handleFilter={handleFilter}
+          setShow={setShow}
+          setUnitdata={setUnitdata}
+          setTahunajaran={setTahunajaran}
+          setKelas={setKelas}
+          setDivisi={setDivisi}
+        />
+
       </Card>
-      <br /><br />
+      <br />
       <Card>
         <CardHeader title={
           (<>
@@ -373,10 +301,6 @@ const Index = () => {
             {`Tagihan Siswa`}
           </>)
         } />
-
-
-
-
 
         <Comheader
           value={searchValue}
@@ -391,9 +315,10 @@ const Index = () => {
           rows={rows}
           rowCount={total}
           columns={[
-            { field: 'id', headerName: '#' },
             {
-              field: 'tingkat', headerName: 'Nama Unit',
+              field: 'tingkat',
+              minWidth: 200,
+              headerName: 'Nama Unit',
               renderCell: ({ row }) => {
                 if (row.tingkat) {
                   return (<b>{row.tingkat}</b>)
@@ -402,10 +327,20 @@ const Index = () => {
                 }
               }
             },
-            { field: 'nis', headerName: 'Nomor Induk' },
-            { field: 'nama', headerName: 'Nama Lengkap' },
             {
-              field: 'kelas', headerName: 'Kelas Sekarang',
+              field: 'nis',
+              minWidth: 200,
+              headerName: 'Nomor Induk'
+            },
+            {
+              field: 'nama',
+              minWidth: 200,
+              headerName: 'Nama Lengkap'
+            },
+            {
+              field: 'kelas',
+              minWidth: 200,
+              headerName: 'Kelas Sekarang',
               renderCell: ({ row }) => {
                 if (row.kelas) {
                   return (<b>{row.kelas}</b>)
@@ -416,7 +351,9 @@ const Index = () => {
 
             },
             {
-              field: 'tahun_ajaran', headerName: 'Tahun Ajaran',
+              field: 'tahun_ajaran',
+              minWidth: 200,
+              headerName: 'Tahun Ajaran',
               renderCell: ({ row }) => {
                 if (row.tahun_ajaran) {
                   return (<b>{row.tahun_ajaran}</b>)
@@ -424,9 +361,22 @@ const Index = () => {
                   return 'Kosong'
                 }
               }
-
             },
-            { field: 'status', headerName: 'Status' },
+            {
+              field: 'status',
+              minWidth: 100,
+              headerName: 'Status',
+              renderCell: ({ row }) => {
+                if (row === 1) {
+                  return 'LUNAS'
+                } else if (row === 2) {
+                  return 'Belum Lunas'
+                } else {
+                  return 'Silahkan Bayar'
+
+                }
+              }
+            },
             {
               field: 'total_tagihan', headerName: 'Total Tagihan', renderCell: ({ row }) => {
                 if (row.total_tagihan) {

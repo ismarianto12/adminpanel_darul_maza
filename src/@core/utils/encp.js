@@ -115,37 +115,44 @@ const getparamPend = (params) => {
 }
 // acceess data
 const GetUnit = async (props) => {
-  axios.get(`${process.env.APP_API}tingkat/list`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-    }
-  }).then((data) => {
-    props.setUnitdata([data.data])
-    console.log(data.data, 'result as tingkat')
-  }).then((err) => {
-    toast.error('tidak dapat memanggil data');
-  })
-}
+  try {
+    const response = await axios.get(`${process.env.APP_API}tingkat/list`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+      }
+    });
+
+    // Assuming the data is an array, if not, adjust accordingly
+    props.setUnitdata(response.data);
+  } catch (error) {
+    // Handle errors
+    console.error('Error fetching unit data:', error);
+    toast.error('Tidak dapat memanggil data unit: ' + error.message);
+  }
+};
+
 const GetTahunAkademik = async (props) => {
-  axios.get(`${process.env.APP_API}tahunakademik/list`, {
+
+  await axios.get(`${process.env.APP_API}tahunakademik/list`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('accessToken')}`
     }
   }).then((data) => {
     props.setTahunajaran([data.data])
-  }).then((err) => {
+  }).catch((err) => {
     toast.error('tidak dapat memanggil data');
   })
 }
 
-const GetKelas = async (props) => {
-  axios.get(`${process.env.APP_API}kelas/list`, {
+const GetKelas = async props => {
+  console.log(props, 'detail props')
+  await axios.get(`${process.env.APP_API}kelas/list`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('accessToken')}`
     }
   }).then((data) => {
     props.setKelas([data.data])
-  }).then((err) => {
+  }).catch((err) => {
     toast.error('tidak dapat memanggil data');
   })
 }

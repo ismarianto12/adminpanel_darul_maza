@@ -362,7 +362,7 @@ const elearning = () => {
         <CardContent>
           <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
             <Grid container spacing={4} paddingBottom={10}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={4}>
                 <CustomTextField
                   select
                   fullWidth
@@ -383,7 +383,7 @@ const elearning = () => {
                 </CustomTextField>
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={4}>
                 <CustomTextField
                   select
                   fullWidth
@@ -403,7 +403,7 @@ const elearning = () => {
                 </CustomTextField>
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={4}>
                 <Comheader addUserOpen={null} setAddUserOpen={null}
                   handleFilter={handleSearch} setAction={null}
                 />
