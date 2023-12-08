@@ -10,7 +10,6 @@ import {
 
 const Filterdata = (
   {
-
     divis,
     datadivisi,
     handleFilter,
@@ -23,6 +22,9 @@ const Filterdata = (
     setTahunajaran,
     setKelas,
     setDivisi,
+    setKata,
+    payload,
+    setPayload
   }
 ) => {
 
@@ -70,9 +72,23 @@ const Filterdata = (
     GetUnit()
     GetTahunAkademik()
     GetKelas()
+  }, [])
 
 
-  }, []);
+  const handleClear = () => {
+    setPayload({
+      unit: '',
+      class_name: '',
+      class_year: '',
+      status: ''
+    })
+  }
+  const handleChange = (e) => {
+    setPayload({
+      ...payload,
+      [e.target.name]: e.target.value
+    });
+  }
 
   return (<>
     <div className="accordion mb-3">
@@ -92,13 +108,14 @@ const Filterdata = (
               <div className="row">
                 <div className="col-sm-6 col-md-2 mb-3">
                   <label className="form-label">Kata Kunci</label>
-                  <input type="text" name="keyword" id="keyword" className="form-control" placeholder="Masukan kata kunci pencarian" maxLength={64} />
+                  <input type="text" name="keyword" onChange={handleChange} id="keyword" className="form-control" placeholder="Masukan kata kunci pencarian" maxLength={64} />
                 </div>
                 <div className="col-sm-6 col-md-2 mb-3">
                   <label className="form-label">
                     Pilih Unit
                   </label>
-                  <select name="unit" id="filter-unit" className="form-select">
+                  <select name="unit" id="filter-unit" className="form-select" onChange={handleChange}>
+                    <option value={``}></option>
                     {unitdata?.map((data) =>
                     (
                       <option value={`${data.id}`}>{data.tingkat}</option>
@@ -111,7 +128,9 @@ const Filterdata = (
                   <label className="form-label">
                     Pilih Kelas
                   </label>
-                  <select name="class_name" id="class-name" className="form-select">
+                  <select name="class_name" id="class-name" className="form-select" onChange={handleChange}>
+                    <option value={``}></option>
+
                     {kelas?.map((data) => {
                       return (
                         <option value={`${data.id}`}>{data.kelas}-{data.tingkat}</option>
@@ -124,7 +143,8 @@ const Filterdata = (
                   <label className="form-label">
                     Tahun Ajaran
                   </label>
-                  <select name="class_year" id="class-year" className="form-select">
+                  <select name="class_year" id="class-year" className="form-select" onChange={handleChange}>
+                    <option value={``}></option>
                     {tahunajaaran?.map((data) => (
                       <option value={data.id} key={data.tahun}>
                         {data.tahun}
@@ -136,8 +156,9 @@ const Filterdata = (
                   <label className="form-label">
                     Status Siswa
                   </label>
-                  <select name="status" id="status" className="form-select">
-                    <option />
+                  <select name="status" id="status" className="form-select" onChange={handleChange}>
+                    <option value={``}></option>
+
                     <option value="A" selected>Aktif</option>
                     <option value="L">Lulus</option>
                     <option value="K">Keluar</option>
@@ -146,10 +167,10 @@ const Filterdata = (
                   </select>
                 </div>
                 <div className="col-12">
-                  <button type="button" id="btn-apply-filter" className="btn btn-primary">
+                  <button type="button" id="btn-apply-filter" onClick={handleFilter} className="btn btn-primary">
                     Terapkan Filter
                   </button>
-                  <button type="button" id="btn-reset-filter" className="btn btn-default ms-2">
+                  <button type="button" id="btn-reset-filter" onClick={handleClear} className="btn btn-default ms-2">
                     Reset Filter
                   </button>
                 </div>

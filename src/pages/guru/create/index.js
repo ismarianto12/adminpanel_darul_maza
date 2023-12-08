@@ -78,7 +78,6 @@ const Index = props => {
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
-
   const onSubmit = data => {
     const config = {
       method: 'post',
@@ -226,9 +225,8 @@ const Index = props => {
 
 
                 </div>
-
               </div>
-              <div className="_stepbackgroundalkdmsaldkma exssubmitform pt-3 form-group mb-4 row" >
+              <div className="pt-3 form-group mb-4 row" >
                 <div className="col-md-12 text-center">
                   <button type="submit" className="btn-block btn btn-success" style={{
                     'width': '40%', 'marginRight': '15px'

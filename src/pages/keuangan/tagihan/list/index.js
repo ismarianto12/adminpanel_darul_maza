@@ -140,10 +140,16 @@ const Index = () => {
   const [divis, setDivisi] = useState([])
   const [datadivisi, setDatadivisi] = useState([])
   const [show, setShow] = useState(false)
-
+  const [kata, setKata] = useState('')
   const [unitdata, setUnitdata] = useState([])
   const [kelas, setKelas] = useState([])
   const [tahunajaaran, setTahunajaran] = useState([])
+  const [payload, setPayload] = useState({
+    unit: '',
+    class_name: '',
+    class_year: '',
+    status: ''
+  })
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 7 })
   function loadServerRows(currentPage, data) {
     return data.slice(currentPage * paginationModel.pageSize, (currentPage + 1) * paginationModel.pageSize)
@@ -214,19 +220,9 @@ const Index = () => {
   const fetchTableData = useCallback(
     async (sort, q, column) => {
       await axios
-        .get(`${process.env.APP_API}pembayaran/list`, {
+        .post(`${process.env.APP_API}pembayaran/list`, payload, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-          }
-        }, {
-          params: {
-            q,
-            sort,
-            column,
-            datadivisi,
-            unitdata,
-            kelas,
-            tahunajaaran,
           }
         })
         .then(res => {
@@ -277,7 +273,6 @@ const Index = () => {
       <Headtitle title="Tagihan Siswa" />
       <Card>
         <Filterdata
-
           divis={divis}
           datadivisi={datadivisi}
           show={show}
@@ -290,6 +285,9 @@ const Index = () => {
           setTahunajaran={setTahunajaran}
           setKelas={setKelas}
           setDivisi={setDivisi}
+          setKata={setKata}
+          payload={payload}
+          setPayload={setPayload}
         />
 
       </Card>

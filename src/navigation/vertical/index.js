@@ -106,7 +106,7 @@ const navigation = () => {
       {
         title: 'E-learning',
         auth: false,
-        icon: 'tabler:document',
+        icon: 'tabler:news',
         children: [
           {
             title: 'Data Absensi',

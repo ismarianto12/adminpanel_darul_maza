@@ -62,7 +62,7 @@ const Action = () => {
     }).then((res) => {
       props.setUnitdata(res.data.data)
     }).catch(err => {
-      Swal.fire('error', err.date.messages, 'error')
+      Swal.fire('error', err, 'error')
     })
   }
   const FKelas = async (props) => {
