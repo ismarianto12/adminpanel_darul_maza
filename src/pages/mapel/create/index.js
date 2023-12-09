@@ -235,7 +235,7 @@ const Index = props => {
                       }
 
                     </select>
-                    {errors.tingkat && <div className="invalid-feedback">Please select a gender.</div>}
+                    {errors.kelas && <div className="invalid-feedback">Please select a kelas.</div>}
                   </div>
 
 
@@ -256,8 +256,7 @@ const Index = props => {
                   }}>Batal</button>
                 </div>
               </div>
-              {/* <Comodal handleClose={handleClose} show={show} setConfirm={setConfirm} /> */}
-            </form>
+             </form>
 
           </Box>
         </CardContent>

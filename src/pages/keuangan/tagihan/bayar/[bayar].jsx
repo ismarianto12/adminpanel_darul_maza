@@ -55,9 +55,9 @@ const Bayar = (props) => {
     formState: { errors }
   } = useForm({
     defaultValues: {
-      title: '', //data?.title,
-      seotitle: '', // data?.seotitle,
-      active: '' // data?.active,
+      title: '',
+      seotitle: '',
+      active: ''
     },
     mode: 'onChange',
     resolver: yupResolver(schema)
@@ -80,15 +80,20 @@ const Bayar = (props) => {
     }
 
     CallSiswa()
-    callTagihan()
-
+    // callTagihan()
   }, [])
 
   useEffect(() => {
+    const unit_id = route?.query.unit_id
+  console
+
     const jenisTagihan = async () => {
-      axios.get(`${process.env.APP_API}parameterbiaya/list`, {
+      axios.get(`${process.env.APP_API}pembayaran/getJenistagihan`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        },
+        params: {
+          unit_id: unit_id
         }
       },).then((data) => {
         setJenisTagihan(data.data)
@@ -98,8 +103,6 @@ const Bayar = (props) => {
     }
     jenisTagihan()
   }, [])
-
-
 
   const callTagihan = async () => {
     // console.log(props.id, 'detail id')
@@ -150,6 +153,7 @@ const Bayar = (props) => {
       }
     }).then(data => {
       Swal.fire('success', 'berhasil menambahkan data tagihan siswa', 'success')
+      route.push('/keuangan/tagihan/list')
     }).catch(err => {
       console.info(err)
       Swal.fire('gagal', err?.response?.data?.msg, 'error')
@@ -177,8 +181,6 @@ const Bayar = (props) => {
                 <div className="col-md-6">
                   <div className="form-group mb-4">
                     <label>Jenis Tagihan</label>
-
-
                     <select
                       className={`form-control ${errors.jenis_tagihan ? 'is-invalid' : ''}`}
                       id="jenis_tagihan"
@@ -209,8 +211,7 @@ const Bayar = (props) => {
                         <option value={`${key}`}>{value}</option>
                       ))}
                     </select>
-                    {errors.type_pembayaran && <div className="invalid-feedback">This field is required.</div>}
-
+                    {errors.type_pembayaran && <div className="invalid-feedback">Type Pembayaran is required.</div>}
                   </div>
 
 
