@@ -174,7 +174,8 @@ const Index = () => {
   }
 
   return (
-    <>
+    <div data-aos="slide-left">
+
       <Headtitle title="List Data Presensi" />
 
       <Filterdata
@@ -193,6 +194,7 @@ const Index = () => {
         setKata={setKata}
         payload={payload}
         setPayload={setPayload}
+        urlparameter={'/absensi/list'}
       />
       <Card>
         <CardHeader title={
@@ -310,7 +312,7 @@ const Index = () => {
           }}
         />
       </Card>
-    </>
+    </div>
   )
 }
 

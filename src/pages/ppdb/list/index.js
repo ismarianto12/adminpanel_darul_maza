@@ -294,7 +294,8 @@ const List = () => {
     fetchTableData(sort, value, sortColumn)
   }
   return (
-    <>
+    <div data-aos="slide-left">
+
       <Head>
         <title>Master - PPDB</title>
       </Head>
@@ -569,7 +570,7 @@ const List = () => {
           }}
         />
       </Card >
-    </>
+    </div>
   )
 }
 

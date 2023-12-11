@@ -54,6 +54,8 @@ import 'src/iconify-bundle/icons-bundle-react'
 import 'bootstrap/dist/css/bootstrap.css'
 
 // ** Global css styles
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import '../../styles/globals.css'
 const clientSideEmotionCache = createEmotionCache()
 
@@ -80,6 +82,12 @@ const App = props => {
 
 
   useEffect(() => {
+    AOS.init({
+      easing: 'ease-out-cubic',
+      once: true,
+      offset: 50,
+      delay: 50,
+    });
     const handleStorageChange = (event) => {
       if (event.key === 'userData' && event.oldValue !== event.newValue) {
         localStorage.clear()

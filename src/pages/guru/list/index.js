@@ -63,6 +63,7 @@ const RowOptions = ({ id, onDeleteSuccess }) => {
 
   return (
     <>
+
       <IconButton size='small' onClick={handleRowOptionsClick}>
         <Icon icon='tabler:dots-vertical' />
       </IconButton>
@@ -179,7 +180,8 @@ const Index = () => {
   }
 
   return (
-    <>
+    <div data-aos="slide-left">
+
       <Headtitle title="List Data pegawai" />
 
 
@@ -307,7 +309,7 @@ const Index = () => {
           }}
         />
       </Card>
-    </>
+    </div>
   )
 }
 

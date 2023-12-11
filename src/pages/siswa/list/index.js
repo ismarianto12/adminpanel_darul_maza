@@ -325,7 +325,8 @@ const Siswa = () => {
 
   }
   return (
-    <>
+    <div data-aos="slide-left">
+
       <Head>
         <title>Master - Siswa</title>
       </Head>
@@ -447,7 +448,7 @@ const Siswa = () => {
           }}
         />
       </Card>
-    </>
+    </div>
   )
 }
 

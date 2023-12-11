@@ -261,7 +261,8 @@ const Index = () => {
 
 
   return (
-    <>
+    <div data-aos="slide-left">
+
       <Headtitle title="Tagihan Siswa" />
       <Card>
         <Filterdata
@@ -280,6 +281,7 @@ const Index = () => {
           setKata={setKata}
           payload={payload}
           setPayload={setPayload}
+          urlparameter={'/keuangan/tagihan/list'}
         />
 
       </Card>
@@ -426,7 +428,7 @@ const Index = () => {
           }}
         />
       </Card>
-    </>
+    </div>
   )
 }
 

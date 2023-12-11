@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import axios from 'axios'
+import { useRouter } from 'next/router'
+
 import {
   GetUnit,
   GetTahunAkademik,
@@ -24,12 +26,11 @@ const Filterdata = (
     setDivisi,
     setKata,
     payload,
-    setPayload
+    setPayload,
+    urlparameter
   }
 ) => {
-
-
-
+  const route = useRouter()
   useEffect(() => {
 
     const GetUnit = async (props) => {
@@ -76,12 +77,20 @@ const Filterdata = (
 
 
   const handleClear = () => {
+    // route.push(`${urlparameter}`)
+
+    // setPayload({
+    //   unit: '',
+    //   class_name: '',
+    //   class_year: '',
+    //   status: ''
+    // })
+    const queryiput = document.querySelector('value')
     setPayload({
-      unit: '',
-      class_name: '',
-      class_year: '',
-      status: ''
-    })
+      ...payload,
+      [queryiput]: ''
+    });
+
   }
   const handleChange = (e) => {
     setPayload({
@@ -170,7 +179,7 @@ const Filterdata = (
                   <button type="button" id="btn-apply-filter" onClick={handleFilter} className="btn btn-primary">
                     Terapkan Filter
                   </button>
-                  <button type="button" id="btn-reset-filter" onClick={handleClear} className="btn btn-default ms-2">
+                  <button type="reset" id="btn-reset-filter" className="btn btn-default ms-2">
                     Reset Filter
                   </button>
                 </div>

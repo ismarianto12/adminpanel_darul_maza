@@ -204,7 +204,8 @@ const Category = () => {
   }
 
   return (
-    <>
+    <div data-aos="slide-left">
+
 
       <Card>
         <div className="accordion mb-3">
@@ -365,7 +366,7 @@ const Category = () => {
           }}
         />
       </Card>
-    </>
+    </div>
   )
 }
 

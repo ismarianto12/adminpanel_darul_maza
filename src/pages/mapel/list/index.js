@@ -1,8 +1,5 @@
-// ** React Imports
 import { useEffect, useState, useCallback } from 'react'
 import Grid from '@mui/material/Grid'
-
-// ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
@@ -148,20 +145,10 @@ const Index = () => {
           }
         })
         .then(res => {
-          console.log(res.data[0], 'response server')
-          setTotal(res.data.length)
-
-
-          // const
+          setLoading(false)
           const search = q.toLowerCase()
-          const resdata = res.data.data
-          // console.log(resdata, 'passing data')
-
-          const filteredData = res.data.filter(galery => (
-            galery.kelas?.toLowerCase().includes(search) || galery.kode?.toLowerCase().includes(search) || galery.mapel?.toLowerCase().includes(search)
-          ))
-
-          setRows(loadServerRows(paginationModel.page, filteredData))
+          setTotal(res.data.total)
+          setRows(res.data.data)
         }).finally(() => {
           setLoading(false)
         })
@@ -202,79 +189,80 @@ const Index = () => {
   }
 
   return (
-    <>
-      <Headtitle title="List Data pegawai" />
+    <div data-aos="slide-left">
+      <Headtitle title="List Mata Pelajaran." />
+      <Card>
+        <div className="accordion mb-3">
+          <div className="accordion-item">
+            <div className="accordion-header">
+              <h2 className="accordion-button" data-bs-toggle="collapse" data-bs-target="#tab-filter" aria-expanded="true" style={{ cursor: 'pointer' }} onClick={() => setShow((show) => !show)}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-filter" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M5.5 5h13a1 1 0 0 1 .5 1.5l-5 5.5l0 7l-4 -3l0 -4l-5 -5.5a1 1 0 0 1 .5 -1.5" />
+                </svg>
+                Filter Data
+              </h2>
+            </div>
+            <div id="tab-filter" className={`accordion-collapse collapse ${show ? '' : 'show'}`} style={{}}>
+              <div className="accordion-body pt-0">
+                <form id="filter-form" action="javascript:void(0)">
+                  <div className="row">
 
-      <div className="accordion mb-3">
-        <div className="accordion-item">
-          <div className="accordion-header">
-            <h2 className="accordion-button" data-bs-toggle="collapse" data-bs-target="#tab-filter" aria-expanded="true" style={{ cursor: 'pointer' }} onClick={() => setShow((show) => !show)}>
-              <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-filter" width={24} height={24} viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M5.5 5h13a1 1 0 0 1 .5 1.5l-5 5.5l0 7l-4 -3l0 -4l-5 -5.5a1 1 0 0 1 .5 -1.5" />
-              </svg>
-              Filter Data
-            </h2>
-          </div>
-          <div id="tab-filter" className={`accordion-collapse collapse ${show ? '' : 'show'}`} style={{}}>
-            <div className="accordion-body pt-0">
-              <form id="filter-form" action="javascript:void(0)">
-                <div className="row">
+                    <div className="col-sm-6 col-md-4 mb-3">
+                      <label className="form-label">
+                        Pilih Unit
+                      </label>
+                      <select name="unit" id="filter-unit" className="form-select">
+                        {unitdata?.map((data) => {
+                          return (
+                            <option value={`${data.id}`}>{data.unit}</option>
+                          )
+                        }
+                        )}
+                      </select>
+                    </div>
+                    <div className="col-sm-6 col-md-4 mb-3">
+                      <label className="form-label">
+                        Pilih Kelas
+                      </label>
+                      <select name="class_name" id="class-name" className="form-select">
+                        {kelas?.map((data) => {
+                          return (
+                            <option value=""></option>
+                          )
+                        }
+                        )}
+                      </select>
+                    </div>
+                    <div className="col-sm-6 col-md-4 mb-4">
+                      <label className="form-label">
+                        Tahun Ajaran
+                      </label>
+                      <select name="class_year" id="class-year" className="form-select">
+                        {tahunajaaran?.map((data) => {
+                          return (
+                            <option value={data.id} key={data.id}>{data.tahun}</option>
+                          )
+                        }
+                        )}
+                      </select>
+                    </div>
 
-                  <div className="col-sm-6 col-md-4 mb-3">
-                    <label className="form-label">
-                      Pilih Unit
-                    </label>
-                    <select name="unit" id="filter-unit" className="form-select">
-                      {unitdata?.map((data) => {
-                        return (
-                          <option value={`${data.id}`}>{data.unit}</option>
-                        )
-                      }
-                      )}
-                    </select>
+                    <div className="col-12">
+                      <button type="button" id="btn-apply-filter" className="btn btn-primary">
+                        Terapkan Filter
+                      </button>
+                      <button type="button" id="btn-reset-filter" className="btn btn-default ms-2">
+                        Reset Filter
+                      </button>
+                    </div>
                   </div>
-                  <div className="col-sm-6 col-md-4 mb-3">
-                    <label className="form-label">
-                      Pilih Kelas
-                    </label>
-                    <select name="class_name" id="class-name" className="form-select">
-                      {kelas?.map((data) => {
-                        return (
-                          <option value=""></option>
-                        )
-                      }
-                      )}
-                    </select>
-                  </div>
-                  <div className="col-sm-6 col-md-4 mb-4">
-                    <label className="form-label">
-                      Tahun Ajaran
-                    </label>
-                    <select name="class_year" id="class-year" className="form-select">
-                      {tahunajaaran?.map((data) => {
-                        return (
-                          <option value={data.id} key={data.id}>{data.tahun}</option>
-                        )
-                      }
-                      )}
-                    </select>
-                  </div>
-
-                  <div className="col-12">
-                    <button type="button" id="btn-apply-filter" className="btn btn-primary">
-                      Terapkan Filter
-                    </button>
-                    <button type="button" id="btn-reset-filter" className="btn btn-default ms-2">
-                      Reset Filter
-                    </button>
-                  </div>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </Card>
       <br /><br />
       <Card>
         <CardHeader title={
@@ -405,7 +393,7 @@ const Index = () => {
           }}
         />
       </Card>
-    </>
+    </div>
   )
 }
 

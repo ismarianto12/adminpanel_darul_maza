@@ -318,6 +318,7 @@ const Kelas = () => {
   };
 
   return (
+    <div data-aos="slide-left">
     <Card>
       <div style={{ 'display': 'inline' }}>
         <Headtitle title="Master Keuangan" />
@@ -623,7 +624,8 @@ const Kelas = () => {
           }
         }}
       />
-    </Card >
+    </Card>
+    </div>
   )
 }
 

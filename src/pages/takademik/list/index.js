@@ -172,126 +172,128 @@ const Tahunakademik = () => {
   }
 
   return (
-    <Card>
-      <Headtitle title="Master Tahun akademik" />
-      <CardHeader title={
-        (<>
-          <Icon fontSize='1.25rem' icon='tabler:Tahunakademik' />
-          {`Master Tahunakademik`}
-        </>)
-      } />
+    <div data-aos="slide-left">
+      <Card>
+        <Headtitle title="Master Tahun akademik" />
+        <CardHeader title={
+          (<>
+            <Icon fontSize='1.25rem' icon='tabler:Tahunakademik' />
+            {`Master Tahunakademik`}
+          </>)
+        } />
 
 
 
-      <Comheader
-        value={searchValue}
-        handleFilter={handleSearch}
+        <Comheader
+          value={searchValue}
+          handleFilter={handleSearch}
 
-      />
+        />
 
 
-      <Alert type={'info'} sx={{ 'padding': '10px' }}>Untuk tahun akademik hanya ada satu yang aktif</Alert>
-      <form>
+        <Alert type={'info'} sx={{ 'padding': '10px' }}>Untuk tahun akademik hanya ada satu yang aktif</Alert>
+        <form>
 
-      </form>
-      <DataGrid
-        autoHeight
-        pagination
-        rows={rows}
-        rowCount={total}
-        columns={
-          [
+        </form>
+        <DataGrid
+          autoHeight
+          pagination
+          rows={rows}
+          rowCount={total}
+          columns={
+            [
 
-            {
-              flex: 0.25,
-              minWidth: 290,
-              field: 'id',
-              headerName: 'No',
-              renderCell: ({ row }) => {
-                if (row.id === null) {
-                  return (<b>Kosong</b>)
-                } else {
-                  return row.id
+              {
+                flex: 0.25,
+                minWidth: 290,
+                field: 'id',
+                headerName: 'No',
+                renderCell: ({ row }) => {
+                  if (row.id === null) {
+                    return (<b>Kosong</b>)
+                  } else {
+                    return row.id
+                  }
                 }
-              }
-            },
-            {
-              flex: 0.25,
-              minWidth: 290,
-              field: 'tahun',
-              headerName: 'Tahun',
-              renderCell: ({ row }) => {
-                if (row.tahun === null) {
-                  return (<b>Kosong</b>)
-                } else {
-                  return (<IconButton size='small'>
-                    {row.tahun}
-                    <Icon icon='tabler:year' />
-                  </IconButton>)
+              },
+              {
+                flex: 0.25,
+                minWidth: 290,
+                field: 'tahun',
+                headerName: 'Tahun',
+                renderCell: ({ row }) => {
+                  if (row.tahun === null) {
+                    return (<b>Kosong</b>)
+                  } else {
+                    return (<IconButton size='small'>
+                      {row.tahun}
+                      <Icon icon='tabler:year' />
+                    </IconButton>)
+                  }
                 }
-              }
-            },
-            {
-              flex: 0.25,
-              minWidth: 290,
-              field: 'created_at',
-              headerName: 'Created at',
-              renderCell: ({ row }) => {
-                if (row?.created_at === null || row?.created_at === undefined) {
-                  return (<b>Kosong</b>)
-                } else {
-                  return row.created_at
+              },
+              {
+                flex: 0.25,
+                minWidth: 290,
+                field: 'created_at',
+                headerName: 'Created at',
+                renderCell: ({ row }) => {
+                  if (row?.created_at === null || row?.created_at === undefined) {
+                    return (<b>Kosong</b>)
+                  } else {
+                    return row.created_at
+                  }
                 }
-              }
-            },
-            {
-              flex: 0.25,
-              field: 'active',
-              headerName: 'active',
-              renderCell: ({ row }) => {
-                if (row?.active === null || row?.active === undefined) {
-                  return (<b>Unactive</b>)
-                } else {
-                  return row.active === '1' ? 'Active' : 'Unactive'
+              },
+              {
+                flex: 0.25,
+                field: 'active',
+                headerName: 'active',
+                renderCell: ({ row }) => {
+                  if (row?.active === null || row?.active === undefined) {
+                    return (<b>Unactive</b>)
+                  } else {
+                    return row.active === '1' ? 'Active' : 'Unactive'
+                  }
                 }
+              },
+              {
+                flex: 0.25,
+                field: 'Semester',
+                headerName: 'Semester'
+              },
+              {
+                flex: 0.1,
+                minWidth: 100,
+                sortable: false,
+                field: 'actions',
+                headerName: 'Actions',
+                renderCell: ({ row }) => <RowOptions id={row.id} setLoading={setLoading} />
               }
-            },
-            {
-              flex: 0.25,
-              field: 'Semester',
-              headerName: 'Semester'
-            },
-            {
-              flex: 0.1,
-              minWidth: 100,
-              sortable: false,
-              field: 'actions',
-              headerName: 'Actions',
-              renderCell: ({ row }) => <RowOptions id={row.id} setLoading={setLoading} />
-            }
-          ]
-        }
-        loading={loading}
-        checkboxSelection
-        sortingMode='server'
-        paginationMode='server'
-        pageSizeOptions={[7, 10, 25, 50]}
-        paginationModel={paginationModel}
-        onSortModelChange={handleSortModel}
-        onPaginationModelChange={setPaginationModel}
-        slotProps={{
-          baseButton: {
-            size: 'medium',
-            variant: 'tonal'
-          },
-          toolbar: {
-            value: searchValue,
-            clearSearch: () => handleSearch(''),
-            onChange: event => handleSearch(event.target.value)
+            ]
           }
-        }}
-      />
-    </Card>
+          loading={loading}
+          checkboxSelection
+          sortingMode='server'
+          paginationMode='server'
+          pageSizeOptions={[7, 10, 25, 50]}
+          paginationModel={paginationModel}
+          onSortModelChange={handleSortModel}
+          onPaginationModelChange={setPaginationModel}
+          slotProps={{
+            baseButton: {
+              size: 'medium',
+              variant: 'tonal'
+            },
+            toolbar: {
+              value: searchValue,
+              clearSearch: () => handleSearch(''),
+              onChange: event => handleSearch(event.target.value)
+            }
+          }}
+        />
+      </Card>
+    </div>
   )
 }
 
