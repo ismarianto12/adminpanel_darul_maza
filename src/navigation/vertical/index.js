@@ -143,6 +143,11 @@ const navigation = () => {
             auth: false,
           },
           {
+            title: 'Berita',
+            path: '/news',
+            auth: false,
+          },
+          {
             title: 'GALERY',
             path: '/galery/list',
             auth: false,

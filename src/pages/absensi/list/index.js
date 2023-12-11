@@ -81,26 +81,13 @@ const RowOptions = ({ id, onDeleteSuccess }) => {
       >
         <MenuItem
           component={Link}
-          sx={{ '& svg': { mr: 2 } }}
-          href={`/absensi/edit/${id}`}
-          onClick={handleRowOptionsClose}
-        >
-          <Icon icon='tabler:eye' fontSize={20} />
-          {`View`}
-        </MenuItem>
-        <MenuItem
-          component={Link}
           onClick={handleRowOptionsClose}
           href={`/absensi/edit/${id}`}
           sx={{ '& svg': { mr: 2 } }}>
           <Icon icon='tabler:edit' fontSize={20} />
-          {`Edit`}
+          {`Status Presensi`}
         </MenuItem>
-        <MenuItem onClick={() => handleDelete(id)}
-          sx={{ '& svg': { mr: 2 } }}>
-          <Icon icon='tabler:trash' fontSize={20} />
-          {`Delete`}
-        </MenuItem>
+
       </Menu>
     </>
   )
@@ -157,10 +144,11 @@ const Index = () => {
           }
         })
         .then(res => {
-          setTotal(res.data.data.length)
           const search = q.toLowerCase()
+          setTotal(res.data.data.length)
           setRows(res.data.data)
-        }).finally(() => {
+          setLoading(false)
+        }).catch((err) => {
           setLoading(false)
         })
     },
@@ -177,7 +165,7 @@ const Index = () => {
       fetchTableData(newModel[0].sort, searchValue, newModel[0].field)
     } else {
       setSort('asc')
-      setSortColumn('title')
+      setSortColumn('nama')
     }
   }
   const handleSearch = value => {
@@ -190,22 +178,22 @@ const Index = () => {
       <Headtitle title="List Data Presensi" />
 
       <Filterdata
-          divis={divis}
-          datadivisi={datadivisi}
-          show={show}
-          unitdata={unitdata}
-          kelas={kelas}
-          tahunajaaran={tahunajaaran}
-          handleFilter={handleFilter}
-          setShow={setShow}
-          setUnitdata={setUnitdata}
-          setTahunajaran={setTahunajaran}
-          setKelas={setKelas}
-          setDivisi={setDivisi}
-          setKata={setKata}
-          payload={payload}
-          setPayload={setPayload}
-        />
+        divis={divis}
+        datadivisi={datadivisi}
+        show={show}
+        unitdata={unitdata}
+        kelas={kelas}
+        tahunajaaran={tahunajaaran}
+        handleFilter={handleFilter}
+        setShow={setShow}
+        setUnitdata={setUnitdata}
+        setTahunajaran={setTahunajaran}
+        setKelas={setKelas}
+        setDivisi={setDivisi}
+        setKata={setKata}
+        payload={payload}
+        setPayload={setPayload}
+      />
       <Card>
         <CardHeader title={
           (<>
@@ -253,28 +241,22 @@ const Index = () => {
               },
               {
                 flex: 0.25,
-                minWidth: 290,
-                field: 'email',
-                headerName: 'Email'
+                minWidth: 150,
+                field: 'kelas',
+                headerName: 'Kelas',
+                renderCell: ({ row }) => {
+                  if (row.kelas) {
+                    return (<b>{row.kelas}</b>)
+                  } else {
+                    return 'Kosong'
+                  }
+                }
 
               },
               {
                 flex: 0.25,
                 minWidth: 290,
-                field: 'create_at',
-                headerName: 'created at ',
-                renderCell: ({ row }) => {
-                  if (row.created_at === null) {
-                    return (<b>Kosong</b>)
-                  } else {
-                    return row.created_at
-                  }
-                }
-              },
-              {
-                flex: 0.25,
-                minWidth: 290,
-                field: 'update_at',
+                field: 'date_created',
                 headerName: 'udataed at',
                 renderCell: ({ row }) => {
                   if (row.updated_at === null) {
