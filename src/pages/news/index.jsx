@@ -389,7 +389,7 @@ const News = () => {
 
                     return <img src={`${process.env.ASSETS_API}/files/${row.picture}`} style={{ width: '100%' }}
                       onError={(e) => {
-                        e.target.src = '/admin/404.png';
+                        e.target.src = '/404.jpeg';
                         e.target.style.width = '100%';
                       }}
                     />
