@@ -5,13 +5,14 @@ import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
 import { useRouter } from 'next/router'
 import CustomTextField from 'src/@core/components/mui/text-field'
 import InputAdornment from '@mui/material/InputAdornment'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm, Controller } from 'react-hook-form'
-
+import { getUserlogin } from 'src/@core/utils/encp'
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
 
@@ -46,11 +47,9 @@ const Header = styled(Box)(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  // deskripsiId: yup.string().required(),
-  // deskripsiEn: yup.string().required(),
-  // title: yup.string().required(),
-  // id_album: yup.string().required(),
-  // gambar: yup.string().required(),
+  gambar1: yup.string().required("Gambar 1 Harap di upload"),
+  gambar2: yup.string().required("Gambar 2 Harap di upload")
+
 })
 
 const defaultValues = {
@@ -69,13 +68,35 @@ const Index = props => {
   const [deskripsiEn, setDeskripsiEn] = useState('')
   const [deskripsiId, setDeskripsiId] = useState('')
 
-  const dispatch = useDispatch()
-  const store = useSelector(state => state.user)
+  const [fileupload1, setFileupload1] = useState('');
+  const [fileupload2, setFileupload2] = useState('');
+  const [fileupload3, setFileupload3] = useState('');
+  const [fileupload4, setFileupload4] = useState('');
+  const [fileupload5, setFileupload5] = useState('');
+  const [fileupload6, setFileupload6] = useState('');
+  const [fileupload7, setFileupload7] = useState('');
+  const [fileupload8, setFileupload8] = useState('');
+  const [fileupload9, setFileupload9] = useState('');
+  const [fileupload10, setFileupload10] = useState('');
+
+
+  const [file1, setFile1] = useState('');
+  const [file2, setFile2] = useState('');
+  const [file3, setFile3] = useState('');
+  const [file4, setFile4] = useState('');
+  const [file5, setFile5] = useState('');
+  const [file6, setFile6] = useState('');
+  const [file7, setFile7] = useState('');
+  const [file8, setFile8] = useState('');
+  const [file9, setFile9] = useState('');
+  const [file10, setFile10] = useState('');
+
   const {
     reset,
     control,
     setValue,
     setError,
+    trigger,
     handleSubmit,
     formState: { errors }
   } = useForm({
@@ -92,16 +113,30 @@ const Index = props => {
   const onSubmit = async (data) => {
     try {
 
+      Swal.fire('Saving data please wait')
+      Swal.showLoading();
+
       const formData = new FormData();
       const user_id = getUserlogin('id')
       const level = getUserlogin('role')
 
-      formData.append('title', data.title);
-      formData.append('deskripsiId', deskripsiId);
-      formData.append('deskripsiEn', deskripsiEn);
-      formData.append('id_album', data.id_album);
-      formData.append('user_id', user_id);
-      formData.append('level', level);
+      formData.append('title', data.title)
+      formData.append('deskripsiId', deskripsiId)
+      formData.append('deskripsiEn', deskripsiEn)
+      formData.append('id_album', data.id_album)
+      formData.append('user_id', user_id)
+      formData.append('level', level)
+
+      formData.append("fileupload[]", fileupload1)
+      formData.append("fileupload[]", fileupload2)
+      formData.append("fileupload[]", fileupload3)
+      formData.append("fileupload[]", fileupload4)
+      formData.append("fileupload[]", fileupload5)
+      formData.append("fileupload[]", fileupload6)
+      formData.append("fileupload[]", fileupload7)
+      formData.append("fileupload[]", fileupload8)
+      formData.append("fileupload[]", fileupload9)
+      formData.append("fileupload[]", fileupload10)
 
       if (data.gambar[0]) {
         formData.append('gambar', fileupload);
@@ -115,8 +150,9 @@ const Index = props => {
         route.push('/galery/list')
       })
     } catch (error) {
+      Swal.fire('error', error.response.data.message, 'error');
       if (error.response) {
-        Swal.fire('error', error.message, 'error');
+
         console.error('Server responded with:', error.response.status);
         console.error('Response data:', error.response.data);
       } else if (error.request) {
@@ -126,22 +162,119 @@ const Index = props => {
       }
     }
   }
-  const uploadFile = (e) => {
+  const uploadFile1 = (e) => {
+    trigger('file')
     const allowedExtensions = ['jpg', 'jpeg', 'png', 'bmp'];
     const fileExtension = e.target.files[0]?.name.split('.').pop().toLowerCase();
     if (allowedExtensions.includes(fileExtension)) {
-      setFile(URL.createObjectURL(e.target.files[0]));
-      setFileupload(e.target.files[0])
+      setFile1(URL.createObjectURL(e.target.files[0]));
+      setFileupload1(e.target.files[0])
     } else {
       toast.error("Erro silahkan koreksi , File yang di izinkan adalah png jpg dan bmp")
     }
   }
+
+  const uploadFile2 = (e) => {
+    trigger('file')
+
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'bmp'];
+    const fileExtension = e.target.files[0]?.name.split('.').pop().toLowerCase();
+    if (allowedExtensions.includes(fileExtension)) {
+      setFile2(URL.createObjectURL(e.target.files[0]));
+      setFileupload2(e.target.files[0])
+    } else {
+      toast.error("Erro silahkan koreksi , File yang di izinkan adalah png jpg dan bmp")
+    }
+  }
+
+  const uploadFile3 = (e) => {
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'bmp'];
+    const fileExtension = e.target.files[0]?.name.split('.').pop().toLowerCase();
+    if (allowedExtensions.includes(fileExtension)) {
+      setFile3(URL.createObjectURL(e.target.files[0]));
+      setFileupload3(e.target.files[0])
+    } else {
+      toast.error("Erro silahkan koreksi , File yang di izinkan adalah png jpg dan bmp")
+    }
+  }
+  const uploadFile4 = (e) => {
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'bmp'];
+    const fileExtension = e.target.files[0]?.name.split('.').pop().toLowerCase();
+    if (allowedExtensions.includes(fileExtension)) {
+      setFile4(URL.createObjectURL(e.target.files[0]));
+      setFileupload4(e.target.files[0])
+    } else {
+      toast.error("Erro silahkan koreksi , File yang di izinkan adalah png jpg dan bmp")
+    }
+  }
+  const uploadFile5 = (e) => {
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'bmp'];
+    const fileExtension = e.target.files[0]?.name.split('.').pop().toLowerCase();
+    if (allowedExtensions.includes(fileExtension)) {
+      setFile5(URL.createObjectURL(e.target.files[0]));
+      setFileupload5(e.target.files[0])
+    } else {
+      toast.error("Erro silahkan koreksi , File yang di izinkan adalah png jpg dan bmp")
+    }
+  }
+  const uploadFile6 = (e) => {
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'bmp'];
+    const fileExtension = e.target.files[0]?.name.split('.').pop().toLowerCase();
+    if (allowedExtensions.includes(fileExtension)) {
+      setFile6(URL.createObjectURL(e.target.files[0]));
+      setFileupload6(e.target.files[0])
+    } else {
+      toast.error("Erro silahkan koreksi , File yang di izinkan adalah png jpg dan bmp")
+    }
+  }
+  const uploadFile7 = (e) => {
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'bmp'];
+    const fileExtension = e.target.files[0]?.name.split('.').pop().toLowerCase();
+    if (allowedExtensions.includes(fileExtension)) {
+      setFile7(URL.createObjectURL(e.target.files[0]));
+      setFileupload7(e.target.files[0])
+    } else {
+      toast.error("Erro silahkan koreksi , File yang di izinkan adalah png jpg dan bmp")
+    }
+  }
+  const uploadFile8 = (e) => {
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'bmp'];
+    const fileExtension = e.target.files[0]?.name.split('.').pop().toLowerCase();
+    if (allowedExtensions.includes(fileExtension)) {
+      setFile8(URL.createObjectURL(e.target.files[0]));
+      setFileupload8(e.target.files[0])
+    } else {
+      toast.error("Erro silahkan koreksi , File yang di izinkan adalah png jpg dan bmp")
+    }
+  }
+  const uploadFile9 = (e) => {
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'bmp'];
+    const fileExtension = e.target.files[0]?.name.split('.').pop().toLowerCase();
+    if (allowedExtensions.includes(fileExtension)) {
+      setFile9(URL.createObjectURL(e.target.files[0]));
+      setFileupload9(e.target.files[0])
+    } else {
+      toast.error("Erro silahkan koreksi , File yang di izinkan adalah png jpg dan bmp")
+    }
+  }
+  const uploadFile10 = (e) => {
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'bmp'];
+    const fileExtension = e.target.files[0]?.name.split('.').pop().toLowerCase();
+    if (allowedExtensions.includes(fileExtension)) {
+      setFile10(URL.createObjectURL(e.target.files[0]));
+      setFileupload10(e.target.files[0])
+    } else {
+      toast.error("Erro silahkan koreksi , File yang di izinkan adalah png jpg dan bmp")
+    }
+  }
+
+
   const handleClose = () => {
     route.push('/galery/list');
   }
 
   return (
-    <>
+    <div data-aos="slide-left">
       <Headtitle title={'List galery'} />
       <Card>
         <CardContent>
@@ -234,39 +367,276 @@ const Index = props => {
                 )}
               />
               <br /><br />
-              <Controller
-                name='gambar'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    type='file'
-                    label='Gambar'
-                    value={value}
-                    sx={{ mb: 4 }}
-                    onChange={(e) => {
-                      onChange(e)
-                      uploadFile(e)
-                    }}
-                    error={Boolean(errors.gambar)}
-                    placeholder='Gambar'
-                    {...(errors.gambar && { helperText: errors.gambar.message })}
+              <br />
+              <Grid container spacing={2}>
+
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='gambar1'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        type='file'
+                        label='Gambar'
+                        value={value}
+                        sx={{ mb: 4 }}
+                        onChange={(e) => {
+                          onChange(e)
+                          uploadFile1(e)
+                        }}
+                        error={Boolean(errors.gambar1)}
+                        placeholder='Gambar'
+                        {...(errors.gambar1 && { helperText: errors.gambar1.message })}
+                      />
+                    )}
                   />
-                )}
-              />
+                  <img src={file1} style={{
+                    'width': '50%'
+                  }} />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='gambar2'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        type='file'
+                        label='Gambar'
+                        value={value}
+                        sx={{ mb: 4 }}
+                        onChange={(e) => {
+                          onChange(e)
+                          uploadFile2(e)
+                        }}
+                        error={Boolean(errors.gambar2)}
+                        placeholder='Gambar'
+                        {...(errors.gambar2 && { helperText: errors.gambar2.message })}
+                      />
+                    )}
+                  />
+                  <img src={file2} style={{
+                    'width': '50%'
+                  }} />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='gambar3'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        type='file'
+                        label='Gambar'
+                        value={value}
+                        sx={{ mb: 4 }}
+                        onChange={(e) => {
+                          onChange(e)
+                          uploadFile3(e)
+                        }}
+                        error={Boolean(errors.gambar)}
+                        placeholder='Gambar'
+                        {...(errors.gambar && { helperText: errors.gambar.message })}
+                      />
+                    )}
+                  />
+                  <img src={file3} style={{
+                    'width': '50%'
+                  }} />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='gambar4'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        type='file'
+                        label='Gambar'
+                        value={value}
+                        sx={{ mb: 4 }}
+                        onChange={(e) => {
+                          onChange(e)
+                          uploadFile4(e)
+                        }}
+                        error={Boolean(errors.gambar)}
+                        placeholder='Gambar'
+                        {...(errors.gambar && { helperText: errors.gambar.message })}
+                      />
+                    )}
+                  />
+                  <img src={file4} style={{
+                    'width': '50%'
+                  }} />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='gambar5'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        type='file'
+                        label='Gambar'
+                        value={value}
+                        sx={{ mb: 4 }}
+                        onChange={(e) => {
+                          onChange(e)
+                          uploadFile5(e)
+                        }}
+                        error={Boolean(errors.gambar)}
+                        placeholder='Gambar'
+                        {...(errors.gambar && { helperText: errors.gambar.message })}
+                      />
+                    )}
+                  /> <img src={file5} style={{
+                    'width': '50%'
+                  }} />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='gambar6'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        type='file'
+                        label='Gambar'
+                        value={value}
+                        sx={{ mb: 4 }}
+                        onChange={(e) => {
+                          onChange(e)
+                          uploadFile6(e)
+                        }}
+                        error={Boolean(errors.gambar)}
+                        placeholder='Gambar'
+                        {...(errors.gambar && { helperText: errors.gambar.message })}
+                      />
+                    )}
+                  />
+                  <img src={file6} style={{
+                    'width': '50%'
+                  }} />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='gambar7'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        type='file'
+                        label='Gambar'
+                        value={value}
+                        sx={{ mb: 4 }}
+                        onChange={(e) => {
+                          onChange(e)
+                          uploadFile7(e)
+                        }}
+                        error={Boolean(errors.gambar)}
+                        placeholder='Gambar'
+                        {...(errors.gambar && { helperText: errors.gambar.message })}
+                      />
+                    )}
+                  />
+                  <img src={file7} style={{
+                    'width': '50%'
+                  }} />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='gambar8'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        type='file'
+                        label='Gambar'
+                        value={value}
+                        sx={{ mb: 4 }}
+                        onChange={(e) => {
+                          onChange(e)
+                          uploadFile8(e)
+                        }}
+                        error={Boolean(errors.gambar)}
+                        placeholder='Gambar'
+                        {...(errors.gambar && { helperText: errors.gambar.message })}
+                      />
+                    )}
+                  />
+                  <img src={file8} style={{
+                    'width': '50%'
+                  }} />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='gambar9'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        type='file'
+                        label='Gambar'
+                        value={value}
+                        sx={{ mb: 4 }}
+                        onChange={(e) => {
+                          onChange(e)
+                          uploadFile9(e)
+                        }}
+                        error={Boolean(errors.gambar)}
+                        placeholder='Gambar'
+                        {...(errors.gambar && { helperText: errors.gambar.message })}
+                      />
+                    )}
+                  />
+                  <img src={file9} style={{
+                    'width': '50%'
+                  }} />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Controller
+                    name='gambar10'
+                    control={control}
+                    rules={{ required: true }}
+                    render={({ field: { value, onChange } }) => (
+                      <CustomTextField
+                        fullWidth
+                        type='file'
+                        label='Gambar'
+                        value={value}
+                        sx={{ mb: 4 }}
+                        onChange={(e) => {
+                          onChange(e)
+                          uploadFile10(e)
+                        }}
+                        error={Boolean(errors.gambar)}
+                        placeholder='Gambar'
+                        {...(errors.gambar && { helperText: errors.gambar.message })}
+                      />
+                    )}
+                  />
+                  <img src={file10} style={{
+                    'width': '50%'
+                  }} />
+                </Grid>
+              </Grid>
               <br /><br />
-
-              <img src={file} style={{
-                'width': '50%'
-              }} />
-
               <br /> <br />
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Button type='submit' variant='contained' sx={{ mr: 3, 'width': '50%' }}>
+                <Button type='submit' variant='contained' color='success' sx={{ mr: 3, 'width': '50%' }}><Icon icon='tabler:device-floppy' />
                   Save
                 </Button>
-                <Button variant='tonal' color='secondary' onClick={handleClose} sx={{ mr: 3, 'width': '50%' }}>
+                <Button variant='tonal' color='warning' onClick={handleClose} sx={{ mr: 3, 'width': '50%' }}>
                   Cancel
                 </Button>
               </Box>
@@ -274,7 +644,7 @@ const Index = props => {
           </Box>
         </CardContent>
       </Card>
-    </>
+    </div>
   )
 }
 

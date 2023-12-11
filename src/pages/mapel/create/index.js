@@ -256,7 +256,7 @@ const Index = props => {
                   }}>Batal</button>
                 </div>
               </div>
-             </form>
+            </form>
 
           </Box>
         </CardContent>

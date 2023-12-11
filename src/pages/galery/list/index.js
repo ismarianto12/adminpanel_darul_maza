@@ -43,7 +43,7 @@ const RowOptions = ({ id, onDeleteSuccess, setLoading }) => {
       }
     })
       .then((response) => {
-        toast.success('Data Galery Berhasil di hapus')
+        toast.success('Data Kategory Berhasil di hapus')
         onDeleteSuccess()
       })
       .catch(error => {
@@ -79,7 +79,7 @@ const RowOptions = ({ id, onDeleteSuccess, setLoading }) => {
         }}
         PaperProps={{ style: { minWidth: '8rem' } }}
       >
-        <MenuItem
+        {/* <MenuItem
           component={Link}
           sx={{ '& svg': { mr: 2 } }}
           href={`/galery/edit/${id}`}
@@ -87,8 +87,9 @@ const RowOptions = ({ id, onDeleteSuccess, setLoading }) => {
         >
           <Icon icon='tabler:eye' fontSize={20} />
           {`View`}
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem
+          component={Link}
           onClick={handleRowOptionsClose}
           href={`/galery/edit/${id}`}
           sx={{ '& svg': { mr: 2 } }}>
@@ -107,7 +108,7 @@ const RowOptions = ({ id, onDeleteSuccess, setLoading }) => {
 
 const Galery = () => {
   const [total, setTotal] = useState(0)
-  const [sort, setSort] = useState('asc')
+  const [sort, setSort] = useState('desc')
   const [rows, setRows] = useState([])
   const [searchValue, setSearchValue] = useState('')
   const [sortColumn, setSortColumn] = useState('title')
@@ -126,7 +127,11 @@ const Galery = () => {
     async (sort, q, column) => {
       setLoading(true)
       await axios
-        .get('/admin/api/galeri/all', {
+        .get(`${process.env.APP_API}galery/list`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          }
+        }, {
           params: {
             q,
             sort,
@@ -174,7 +179,7 @@ const Galery = () => {
   }, []);
 
   return (
-    <Card>
+    <Card data-aos="slide-left">
       <Headtitle title="Master Galery" />
       <CardHeader title={
         (<>
@@ -198,17 +203,8 @@ const Galery = () => {
         columns={
           [
             {
-              flex: 0.2,
-              field: 'id',
-              minWidth: 100,
-              headerName: '#NO',
-              renderCell: (params) => {
-                return (params.id)
-              }
-            },
-            {
-              flex: 0.25,
-              minWidth: 290,
+              flex: 1,
+              minWidth: 250,
               field: 'title',
               headerName: 'Judul',
               renderCell: ({ row }) => {
@@ -222,29 +218,33 @@ const Galery = () => {
             },
             {
               flex: 0.25,
-              minWidth: 290,
+              minWidth: 168,
               field: 'albumtitle',
               headerName: 'albumtitle',
               renderCell: ({ row }) => {
-                if (row.albumtitle === null) {
-                  return (<b>Kosong</b>)
-                } else {
+                if (row.albumtitle) {
                   return row.albumtitle
+                } else {
+                  return (<b>Kosong</b>)
+
                 }
               }
             },
             {
               flex: 0.25,
-              minWidth: 290,
+              minWidth: 168,
+
               field: 'gambar',
               headerName: 'Gambar',
               renderCell: ({ row }) => {
+                const dataArrayImage = row?.images?.length > 0 ? row?.images?.split('\r\n') : [];
+
                 if (row.gambar === null) {
                   return (<b>Kosong</b>)
                 } else {
-                  return (<img src={`${process.env.ASSETS_API}/public/galery/${row.gambar}`} style={{ 'width': '100%' }}
+                  return (<img src={`https://www.mncsekuritas.id/po-content/po-upload/${dataArrayImage}`} style={{ 'width': '100%' }}
                     onError={(e) => {
-                      e.target.src = '/logo_maza.png'; // Replace with your fallback image URL
+                      e.target.src = 'https://www.mncsekuritas.id/po-content/mnc/img/logo_new1.png?1'; // Replace with your fallback image URL
                       e.target.style.width = '100%'; // Set width for the fallback image
                     }}
 
@@ -254,26 +254,63 @@ const Galery = () => {
               }
             },
             {
-              flex: 0.25,
-              minWidth: 290,
-              field: 'create_at',
-              headerName: 'created at '
-            },
-            {
-              flex: 0.25,
-              minWidth: 290,
-              field: 'update_at',
-              headerName: 'udataed at'
-            },
-            {
-              flex: 0.25,
-              minWidth: 290,
-              field: 'user id',
-              headerName: 'User id'
+              flex: 1,
+              field: 'created_on',
+              minWidth: 168,
+
+              headerName: 'created On',
+              renderCell: ({ row }) => {
+                if (row.created_on) {
+                  return (row.created_on)
+                } else {
+                  return 'Data Kosong'
+                }
+              }
             },
 
             {
-              flex: 0.1,
+              flex: 1,
+              field: 'created_by',
+              minWidth: 168,
+              headerName: 'Created By',
+              renderCell: ({ row }) => {
+                if (row.created_by) {
+                  return row.created_by
+                } else {
+                  return (<b>Kosong</b>)
+                }
+              }
+            },
+            {
+              flex: 1,
+              field: 'updated_on',
+              minWidth: 168,
+
+              headerName: 'Updated on',
+              renderCell: ({ row }) => {
+                if (row.updated_on) {
+                  return (row.updated_on)
+                } else {
+                  return 'Data Kosong'
+                }
+              }
+            },
+            {
+              flex: 1,
+              field: 'updated_by',
+              minWidth: 168,
+
+              headerName: 'Updated By',
+              renderCell: ({ row }) => {
+                if (row.updated_by) {
+                  return row.updated_by
+                } else {
+                  return (<b>Kosong</b>)
+                }
+              }
+            },
+            {
+              flex: 0.20,
               minWidth: 100,
               sortable: false,
               field: 'actions',

@@ -1,13 +1,14 @@
 // ** React Imports
 import { useEffect, useState, useCallback } from 'react'
 
-// ** MUI Imports
+import Divider from '@mui/material/Divider'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
 import { DataGrid } from '@mui/x-data-grid'
 import toast from 'react-hot-toast'
+
 import Comheader from 'src/@core/components/Comheader'
 import axios from 'axios'
 import Link from 'next/link'
@@ -29,6 +30,10 @@ import Grid from '@mui/material/Grid'
 import Swal from 'sweetalert2'
 import { getUserlogin } from 'src/@core/utils/encp'
 import Action from 'src/@core/utils/action'
+import CustomTextField from 'src/@core/components/mui/text-field'
+import CardContent from '@mui/material/CardContent'
+import { useRouter } from 'next/router'
+
 const RowOptions = ({ id, onDeleteSuccess }) => {
 
   const [anchorEl, setAnchorEl] = useState(null)
@@ -93,21 +98,14 @@ const RowOptions = ({ id, onDeleteSuccess }) => {
           horizontal: 'right'
         }}
         transformOrigin={{
-          vertical: 'top',
+          vertical: 'bottom',
           horizontal: 'right'
         }}
         PaperProps={{ style: { minWidth: '8rem' } }}
       >
+
         <MenuItem
           component={Link}
-          sx={{ '& svg': { mr: 2 } }}
-          href={`/news/edit/${id}`}
-          onClick={handleRowOptionsClose}
-        >
-          <Icon icon='tabler:eye' fontSize={20} />
-          {`View`}
-        </MenuItem>
-        <MenuItem
           href={`/news/edit/${id}`}
           onClick={handleRowOptionsClose}
           sx={{ '& svg': { mr: 2 } }}>
@@ -128,14 +126,16 @@ const RowOptions = ({ id, onDeleteSuccess }) => {
 const News = () => {
   const [loading, setLoading] = useState(true)
   const [total, setTotal] = useState(0)
-  const [sort, setSort] = useState('asc')
+  const route = useRouter();
+  const [sort, setSort] = useState('desc')
   const [rows, setRows] = useState([])
   const [searchValue, setSearchValue] = useState('')
   const [value, setValue] = useState('')
   const [sortColumn, setSortColumn] = useState('title')
-  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 7 })
+  const [filter, setFilter] = useState('35')
+  const [paginationModel, setPaginationModel] = useState({ page: 1, pageSize: 7 })
   function loadServerRows(currentPage, data) {
-    console.log(currentPage * paginationModel.pageSize, (currentPage + 1) * paginationModel.pageSize, 'page')
+    console.log(data, 'slice data');
     return data.slice(currentPage * paginationModel.pageSize, (currentPage + 1) * paginationModel.pageSize)
   }
 
@@ -144,7 +144,7 @@ const News = () => {
   };
 
   const fetchTableData = useCallback(
-    async (sort, q, column) => {
+    async (sort, q, filter, column) => {
       setLoading(true)
       const level = {
         level: getUserlogin('role'),
@@ -153,12 +153,15 @@ const News = () => {
       await axios
         .post(`${process.env.APP_API}artikel/list`,
           {
+            parameter_id: 'artikel',
             level: getUserlogin('role'),
             user_id: getUserlogin('id'),
             page: paginationModel.page,
-            q,
+            q: value,
+            filter,
             sort,
             column
+
           },
           {
             headers: {
@@ -167,32 +170,25 @@ const News = () => {
           },)
         .then(res => {
 
-          const getdata = res?.data?.data
-          setTotal(getdata.length)
+          const getdata = res?.data?.data?.data
+          const total = res?.data?.data.total
+          setTotal(total)
           const search = q?.toLowerCase()
-          console.log(search, 'status search action after event listner')
-          if (search === null || search === undefined) {
-            const filteredData = getdata
-            setRows(loadServerRows(paginationModel.page, filteredData))
+          const filteredData = getdata
+          setRows(filteredData)
 
-          } else {
-            const filteredData = getdata.filter(posts => (
-              posts.title?.toLowerCase().includes(search) || posts.judul?.toLowerCase().includes(search) || posts.content?.toLowerCase().includes(search) || posts.isi?.toLowerCase().includes(search)
-            ))
-            setRows(loadServerRows(paginationModel.page, filteredData))
-          }
         }).finally(() => {
           setLoading(false)
         })
     },
-    [paginationModel]
+    [value, paginationModel]
   )
   // const dispatch = useDispatch()
   // const store = useSelector(state => state.post)
 
   useEffect(() => {
-    fetchTableData(sort, searchValue, sortColumn)
-  }, [fetchTableData, searchValue, sort, sortColumn])
+    fetchTableData(sort, searchValue, filter, sortColumn)
+  }, [fetchTableData, searchValue, sort, filter, sortColumn])
   const handleSortModel = newModel => {
     if (newModel.length) {
       setSort(newModel[0].sort)
@@ -206,25 +202,24 @@ const News = () => {
   const handleSearch = value => {
     setLoading(true)
     setSearchValue(value)
-    fetchTableData(sort, value, sortColumn)
+    fetchTableData(sort, value, filter, sortColumn)
   }
-
-
   const handleNextPage = () => {
-    // Increment the page number and call fetchTableData with the updated paginationModel
     const nextPage = paginationModel.page + 1;
     setPaginationModel({ ...paginationModel, page: nextPage });
-    fetchTableData(sort, searchValue, sortColumn, nextPage);
+    // fetchTableData(sort, searchValue, sortColumn, nextPage);
   };
 
-  const handleFilter = useCallback(val => {
+  const handleFilter = (val) => {
+    console.log(val, 'detail value')
     setValue(val)
-  }, [])
+    fetchTableData(sort, searchValue, filter, sortColumn)
+  }
 
   const confirmActive = (param, artikel_id) => {
     Swal.fire({
       title: 'Anda yakin?',
-      text: param === 'N' ? 'Non Aktifkan berita' : 'Aktifkan Berita yang dipilih.',
+      text: param === 'N' ? 'Non Aktifkan Berita' : 'Aktifkan Berita yang dipilih.',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -233,17 +228,34 @@ const News = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         Action().activenewsNews(param, artikel_id)
-        onDeleteSuccess(sort, searchValue, sortColumn)
+        fetchTableData(sort, searchValue, filter, sortColumn)
       }
     })
   }
+
+  const handlePageSizeChange = (newPageSize) => {
+    // You can access the new page size here
+    console.log(`New page size: ${newPageSize}`);
+
+    // You can update your state or perform any other action with the new page size
+    // For example, set it in a state variable
+    // setPageSize(newPageSize);
+  };
+
+  const filterNews = (a) => {
+    setFilter(a)
+    const filterdata = a
+    fetchTableData(sort, searchValue, filterdata, sortColumn)
+
+  }
+
   return (
-    <>
-      <Headtitle title={`Artikel`} />
+    <div>
+      <Headtitle title={`Artikel & News Update`} />
       <CardHeader title={
         (<>
           <Icon fontSize='1.25rem' icon='tabler:news' />
-          {`Master Artikel`}
+          {`Artikel & News Update`}
 
         </>)
       } />
@@ -251,43 +263,97 @@ const News = () => {
         <Grid item xs={12} sm={4}>
           <CardStatsHorizontalWithDetails
             stats={`${total}`}
-            // trend='negative'
+            trend='negative'
             title='Total data'
             avatarColor='success'
-            icon='tabler:document-check'
-          // subtitle='Last week analytics'
+            icon='tabler:report-analytics'
+          // subtitle=''
           />
         </Grid>
         <Grid item xs={12} sm={4}>
           <CardStatsHorizontalWithDetails
             stats={rows.length}
-            // trend='negative'
-            title='Artikel active'
+            trend='negative'
+            title='Artikel Perpage'
             avatarColor='success'
             icon='tabler:list-check'
-          // subtitle='Last week analytics'
+          // subtitle=''
           />
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <CardStatsHorizontalWithDetails
-            stats='19,860'
-            // trend='negative'
-            title='Hits Artikel'
-            avatarColor='success'
-            icon='tabler:user-check'
-          // subtitle='Last week analytics'
-          />
-        </Grid>
+
       </Grid>
       <br /><br />
 
       <Card>
-        <Comheader
-          value={searchValue}
+        <CardContent>
+          <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
 
-          handleFilter={handleSearch}
-          url={`/news/create`}
-        />
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={4} style={{ 'marginTop': '15px' }}>
+
+
+                <Button variant='contained' sx={{ '& svg': { mr: 2 } }}
+                  onClick={() =>
+                    route.push('/news/create')
+                  }
+                >
+                  <Icon fontSize='1.125rem' icon='tabler:plus' />
+                  Tambah
+                </Button>
+
+              </Grid>
+              <Grid item xs={12} sm={4} style={{ 'marginTop': '15px' }}>
+
+                <CustomTextField
+                  select
+                  fullWidth
+                  SelectProps={{
+                    displayEmpty: true,
+                    onChange: e => filterNews(e.target.value)
+                  }}
+                >
+                  <MenuItem key={0} value={null}>
+                    --Semua data--
+                  </MenuItem>
+                  <MenuItem value="36">
+                    Press Release
+                  </MenuItem>
+                  <MenuItem value="35">
+                    News Update
+                  </MenuItem>
+
+                </CustomTextField>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <Box
+                  sx={{
+                    py: 4,
+                    px: 6,
+                    rowGap: 2,
+                    columnGap: 12,
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <CustomTextField
+                    value={value}
+                    sx={{ mr: 8 }}
+                    placeholder='Search Data'
+                    onChange={e => handleFilter(e.target.value)}
+                  />
+
+                </Box>
+              </Grid>
+
+            </Grid>
+          </Box>
+        </CardContent>
+        <Divider sx={{ m: '0 !important' }} />
+
+
+
         <DataGrid
           autoHeight
           pagination
@@ -300,122 +366,117 @@ const News = () => {
             [
 
               {
-                flex: 0.25,
+                flex: 1,
                 minWidth: 290,
                 field: 'formatted_title',
-                headerName: 'Judul'
-              },
-              {
-                flex: 0.125,
-                field: 'picture',
-                minWidth: 290,
-                headerName: 'Picture',
+                headerName: 'Judul',
                 renderCell: ({ row }) => {
-                  <img src={`${process.env.ASSETS_API}/files/${row.picture}`} style={{ width: '100%' }}
-                    onError={(e) => {
-                      e.target.src = '/logo_new1.png';
-                      e.target.style.width = '100%';
-                    }}
-                  />
-
-                }
-              },
-              {
-                // flex: 0.25,
-                field: 'active',
-                headerName: 'active',
-                renderCell: ({ row }) => {
-                  if (row.active === 'Y') {
-                    return (<b>Active</b>)
+                  if (row.formatted_title) {
+                    return row.formatted_title
                   } else {
                     return 'Un Active'
                   }
                 }
               },
               {
-                flex: 0.25,
-                field: 'created_at',
-                headerName: 'created at '
-              },
-              {
-                flex: 0.25,
-                field: 'updated_at',
-                headerName: 'udataed at'
-              },
-              {
-                flex: 0.25,
-                field: 'user_id',
-                headerName: 'User id',
+                flex: 2,
+                field: 'picture',
+                minWidth: 230,
+                height: 230,
+                headerName: 'Picture',
                 renderCell: ({ row }) => {
-                  if (row.user_id) {
-                    return row.user_id
+                  if (row.picture) {
+
+                    return <img src={`${process.env.ASSETS_API}/files/${row.picture}`} style={{ width: '100%' }}
+                      onError={(e) => {
+                        e.target.src = '/admin/404.png';
+                        e.target.style.width = '100%';
+                      }}
+                    />
                   } else {
-                    return (<b>Kosong</b>)
+                    return 'data kosong'
                   }
+
                 }
-
               },
-              getUserlogin('role') === '1' ?
-                {
+              {
+                flex: 1.8,
+                minWidth: 100,
 
-                  flex: 0.25,
-                  field: 'status',
-                  headerName: 'Status',
-                  renderCell: ({ row }) => {
+                field: 'active',
+                headerName: 'active',
+                renderCell: ({ row }) => {
+                  if (getUserlogin('role') === '1') {
+
                     if (row.active === 'N') {
-                      return <Button
-                        variant='contained' sx={{
-                          'background': 'red',
-                          'padding': '3px 3px', // Sesuaikan dengan ukuran yang Anda inginkan
-                        }}
+                      return <Button variant='tonal' color='warning'
                         onClick={() =>
                           confirmActive('Y', row.id)
                         }
                       >
-                        <Icon fontSize='20px' icon='tabler:list' />
+                        <Icon fontSize='10px' icon='tabler:list' />
                       </Button>
 
                     } else {
-                      return <Button variant='contained' sx={{
-                        'background': 'green',
-                        'padding': '3px 3px', // Sesuaikan dengan ukuran yang Anda inginkan
-                      }}
+                      return <Button variant='tonal' color='success'
                         onClick={() =>
                           confirmActive('N', row.id)
                         }
                       >
-                        <Icon fontSize='20px' icon='tabler:check' />
+                        <Icon fontSize='10px' icon='tabler:check' />
 
                       </Button>
 
                     }
-                  }
-
-                } :
-                {
 
 
-                  flex: 0.25,
-                  field: 'status',
-                  headerName: 'Status',
-                  renderCell: ({ row }) => {
-                    if (row.active === 'N') {
-                      return 'Non Active'
-                    } else {
+                  } else {
+
+                    if (row.active === 'Y') {
                       return (<b>Active</b>)
+                    } else {
+                      return 'Un Active'
                     }
                   }
-
-                },
+                }
+              },
               {
-                flex: 0.1,
+                flex: 2.5,
+                minWidth: 290,
+                field: 'date',
+                headerName: 'created On'
+              },
+
+              {
+                flex: 1,
+                minWidth: 250,
                 sortable: false,
-                field: 'actions',
+                field: 'created_by',
+                headerName: 'Created By'
+              },
+              {
+                flex: 2.5,
+                minWidth: 168,
+                field: 'updated_on',
+                headerName: 'Update On'
+              },
+              {
+                flex: 2.5,
+                minWidth: 168,
+
+                sortable: false,
+                field: 'updated_by',
+                headerName: 'Update By'
+              },
+              {
+                flex: 1,
+                minWidth: 100,
+                sortable: false,
+                field: 'id',
                 headerName: 'Actions',
                 renderCell: ({ row }) => <RowOptions id={row.id} onDeleteSuccess={onDeleteSuccess} />
               }
             ]
-
           }
           checkboxSelection
           sortingMode='server'
@@ -423,8 +484,12 @@ const News = () => {
           pageSizeOptions={[7, 10, 25, 50]}
           paginationModel={paginationModel}
           onSortModelChange={handleSortModel}
-          // slots={{ toolbar: ServerSideToolbar }}
           onPaginationModelChange={setPaginationModel}
+          onPageSizeChange={(newPageSize) => {
+            console.log('ada', newPageSize)
+
+            handlePageSizeChange(newPageSize)
+          }}
           slotProps={{
             baseButton: {
               size: 'medium',
@@ -439,8 +504,8 @@ const News = () => {
           loading={loading}
 
         />
-      </Card >
-    </>
+      </Card>
+    </div >
   )
 }
 

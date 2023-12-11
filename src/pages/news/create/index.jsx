@@ -69,8 +69,8 @@ const schema = yup.object().shape({
   // content: yup.string().required(),
   // isi: yup.string().required(),
   // tags: yup.string().required(),
-  publish: yup.string().required(),
-  // picture: yup.string().required(),
+  // publish: yup.string().required(),
+  picture: yup.string().required(),
 })
 
 const defaultValues = {
@@ -95,6 +95,7 @@ const Index = props => {
   const [contenin, setContentIn] = useState('')
   const [contening, setContentIng] = useState('')
   const [file, setFile] = useState('')
+  const [category, setCategory] = useState('')
   const dispatch = useDispatch()
   const store = useSelector(state => state.user)
   useEffect(() => {
@@ -121,6 +122,7 @@ const Index = props => {
     setValue,
     setError,
     handleSubmit,
+    trigger,
     formState: { errors }
   } = useForm({
     defaultValues,
@@ -131,7 +133,7 @@ const Index = props => {
 
   const onSubmit = async (data) => {
 
-    if (contenin === '' && contening == '') {
+    if (contenin === '' && contening === '') {
       Swal.fire({
         title: 'Error!',
         text: 'Silahkan isi konten berita dalam bahasa inggris dan indonesia',
@@ -188,8 +190,11 @@ const Index = props => {
     }
   }
 
-  const uploadFile = (e) => {
-    const allowedExtensions = ['jpg', 'jpeg', 'png', 'bmp'];
+  const uploadFile = async (e) => {
+    const valid = await trigger("file");
+
+
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'bmp', 'pdf', 'word', 'ppt'];
     const fileExtension = e.target.files[0]?.name.split('.').pop().toLowerCase();
     if (allowedExtensions.includes(fileExtension)) {
       setFile(URL.createObjectURL(e.target.files[0]));
@@ -202,7 +207,7 @@ const Index = props => {
     route.push('/news');
   }
   return (
-    <>
+    <div>
       <Headtitle title="Tambah Berita" />
 
       <Card>
@@ -372,16 +377,16 @@ const Index = props => {
                       <CustomTextField
                         fullWidth
                         type='file'
-                        label='Gambar'
+                        label={category === 35 ? `Gambar` : `Document PDF:`}
                         sx={{ mb: 4 }}
                         onChange={(e) => {
                           onChange(e)
                           uploadFile(e)
                         }
                         }
-                        error={Boolean(errors.gambar)}
+                        error={Boolean(errors.picture)}
                         placeholder='Gambar'
-                        {...(errors.gambar && { helperText: errors.gambar.message })}
+                        {...(errors.picture && { helperText: errors.picture.message })}
                       />
                     )}
                   />
@@ -394,13 +399,19 @@ const Index = props => {
                     render={({ field: { value, onChange } }) => (
                       <CustomTextField select fullWidth label='Kategory Berita :' id='form-layouts-tabs-select'
                         value={value}
-                        onChange={onChange}
+                        onChange={(e) => {
+                          console.log(e.target.value)
+
+                          onChange(e),
+                            setCategory(e.target.value)
+                        }
+                        }
                         error={Boolean(errors.id_category)}
                         placeholder='Category'
                         {...(errors.id_category && { helperText: errors.id_category.message })}
                       >
                         {data.map((category) => (
-                          <MenuItem key={category.id} value={category.id}>
+                          <MenuItem key={category.id_category} value={category.id_category}>
                             {category.title}
                           </MenuItem>
                         ))}
@@ -417,10 +428,10 @@ const Index = props => {
 
 
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Button type='submit' variant='contained' sx={{ mr: 3, width: '50%' }}>
-                  Save
+                <Button type='submit' variant='contained' color='success' sx={{ mr: 3, width: '50%' }}>
+                  <Icon icon='tabler:device-floppy' />Save
                 </Button>
-                <Button variant='tonal' color='secondary' sx={{ mr: 3, width: '50%' }} onClick={handleClose}>
+                <Button variant='tonal' color='warning' sx={{ mr: 3, width: '50%' }} onClick={handleClose}>
                   Cancel
                 </Button>
               </Box>
@@ -429,7 +440,7 @@ const Index = props => {
         </CardContent>
       </Card>
       <Preloading show={loading} />
-    </>
+    </div>
   )
 }
 

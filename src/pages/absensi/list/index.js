@@ -14,6 +14,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import axios from 'axios'
 import CustomChip from 'src/@core/components/mui/chip'
 import CustomAvatar from 'src/@core/components/mui/avatar'
+import Filterdata from 'src/@core/components/Filterdata'
 
 import { getInitials } from 'src/@core/utils/get-initials'
 import Icon from 'src/@core/components/icon'
@@ -81,7 +82,7 @@ const RowOptions = ({ id, onDeleteSuccess }) => {
         <MenuItem
           component={Link}
           sx={{ '& svg': { mr: 2 } }}
-          href={`/promo/edit/${id}`}
+          href={`/absensi/edit/${id}`}
           onClick={handleRowOptionsClose}
         >
           <Icon icon='tabler:eye' fontSize={20} />
@@ -90,7 +91,7 @@ const RowOptions = ({ id, onDeleteSuccess }) => {
         <MenuItem
           component={Link}
           onClick={handleRowOptionsClose}
-          href={`/promo/edit/${id}`}
+          href={`/absensi/edit/${id}`}
           sx={{ '& svg': { mr: 2 } }}>
           <Icon icon='tabler:edit' fontSize={20} />
           {`Edit`}
@@ -115,6 +116,25 @@ const Index = () => {
   const [status, setStatus] = useState('')
   const [loading, setLoading] = useState(true)
 
+  const [divis, setDivisi] = useState([])
+  const [datadivisi, setDatadivisi] = useState([])
+  const [show, setShow] = useState(false)
+  const [kata, setKata] = useState('')
+  const [unitdata, setUnitdata] = useState([])
+  const [kelas, setKelas] = useState([])
+  const [tahunajaaran, setTahunajaran] = useState([])
+  const [payload, setPayload] = useState({
+    unit: '',
+    class_name: '',
+    class_year: '',
+    status: ''
+  })
+
+
+
+  const handleFilter = () => {
+    fetchTableData()
+  }
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 7 })
   function loadServerRows(currentPage, data) {
     return data.slice(currentPage * paginationModel.pageSize, (currentPage + 1) * paginationModel.pageSize)
@@ -137,19 +157,9 @@ const Index = () => {
           }
         })
         .then(res => {
-          console.log(res.data[0], 'response server')
-          setTotal(res.data.length)
-
-
-          // const
+          setTotal(res.data.data.length)
           const search = q.toLowerCase()
-          const resdata = res.data[0]
-
-          const filteredData = res.data.filter(galery => (
-            galery.nama?.toLowerCase().includes(search) || galery.deskripsiId?.toLowerCase().includes(search) || galery.deskripsiEn?.toLowerCase().includes(search)
-          ))
-
-          setRows(loadServerRows(paginationModel.page, filteredData))
+          setRows(res.data.data)
         }).finally(() => {
           setLoading(false)
         })
@@ -178,7 +188,24 @@ const Index = () => {
   return (
     <>
       <Headtitle title="List Data Presensi" />
-      <br /><br />
+
+      <Filterdata
+          divis={divis}
+          datadivisi={datadivisi}
+          show={show}
+          unitdata={unitdata}
+          kelas={kelas}
+          tahunajaaran={tahunajaaran}
+          handleFilter={handleFilter}
+          setShow={setShow}
+          setUnitdata={setUnitdata}
+          setTahunajaran={setTahunajaran}
+          setKelas={setKelas}
+          setDivisi={setDivisi}
+          setKata={setKata}
+          payload={payload}
+          setPayload={setPayload}
+        />
       <Card>
         <CardHeader title={
           (<>
@@ -186,10 +213,9 @@ const Index = () => {
             {`Data Presensi`}
           </>)
         } />
-        <Comheader
-          value={searchValue}
-          handleFilter={handleSearch}
-        />
+
+
+
         <DataGrid
           autoHeight
           pagination

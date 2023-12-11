@@ -1,21 +1,13 @@
 // ** React Imports
 import { useEffect, useState, useCallback } from 'react'
-import Grid from '@mui/material/Grid'
 
-// ** MUI Imports
-import Box from '@mui/material/Box'
 import { Card, Button } from '@mui/material'
-import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
 import IconButton from '@mui/material/IconButton'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import { DataGrid } from '@mui/x-data-grid'
 import axios from 'axios'
-import CustomTextField from 'src/@core/components/mui/text-field'
-import CustomChip from 'src/@core/components/mui/chip'
-import CustomAvatar from 'src/@core/components/mui/avatar'
-// import CardStatsHorizontalWithedits from 'src/@core/components/card-statistics/card-stats-horizontal-with-edits'
 
 
 import { getInitials } from 'src/@core/utils/get-initials'
@@ -179,9 +171,9 @@ const Index = () => {
       judul: "",
       content: "",
       isi: "",
-      tags: "",  //editdata.tags === undefined ? [] : JSON.parse(JSON.stringify(editdata?.tags)),
-      protect: "", //'Y',
-      picture: "" //editdata?.picture,
+      tags: "",
+      protect: "",
+      picture: ""
     },
     mode: 'onChange',
     resolver: yupResolver(schema)

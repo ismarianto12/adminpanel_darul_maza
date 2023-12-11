@@ -47,13 +47,13 @@ const Header = styled(Box)(({ theme }) => ({
 }))
 const schema = yup.object().shape({
   // id_category: yup.string().required(),
-  // title: yup.string().required(),
-  // judul: yup.string().required(),
+  title: yup.string().required("wajib diisi"),
+  judul: yup.string().required("Wajib diisi"),
   // content: yup.string().required(),
   // isi: yup.string().required(),
   // tags: yup.string().required(),
-  // protect: yup.string().required(),
-  // picture: yup.string().required(),
+  active: yup.string().required("Status Publish Wajib diisi"),
+  // picture: yup.string().required(""),
 })
 
 
@@ -109,7 +109,7 @@ const Index = props => {
       content: "",
       isi: "",
       tags: "",  //editdata.tags === undefined ? [] : JSON.parse(JSON.stringify(editdata?.tags)),
-      protect: "", //'Y',
+      active: "", //'Y',
       picture: "" //editdata?.picture,
     },
     mode: 'onChange',
@@ -144,7 +144,6 @@ const Index = props => {
       setLoading(true)
       const formData = new FormData();
 
-      // getUserlogin
       const user_id = getUserlogin('id')
       const level = getUserlogin('role')
 
@@ -197,21 +196,21 @@ const Index = props => {
     }
   }
   const uploadFile = (e) => {
-    const allowedExtensions = ['jpg', 'jpeg', 'png', 'bmp'];
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'bmp', 'pdf', 'word', 'ppt'];
     const fileExtension = e.target.files[0]?.name.split('.').pop().toLowerCase();
     if (allowedExtensions.includes(fileExtension)) {
       setFile(URL.createObjectURL(e.target.files[0]));
       setFileupload(e.target.files[0])
     } else {
-      toast.error("Error silahkan koreksi , File yang di izinkan adalah png jpg dan bmp")
+      toast.error("Error silahkan koreksi , File yang di izinkan adalah jpg, jpeg, png, bmp, pdf, word, ppt")
     }
   }
   const handleClose = () => {
     route.push('/news');
   }
-  console.log(contening, 'detail content')
   return (
-    <>
+    <div>
+
       <Headtitle title="Edit Berita" />
 
       <Card>
@@ -298,7 +297,6 @@ const Index = props => {
                         multiple
                         limitTags={2}
                         defaultValues={tagdata ? tagdata : []}
-                        // value={editdata?.tags === undefined ? value : JSON.parse(editdata?.tags)}
                         options={tagdata ? tagdata : []}
                         id='autocomplete-limit-tags'
                         getOptionLabel={option => option?.tag_title || ''}
@@ -312,16 +310,16 @@ const Index = props => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Controller
-                    name='protect'
+                    name='active'
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
                       <CustomTextField select fullWidth label='Status Berita :' id='form-layouts-tabs-select'
                         value={value}
                         onChange={onChange}
-                        error={Boolean(errors.protect)}
+                        error={Boolean(errors.active)}
                         placeholder='Status Publish:'
-                        {...(errors.protect && { helperText: errors.protect.message })}
+                        {...(errors.active && { helperText: errors.active.message })}
                       >
                         <MenuItem key={``} value={``}>
                           {`Status Publish`}
@@ -401,11 +399,10 @@ const Index = props => {
                         onChange={onChange}
                         error={Boolean(errors.id_category)}
                         placeholder='Category'
-                        defaultValues={editdata?.id_category}
                         {...(errors.id_category && { helperText: errors.id_category.message })}
                       >
                         {data.map((category) => (
-                          <MenuItem key={category.id} value={category.id === editdata.id_category ? editdata.id_category : category.id} key={editdata.id_category}>
+                          <MenuItem key={category.id_category} value={category.id_category}>
                             {category.title}
                           </MenuItem>
                         ))}
@@ -420,7 +417,7 @@ const Index = props => {
                 'width': '50%'
               }}
                 onError={(e) => {
-                  e.target.src = '/logo_maza.png'; // Replace with your fallback image URL
+                  e.target.src = 'https://www.mncsekuritas.id/po-content/mnc/img/logo_new1.png?1'; // Replace with your fallback image URL
                   e.target.style.width = '100%'; // Set width for the fallback image
                 }}
 
@@ -429,10 +426,10 @@ const Index = props => {
 
 
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Button type='submit' variant='contained' sx={{ mr: 3, width: '50%' }}>
+                <Button type='submit' variant='contained' color='success' sx={{ mr: 3, width: '50%' }}>
                   Save
                 </Button>
-                <Button variant='tonal' color='secondary' sx={{ mr: 3, width: '50%' }} onClick={handleClose}>
+                <Button variant='tonal' color='warning' sx={{ mr: 3, width: '50%' }} onClick={handleClose}>
                   Cancel
                 </Button>
               </Box>
@@ -441,7 +438,7 @@ const Index = props => {
         </CardContent>
       </Card>
       <Preloading show={loading} />
-    </>
+    </div>
   )
 }
 
