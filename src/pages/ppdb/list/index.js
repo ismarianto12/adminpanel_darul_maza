@@ -300,7 +300,7 @@ const List = () => {
         <title>Master - PPDB</title>
       </Head>
       <Grid container spacing={6}>
-        <Grid item xs={6} sm={4} lg={3}>
+        <Grid item xs={6} sm={3} lg={3}>
           <CardStatsVertical
             stats={rows.length}
             chipText='-12.2%'
@@ -311,7 +311,7 @@ const List = () => {
             avatarIcon='tabler:currency-dollar'
           />
         </Grid>
-        <Grid item xs={6} sm={4} lg={3}>
+        <Grid item xs={6} sm={3} lg={3}>
           <CardStatsVertical
             stats={rows.length}
             chipText='-12.2%'
@@ -322,7 +322,7 @@ const List = () => {
             avatarIcon='tabler:currency-dollar'
           />
         </Grid>
-        <Grid item xs={6} sm={4} lg={3}>
+        <Grid item xs={6} sm={3} lg={3}>
           <CardStatsVertical
             stats='1.28k'
             chipText='-12.2%'
@@ -333,7 +333,7 @@ const List = () => {
             avatarIcon='tabler:currency-dollar'
           />
         </Grid>
-        <Grid item xs={6} sm={4} lg={3}>
+        <Grid item xs={6} sm={3} lg={3}>
           <CardStatsVertical
             stats='24.67k'
             chipText='+25.2%'
@@ -419,7 +419,8 @@ const List = () => {
                   ))}
                 </CustomTextField>
               </Grid>
-              {/* <Grid item sm={3}>
+              <Grid item xs={12} sm={3}>
+                <br />
                 <Button type='submit' variant='contained' sx={{
                   mr: 3,
                   width: '50%'
@@ -428,15 +429,17 @@ const List = () => {
                 >
                   Cari
                 </Button>
-              </Grid> */}
+              </Grid>
             </Grid>
 
-            <Grid item xs={12} sm={6}>
-              <Comheader addUserOpen={null} setAddUserOpen={null}
-                handleFilter={handleSearch} setAction={''} url={'/ppdb/create'}
-              />
-            </Grid>
           </Box>
+
+          <Comheader
+            value={searchValue}
+            handleFilter={handleSearch}
+            url={`/ppdb/create`}
+          />
+
         </CardContent>
         <DataGrid
           autoHeight
@@ -446,37 +449,42 @@ const List = () => {
           columns={
             [
               {
-                flex: 0.2,
-                field: 'id',
-                minWidth: 100,
+                flex: 1,
+                minWidth: 180,
                 headerName: 'ID',
                 renderCell: ({ row }) => (
                   <Typography href={`/apps/invoice/preview/${row.id}`}>{`#${row.id}`}</Typography>
                 )
               },
               {
-                flex: 0.25,
+                flex: 1,
+                minWidth: 180,
+
                 field: 'date_inv',
                 headerName: 'Tgl & Jam'
               },
               {
-                flex: 0.25,
+                flex: 1,
+                minWidth: 180,
                 field: 'nama',
                 headerName: 'Nama'
               },
               {
-                flex: 0.25,
+                flex: 1,
+                minWidth: 180,
                 field: 'no_telp',
                 headerName: 'Handphone'
               },
               {
-                flex: 0.25,
+                flex: 1,
+                minWidth: 180,
                 field: 'nis',
                 headerName: 'Nis',
               },
 
               {
-                flex: 0.25,
+                flex: 1,
+                minWidth: 180,
                 field: 'jk',
                 headerName: 'JK',
                 renderCell: ({ row }) => {
@@ -488,7 +496,9 @@ const List = () => {
                 }
               },
               {
-                flex: 0.25,
+                flex: 1,
+                minWidth: 180,
+
                 field: 'id_majors',
                 headerName: 'Majors',
                 renderCell: ({ row }) => {
@@ -496,7 +506,8 @@ const List = () => {
                 }
               },
               {
-                flex: 0.25,
+                flex: 1,
+                minWidth: 180,
                 field: 'status',
                 headerName: 'Status',
                 renderCell: ({ row }) => {
@@ -531,12 +542,15 @@ const List = () => {
                 }
               },
               {
-                flex: 0.25,
+                flex: 1,
+                minWidth: 180,
+
                 field: 'username',
                 headerName: 'User id'
               },
               {
-                flex: 0.1,
+                flex: 1,
+                minWidth: 180,
                 sortable: false,
                 field: 'staff_konfirmasi',
                 headerName: 'Actions',

@@ -20,7 +20,7 @@ import Headtitle from 'src/@core/components/Headtitle'
 import toast from 'react-hot-toast'
 import CardStatsVertical from 'src/@core/components/card-statistics/card-stats-vertical'
 import CardStatsHorizontalWithDetails from 'src/@core/components/card-statistics/card-stats-horizontal-with-details'
-import Action from 'src/@core/utils/action'
+import Action from 'src/store/action'
 
 
 
@@ -34,12 +34,12 @@ const Index = () => {
   const [value, setValue] = useState('')
   const [status, setStatus] = useState('')
   const [loading, setLoading] = useState(true)
+  const [tahunajaaran, setTahunajaran] = useState([])
 
   const [unitdata, setUnitdata] = useState([])
   const [kelas, setKelas] = useState([])
-  const [tahunajaaran, setTahunajaran] = useState([])
-
-
+  const [kelas_id, setKelas_id] = useState('')
+  const [tahunakademik, setTahunakademik] = useState([])
 
 
   const RowOptions = ({ id, onDeleteSuccess }) => {
@@ -157,21 +157,41 @@ const Index = () => {
   )
   useEffect(() => {
     fetchTableData(sort, searchValue, sortColumn)
-    const id = 12
-    Action().FUnit({
-      setUnitdata
+
+    const callData = (async () => {
+      const callunit = await Action().callUnit()
+      setUnitdata(callunit)
     })
-    Action().FKelas({
-      setKelas,
-      id
+    const callKelas = (async () => {
+      const restkelas = await Action().callKelas(kelas_id)
+      setKelas(restkelas)
+    })
+
+    const callTahunAkademik = (async () => {
+      const takamdemik = await Action().callTahunakademik()
+      setTahunakademik(takamdemik)
     })
 
 
-    Action().FtahunAkademik({
-      setTahunajaran
-    })
+    callKelas()
+    callData()
+    callTahunAkademik()
 
-  }, [fetchTableData, searchValue, sort, sortColumn, unitdata])
+  }, [searchValue, sort, sortColumn])
+
+
+  const searchKelas = async (e) => {
+    setKelas([])
+    const kelas_id = e.target.value
+    setKelas_id(kelas_id)
+  }
+
+
+  const filterGetData = () => {
+    console.log('console')
+    fetchTableData(sort, value, sortColumn)
+
+  }
 
   const handleSortModel = newModel => {
     if (newModel.length) {
@@ -212,10 +232,14 @@ const Index = () => {
                       <label className="form-label">
                         Pilih Unit
                       </label>
-                      <select name="unit" id="filter-unit" className="form-select">
-                        {unitdata?.map((data) => {
+                      <select name="unit" id="filter-unit" className="form-select"
+
+                        onChange={(e) => searchKelas(e)}
+                      >
+                        <option value={``}>Pilih Unit</option>
+                        {unitdata?.map((data, i) => {
                           return (
-                            <option value={`${data.id}`}>{data.unit}</option>
+                            <option value={`${data.id}`}>{data.tingkat}</option>
                           )
                         }
                         )}
@@ -226,12 +250,13 @@ const Index = () => {
                         Pilih Kelas
                       </label>
                       <select name="class_name" id="class-name" className="form-select">
-                        {kelas?.map((data) => {
-                          return (
-                            <option value=""></option>
-                          )
-                        }
+                        <option value={``}>Pilih Kelas</option>
+
+                        {kelas?.map((data) => (
+                          <option value={`${data.id}`}>{data.kelas}</option>
+                        )
                         )}
+
                       </select>
                     </div>
                     <div className="col-sm-6 col-md-4 mb-4">
@@ -239,7 +264,9 @@ const Index = () => {
                         Tahun Ajaran
                       </label>
                       <select name="class_year" id="class-year" className="form-select">
-                        {tahunajaaran?.map((data) => {
+                        <option value={``}>Pilih Tahun </option>
+
+                        {tahunakademik?.map((data) => {
                           return (
                             <option value={data.id} key={data.id}>{data.tahun}</option>
                           )
@@ -249,10 +276,10 @@ const Index = () => {
                     </div>
 
                     <div className="col-12">
-                      <button type="button" id="btn-apply-filter" className="btn btn-primary">
+                      <button type="button" id="btn-apply-filter" className="btn btn-primary" onClick={filterGetData}>
                         Terapkan Filter
                       </button>
-                      <button type="button" id="btn-reset-filter" className="btn btn-default ms-2">
+                      <button type="reset" id="btn-reset-filter" className="btn btn-default ms-2">
                         Reset Filter
                       </button>
                     </div>
