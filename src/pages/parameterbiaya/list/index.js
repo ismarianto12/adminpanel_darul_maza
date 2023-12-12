@@ -262,7 +262,7 @@ const Category = () => {
                         <option value={``}>Pilih Unit</option>
                         {unitdata?.map((data, i) => {
                           return (
-                            <option value={`${data.id}`}>{data.tingkat}</option>
+                            <option value={`${data?.id}`}>{data?.tingkat}</option>
                           )
                         }
                         )}
@@ -275,8 +275,8 @@ const Category = () => {
                       <select name="class_name" id="class-name" className="form-select">
                         <option value={``}>Pilih Kelas</option>
 
-                        {kelas?.map((data) => (
-                          <option value={`${data.id}`}>{data.kelas}</option>
+                        {kelas?.map((fdata) => (
+                          <option value={`${fdata?.id}`}>{fdata?.kelas}</option>
                         )
                         )}
                       </select>
