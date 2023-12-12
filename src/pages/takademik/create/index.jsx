@@ -50,14 +50,14 @@ const Header = styled(Box)(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  // tahun: yup.string().required(),
-  // Semester: yup.string().required(),
-  // active: yup.string().required()
+  tahun: yup.string().required("Wajib diisi ."),
+  semester: yup.string().required("Wajib diisi ."),
+  active: yup.string().required("Wajib diisi .")
 })
 
 const defaultValues = {
   tahun: '',
-  Semester: '',
+  semester: '',
   active: ''
 }
 
@@ -136,13 +136,13 @@ const Index = props => {
 
   return (
     <>
-      <Headtitle title={'Tambah data download'} />
+      <Headtitle title={'Tambah Tahun akademik'} />
       <Card>
         <CardContent>
           <Header>
             <Typography variant='h5'>
               <Icon icon='tabler:list' />
-              Edit tahun akademik</Typography>
+              Tambah tahun akademik</Typography>
             <IconButton
               size='small'
               onClick={handleClose}

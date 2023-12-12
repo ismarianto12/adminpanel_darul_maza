@@ -202,20 +202,6 @@ const Tahunakademik = () => {
           rowCount={total}
           columns={
             [
-
-              {
-                flex: 0.25,
-                minWidth: 290,
-                field: 'id',
-                headerName: 'No',
-                renderCell: ({ row }) => {
-                  if (row.id === null) {
-                    return (<b>Kosong</b>)
-                  } else {
-                    return row.id
-                  }
-                }
-              },
               {
                 flex: 0.25,
                 minWidth: 290,
@@ -247,6 +233,7 @@ const Tahunakademik = () => {
               },
               {
                 flex: 0.25,
+                minWidth: 290,
                 field: 'active',
                 headerName: 'active',
                 renderCell: ({ row }) => {
@@ -258,7 +245,9 @@ const Tahunakademik = () => {
                 }
               },
               {
-                flex: 0.25,
+                flex: 1,
+                minWidth: 290,
+
                 field: 'Semester',
                 headerName: 'Semester'
               },

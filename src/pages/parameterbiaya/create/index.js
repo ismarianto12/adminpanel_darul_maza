@@ -1,7 +1,4 @@
-// ** React Imports
 import { useState, useEffect } from 'react'
-
-// ** MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Button from '@mui/material/Button'
 import MenuItem from '@mui/material/MenuItem'
@@ -173,7 +170,6 @@ const Index = props => {
                 <Grid item xs={12} sm={6}>
                   <Controller
                     name='nominal'
-                    type="number"
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
@@ -181,6 +177,7 @@ const Index = props => {
                         fullWidth
                         value={value}
                         sx={{ mb: 4 }}
+                        type="number"
                         label=''
                         onChange={onChange}
                         placeholder='Masukan Nominal'

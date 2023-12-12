@@ -179,7 +179,7 @@ const Filterdata = (
                   <button type="button" id="btn-apply-filter" onClick={handleFilter} className="btn btn-primary">
                     Terapkan Filter
                   </button>
-                  <button type="reset" id="btn-reset-filter" className="btn btn-default ms-2">
+                  <button type="reset" id="btn-reset-filter" onClick={handleFilter} className="btn btn-default ms-2">
                     Reset Filter
                   </button>
                 </div>

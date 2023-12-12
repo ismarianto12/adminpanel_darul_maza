@@ -87,33 +87,27 @@ const Comheader = props => {
     // setAction('tambah')
   }
   return (
-    <Box
-      sx={{
-        // py: 4,
-        px: 6,
-        rowGap: 2,
-        // columnGap: 4,
-        display: 'flex',
-        flexWrap: 'wrap',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-      }}
-    >
-      <Box sx={{ rowGap: 2, display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
+    <>
+      <Grid item xs={12} sm={3}>
+
         <CustomTextField
           value={value}
           sx={{ mr: 10 }}
           placeholder='Search'
           onChange={e => handleFilter(e.target.value)}
         />
+      </Grid>
+      <Grid item xs={12} sm={3}>
         <Button variant='contained' sx={{ '& svg': { mr: 2 } }}
           onClick={() => updateAction()}
         >
           <Icon fontSize='1.125rem' icon='tabler:plus' />
           Tambah
         </Button>
-      </Box>
-    </Box>
+      </Grid>
+    </>
+
+
   )
 }
 
@@ -366,7 +360,7 @@ const Siswa = () => {
         <CardContent>
           <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
             <Grid container spacing={4} paddingBottom={10}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={3}>
                 <CustomTextField
                   select
                   fullWidth
@@ -387,7 +381,7 @@ const Siswa = () => {
                 </CustomTextField>
               </Grid>
 
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm={3}>
                 <CustomTextField
                   select
                   fullWidth
@@ -408,11 +402,9 @@ const Siswa = () => {
                 </CustomTextField>
               </Grid>
 
-              <Grid item xs={12} sm={6}>
-                <Comheader addUserOpen={null} setAddUserOpen={null}
-                  handleFilter={handleSearch} setAction={null}
-                />
-              </Grid>
+              <Comheader addUserOpen={null} setAddUserOpen={null}
+                handleFilter={handleSearch} setAction={null}
+              />
             </Grid>
 
           </Box>

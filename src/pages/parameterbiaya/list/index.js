@@ -23,6 +23,7 @@ import Comheader from './Comheader'
 import Headtitle from 'src/@core/components/Headtitle'
 import toast from 'react-hot-toast'
 import { getparamPend } from 'src/@core/utils/encp'
+import Action from 'src/store/action'
 const renderClient = params => {
   const { row } = params
   const stateNum = Math.floor(Math.random() * 6)
@@ -55,6 +56,7 @@ const Category = () => {
   const [show, setShow] = useState(false)
   const [unitdata, setUnitdata] = useState([])
   const [kelas, setKelas] = useState([])
+  const [kelas_id, setKelas_id] = useState('')
 
 
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 7 })
@@ -67,19 +69,22 @@ const Category = () => {
   };
   const fetchTableData = useCallback(
     async (sort, q, column) => {
+
+
       await axios
-        .get(`${process.env.APP_API}parameterbiaya/list`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-          },
-        }, {
-          params: {
+        .post(`${process.env.APP_API}parameterbiaya/list`,
+          {
             q,
             sort,
-            column
+            column,
+            kelas_id: kelas_id,
+            unit_id: kelas_id
+          }, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           }
-
-        })
+        }
+        )
         .then(res => {
           setTotal(res.data.length)
 
@@ -100,12 +105,21 @@ const Category = () => {
   )
   useEffect(() => {
     fetchTableData(sort, searchValue, sortColumn)
-  }, [fetchTableData, searchValue, sort, sortColumn])
-  const RowOptions = ({ id, setLoading }) => {
-    // ** Hooks
-    // const dispatch = useDispatch()
+    const callData = (async () => {
+      const callunit = await Action().callUnit()
+      setUnitdata(callunit)
+    })
+    const callKelas = (async () => {
+      const restkelas = await Action().callKelas(kelas_id)
+      setKelas(restkelas)
+    })
+    callKelas()
+    callData()
+  }, [fetchTableData, searchValue, sort, sortColumn, kelas_id])
 
-    // ** State
+
+
+  const RowOptions = ({ id, setLoading }) => {
     const [anchorEl, setAnchorEl] = useState(null)
     const rowOptionsOpen = Boolean(anchorEl)
 
@@ -118,15 +132,12 @@ const Category = () => {
     }
 
     const DeleteCat = (id) => {
-      axios.delete(`${process.env.APP_API}parameterbiaya/destroy/${id}`, {
+      axios.post(`${process.env.APP_API}parameterbiaya/destroy/${id}`, {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         }
-
       })
         .then(succes => {
-          // onDeleteSuccess()
-          // fetchTableData()
           fetchTableData(sort, searchValue, sortColumn)
           setLoading(true)
           toast.success('Berhasil hapus data')
@@ -134,6 +145,7 @@ const Category = () => {
           setLoading(false)
         });
     }
+
 
     const handleDelete = (id) => {
       DeleteCat(id)
@@ -188,6 +200,12 @@ const Category = () => {
     )
   }
 
+  const searchKelas = async (e) => {
+    setKelas([])
+    const kelas_id = e.target.value
+    setKelas_id(kelas_id)
+  }
+
   const handleSortModel = newModel => {
     if (newModel.length) {
       setSort(newModel[0].sort)
@@ -195,12 +213,16 @@ const Category = () => {
       fetchTableData(newModel[0].sort, searchValue, newModel[0].field)
     } else {
       setSort('asc')
-      setSortColumn('title')
+      setSortColumn('tingkat')
     }
   }
   const handleSearch = value => {
     setSearchValue(value)
     fetchTableData(sort, value, sortColumn)
+  }
+  const searchdata = () => {
+    fetchTableData(sort, searchValue, sortColumn)
+
   }
 
   return (
@@ -229,44 +251,52 @@ const Category = () => {
             </div>
             <div id="tab-filter" className={`accordion-collapse collapse ${show ? '' : 'show'}`} style={{}}>
               <div className="accordion-body pt-0">
-                <form id="filter-form" action="javascript:void(0)">
+                <form id="filter-form" action='#'>
                   <div className="row">
 
-                    <div className="col-sm-6 col-md-6 mb-3">
+                    <div className="col-sm-4 col-md-4 mb-3">
                       <label className="form-label">
                         Pilih Unit
                       </label>
-                      <select name="unit" id="filter-unit" className="form-select">
-                        {unitdata?.map((data) => {
+                      <select name="unit" id="filter-unit" className="form-select"
+
+                        onChange={(e) => searchKelas(e)}
+                      >
+                        <option value={``}>Pilih Unit</option>
+                        {unitdata?.map((data, i) => {
                           return (
-                            <option value=""></option>
+                            <option value={`${data.id}`}>{data.tingkat}</option>
                           )
                         }
                         )}
                       </select>
                     </div>
-                    <div className="col-sm-6 col-md-6 mb-3">
+                    <div className="col-sm-4 col-md-4 mb-3">
                       <label className="form-label">
                         Pilih Kelas
                       </label>
                       <select name="class_name" id="class-name" className="form-select">
-                        {kelas?.map((data) => {
-                          return (
-                            <option value=""></option>
-                          )
-                        }
+                        <option value={``}>Pilih Kelas</option>
+
+                        {kelas?.map((data) => (
+                          <option value={`${data.id}`}>{data.kelas}</option>
+                        )
                         )}
                       </select>
-                    </div>
 
-                    <div className="col-12">
-                      <button type="button" id="btn-apply-filter" className="btn btn-primary">
+                    </div>
+                    <div className="col-sm-4 col-md-4 mt-4">
+
+                      <button type="button" id="btn-apply-filter" className="btn btn-primary" onClick={searchdata}>
                         Terapkan Filter
                       </button>
-                      <button type="button" id="btn-reset-filter" className="btn btn-default ms-2">
+                      &nbsp;&nbsp;
+                      <button type="reset" id="btn-reset-filter" className="btn btn-warning mr-12">
                         Reset Filter
                       </button>
                     </div>
+
+
                   </div>
                 </form>
               </div>
