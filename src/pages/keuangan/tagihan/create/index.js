@@ -278,8 +278,8 @@ const Index = props => {
                     >
                       <option value="">Pilih Kelas</option>
                       {kelas.map((data, i) => {
-                        return (<option value={`${data.id}`}>
-                          {data.kelas} - {data.nama_unit}
+                        return (<option value={`${data?.id}`}>
+                          {data?.kelas} - {data?.nama_unit}
                         </option>)
 
                       })

@@ -93,11 +93,10 @@ const Kelas = () => {
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
-
   const fetchTableData = useCallback(
     async (sort, q, column) => {
       await axios
-        .get(`${process.env.APP_API}reportppdb`, {
+        .get(`${process.env.APP_API}laporan/pembayaran`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
@@ -111,13 +110,9 @@ const Kelas = () => {
           }
         })
         .then(res => {
-          setTotal(res.data.length)
-          const search = q.toLowerCase()
-
-          const filteredData = res.data.filter(galery => (
-            galery.kelas?.toLowerCase().includes(search) || galery.tingkat?.toLowerCase().includes(search)
-          ))
-          setRows(loadServerRows(paginationModel.page, filteredData))
+          setTotal(res.data.total)
+          // const search = q.toLowerCase()
+          setRows(res.data?.data?.data)
         }).finally(() => {
           setLoading(false)
         })
@@ -142,6 +137,11 @@ const Kelas = () => {
     const handleRowOptionsClose = () => {
       setAnchorEl(null)
     }
+
+    const filterByjenjang = () => {
+
+    }
+
 
     const DeleteCat = (id) => {
       axios.delete(`${process.env.APP_API}ppdb/destroy/${id}`, {

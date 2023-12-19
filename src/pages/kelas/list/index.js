@@ -257,14 +257,29 @@ const Kelas = () => {
               flex: 0.25,
               minWidth: 290,
               field: 'created_at',
-              headerName: 'Created at'
+              headerName: 'Created at',
+              renderCell: ({ row }) => {
+                if (row.created_at) {
+                  return row.created_at;
+                } else {
+                  return 'Data Kosong'
+                }
+              }
+
 
             },
             {
               flex: 0.25,
               minWidth: 290,
               field: 'updated_at',
-              headerName: 'Updated at'
+              headerName: 'Updated at',
+              renderCell: ({ row }) => {
+                if (row.updated_at) {
+                  return row.updated_at;
+                } else {
+                  return 'Data Kosong'
+                }
+              }
             },
             {
               flex: 0.1,

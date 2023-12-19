@@ -127,7 +127,7 @@ const Identiti = props => {
 
   return (
     <>
-      <Headtitle title={`Tambah Biaya`} />
+      <Headtitle title={`Identitas Aplikasi`} />
       <Card>
         <CardContent>
           <Header>

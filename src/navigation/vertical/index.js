@@ -33,11 +33,6 @@ const navigation = () => {
             auth: false,
           },
           {
-            title: 'PARAMATER BIAYA',
-            path: '/parameterbiaya/list',
-            auth: false,
-          },
-          {
             title: 'DATA PPDB',
             path: '/ppdb/list',
             auth: false,
@@ -87,8 +82,8 @@ const navigation = () => {
         auth: false,
         children: [
           {
-            title: 'Pembayaran',
-            path: '/keuangan/list',
+            title: 'PARAMATER BIAYA',
+            path: '/parameterbiaya/list',
             auth: false,
           },
           {

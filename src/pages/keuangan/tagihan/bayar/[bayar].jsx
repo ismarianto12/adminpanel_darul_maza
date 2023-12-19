@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Card, CardContent } from '@mui/material'
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import * as Icon from 'react-feather'
 
 const showErrors = (field, valueLen, min) => {
   if (valueLen === 0) {
@@ -31,13 +32,11 @@ const Header = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between'
 }))
 const schema = yup.object().shape({
-  jenis_tagihan: yup.string().required(),
-  type_pembayaran: yup.string().required(),
-  jumlah_bayar: yup.string().required(),
-  type_pembayaran: yup.string().required(),
+  jenis_tagihan: yup.string().required("Wajib diisi."),
+  type_pembayaran: yup.string().required("Wajid diisi."),
+  jumlah_bayar: yup.string().required("Wajib diisi"),
+  type_pembayaran: yup.string().required("Wajib diisi"),
 })
-
-
 
 const Bayar = (props) => {
   const route = useRouter()
@@ -85,7 +84,7 @@ const Bayar = (props) => {
 
   useEffect(() => {
     const unit_id = route?.query.unit_id
-  console
+    console
 
     const jenisTagihan = async () => {
       axios.get(`${process.env.APP_API}pembayaran/getJenistagihan`, {
@@ -96,6 +95,7 @@ const Bayar = (props) => {
           unit_id: unit_id
         }
       },).then((data) => {
+        console.log(data.data,'response')
         setJenisTagihan(data.data)
       }).catch(err => {
         Swal.fire('error', 'gagal mengambil data tagihan', 'error')
@@ -175,7 +175,10 @@ const Bayar = (props) => {
         <CardContent>
 
           <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
+            <Icon.MoreHorizontal />
+            <h4>Tagihan Siswa</h4>
 
+            <br />
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="row">
                 <div className="col-md-6">
@@ -197,6 +200,40 @@ const Bayar = (props) => {
 
                     {errors.jenis_tagihan && <div className="invalid-feedback">This field is required.</div>}
                   </div>
+
+
+
+                  <div className="form-group mb-4">
+                    <label>Nama Siswa</label>
+                    <input
+                      type="text"
+                      className={`form-control ${errors.nis ? 'is-invalid' : ''}`}
+                      id="nis"
+                      value={datasiswa.nama}
+                      name="nis"
+                      placeholder="Nama Siswa"
+                      defaultValue=""
+                      {...register('nis', { required: true })}
+                    />
+                    {errors.nis && <div className="invalid-feedback">This field is required.</div>}
+                  </div>
+
+
+                  <div className="form-group mb-4">
+                    <label>Catatan Bayar</label>
+                    <textarea
+                      type="text"
+                      className={`form-control ${errors.catatan ? 'is-invalid' : ''}`}
+                      id="catatan"
+                      name="catatan"
+                      placeholder="Catatn Bayar"
+                      defaultValue=""
+                      {...register('catatan', { required: true })}
+                    />
+                    {errors.catatan && <div className="invalid-feedback">This field is required.</div>}
+                  </div>
+                </div>
+                <div className="col-md-6">
 
                   <div className="form-group mb-4">
                     <label>Type Pembayaran</label>
@@ -244,20 +281,9 @@ const Bayar = (props) => {
                     {errors.jumlah_bayar && <div className="invalid-feedback">This field is required.</div>}
 
                   </div>
-                  <div className="form-group mb-4">
-                    <label>Catatan Bayar</label>
-                    <textarea
-                      type="text"
-                      className={`form-control ${errors.catatan ? 'is-invalid' : ''}`}
-                      id="catatan"
-                      name="catatan"
-                      placeholder="Catatn Bayar"
-                      defaultValue=""
-                      {...register('catatan', { required: true })}
-                    />
-                    {errors.catatan && <div className="invalid-feedback">This field is required.</div>}
-                  </div>
+
                 </div>
+
                 <br /> <br />
                 <div className="pt-3 form-group mb-4 row" >
                   <div className="col-md-12 text-center">

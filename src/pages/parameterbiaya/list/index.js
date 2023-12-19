@@ -250,13 +250,11 @@ const Category = () => {
               <div className="accordion-body pt-0">
                 <form id="filter-form" action='#'>
                   <div className="row">
-
                     <div className="col-sm-4 col-md-4 mb-3">
                       <label className="form-label">
                         Pilih Unit
                       </label>
                       <select name="unit" id="filter-unit" className="form-select"
-
                         onChange={(e) => searchKelas(e)}
                       >
                         <option value={``}>Pilih Unit</option>
@@ -274,7 +272,6 @@ const Category = () => {
                       </label>
                       <select name="class_name" id="class-name" className="form-select">
                         <option value={``}>Pilih Kelas</option>
-
                         {kelas?.map((fdata) => (
                           <option value={`${fdata?.id}`}>{fdata?.kelas}</option>
                         )
