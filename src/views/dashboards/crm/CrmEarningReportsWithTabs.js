@@ -196,8 +196,8 @@ const CrmEarningReportsWithTabs = () => {
   return (
     <Card>
       <CardHeader
-        title='Earning Reports'
-        subheader='Yearly Earnings Overview'
+        title='Statis Aplikasi.'
+        subheader='#'
         action={
           <OptionsMenu
             options={['Last Week', 'Last Month', 'Last Year']}
