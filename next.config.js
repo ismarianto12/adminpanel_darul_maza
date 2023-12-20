@@ -3,9 +3,9 @@ module.exports = {
   trailingSlash: true,
   reactStrictMode: false,
   env: {
-    // APP_API: 'http://localhost/siakad/backend_siakad/public/api/v1/',  // 'https://api.darulmaza.sch.id/api/v1/',  //https://api.darulmaza.sch.id
-    // ASSETS_API: 'http://localhost/siakad/backend_siakad/public',
-    // DEV_USER_WEB: 'http://localhost:3001',
+    APP_API: 'http://localhost/siakad/backend_siakad/public/api/v1/',  // 'https://api.darulmaza.sch.id/api/v1/',  //https://api.darulmaza.sch.id
+    ASSETS_API: 'http://localhost/siakad/backend_siakad/public',
+    DEV_USER_WEB: 'http://localhost:3001',
 
     // APP_API: 'http://localhost/siakad/backend_siakad/public/api/v1/',  // 'https://api.darulmaza.sch.id/api/v1/',  //https://api.darulmaza.sch.id
     // ASSETS_API: 'http://localhost/siakad/backend_siakad/public',

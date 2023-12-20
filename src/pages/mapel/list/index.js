@@ -382,10 +382,10 @@ const Index = () => {
                 field: 'user_id',
                 headerName: 'User id',
                 renderCell: ({ row }) => {
-                  if (row.user_id === null) {
-                    return (<b>Kosong</b>)
-                  } else {
+                  if (row.user_id) {
                     return row.user_id
+                  } else {
+                    return (<b>Kosong</b>)
                   }
                 }
               },
