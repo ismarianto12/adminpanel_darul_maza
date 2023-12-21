@@ -63,7 +63,7 @@ const Header = styled(Box)(({ theme }) => ({
   justifyContent: 'space-between'
 }))
 const schema = yup.object().shape({
-  id_category: yup.string().required(),
+  // id_category: yup.string().required(),
   title: yup.string().typeError('Judul Dalam Bahasa Inggris Wajib di isi').required(),
   judul: yup.string().typeError('Judul Wajib di isi').required(),
   // content: yup.string().required(),
