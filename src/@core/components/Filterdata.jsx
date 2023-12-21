@@ -128,12 +128,11 @@ const Filterdata = (
                   </label>
                   <select name="unit" id="filter-unit" className="form-select" onChange={(e)=>
                    searchKelas(e)
-
                     }>
                     <option value={``}></option>
                     {unitdata?.map((data) =>
                     (
-                      <option value={`${data.id}`}>{data.tingkat}</option>
+                      <option value={`${data?.id}`}>{data?.tingkat}</option>
                     )
 
                     )}
