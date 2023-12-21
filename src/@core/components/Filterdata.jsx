@@ -147,7 +147,7 @@ const Filterdata = (
 
                     {kelas?.map((data) => {
                       return (
-                        <option value={`${data.id}`}>{data.kelas}-{data.tingkat}</option>
+                        <option value={`${data?.id}`}>{data?.kelas}-{data?.tingkat}</option>
                       )
                     }
                     )}
@@ -160,8 +160,8 @@ const Filterdata = (
                   <select name="class_year" id="class-year" className="form-select" onChange={handleChange}>
                     <option value={``}></option>
                     {tahunajaaran?.map((data) => (
-                      <option value={data.id} key={data.tahun}>
-                        {data.tahun}
+                      <option value={data?.id} key={data?.tahun}>
+                        {data?.tahun}
                       </option>
                     ))}
                   </select>
