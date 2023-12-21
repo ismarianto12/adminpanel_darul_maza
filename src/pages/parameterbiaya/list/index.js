@@ -38,9 +38,6 @@ const statusObj = {
 }
 
 
-
-
-
 const Category = () => {
   const [total, setTotal] = useState(0)
   const [sort, setSort] = useState('asc')
@@ -52,6 +49,7 @@ const Category = () => {
   const [loading, setLoading] = useState(true)
   const [show, setShow] = useState(false)
   const [unitdata, setUnitdata] = useState([])
+  const [unitid, setUnitid] = useState('')
   const [kelas, setKelas] = useState([])
   const [kelas_id, setKelas_id] = useState('')
 
@@ -66,8 +64,6 @@ const Category = () => {
   };
   const fetchTableData = useCallback(
     async (sort, q, column) => {
-
-
       await axios
         .post(`${process.env.APP_API}parameterbiaya/list`,
           {
@@ -75,7 +71,7 @@ const Category = () => {
             sort,
             column,
             kelas_id: kelas_id,
-            unit_id: kelas_id
+            unit_id: unitid
           }, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -106,11 +102,7 @@ const Category = () => {
       const callunit = await Action().callUnit()
       setUnitdata(callunit)
     })
-    const callKelas = (async () => {
-      const restkelas = await Action().callKelas(kelas_id)
-      setKelas(restkelas)
-    })
-    callKelas()
+
     callData()
   }, [fetchTableData, searchValue, sort, sortColumn, kelas_id])
 
@@ -148,7 +140,6 @@ const Category = () => {
       DeleteCat(id)
       handleRowOptionsClose()
     }
-
     return (
       <>
         <IconButton size='small' onClick={handleRowOptionsClick}>
@@ -199,8 +190,11 @@ const Category = () => {
 
   const searchKelas = async (e) => {
     setKelas([])
-    const kelas_id = e.target.value
-    setKelas_id(kelas_id)
+    const dataunit_id = e.target.value
+    const restkelas = await Action().callKelas(dataunit_id)
+    setUnitid(dataunit_id)
+    setKelas(restkelas)
+
   }
 
   const handleSortModel = newModel => {
@@ -270,10 +264,12 @@ const Category = () => {
                       <label className="form-label">
                         Pilih Kelas
                       </label>
-                      <select name="class_name" id="class-name" className="form-select">
+                      <select name="class_name" id="class-name" className="form-select"
+                        onChange={(e) => setKelas_id(e.target.value)}
+                      >
                         <option value={``}>Pilih Kelas</option>
                         {kelas?.map((fdata) => (
-                          <option value={`${fdata?.id}`}>{fdata?.kelas}</option>
+                          <option value={`${fdata?.id}`}>{fdata?.kelas} - {fdata?.tingkat}</option>
                         )
                         )}
                       </select>

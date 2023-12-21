@@ -133,12 +133,7 @@ const navigation = () => {
 
           },
           {
-            title: 'ACARA',
-            path: '/acara/list',
-            auth: false,
-          },
-          {
-            title: 'Berita',
+            title: 'Berita & Acara',
             path: '/news',
             auth: false,
           },

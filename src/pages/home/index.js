@@ -29,11 +29,11 @@ const CrmDashboard = () => {
           </Grid>
           <Grid item xs={6} sm={4} lg={3}>
             <CardStatsVertical
-              stats='1.28k'
+              stats='500'
               chipText='-12.2%'
               chipColor='default'
               avatarColor='error'
-              title='Total Profit'
+              title='Total Tagihan'
               subtitle='Last week'
               avatarIcon='tabler:currency-dollar'
             />
@@ -44,7 +44,7 @@ const CrmDashboard = () => {
               chipText='+25.2%'
               avatarColor='info'
               chipColor='default'
-              title='Total Sales'
+              title='Total Materi Elerning'
               subtitle='Last week'
               avatarIcon='tabler:chart-bar'
             />

@@ -253,21 +253,6 @@ const Bayar = (props) => {
 
 
                   <div className="form-group mb-4">
-                    <label>Nama Siswa</label>
-                    <input
-                      type="text"
-                      className={`form-control ${errors.nis ? 'is-invalid' : ''}`}
-                      id="nis"
-                      value={datasiswa.nama}
-                      name="nis"
-                      placeholder="Nama Siswa"
-                      defaultValue=""
-                      {...register('nis', { required: true })}
-                    />
-                    {errors.nis && <div className="invalid-feedback">This field is required.</div>}
-                  </div>
-
-                  <div className="form-group mb-4">
                     <label>Jumlah Bayar</label>
                     <input
                       type="text"

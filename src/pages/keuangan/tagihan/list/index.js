@@ -282,6 +282,7 @@ const Index = () => {
           payload={payload}
           setPayload={setPayload}
           urlparameter={'/keuangan/tagihan/list'}
+          fetchTableData={fetchTableData}
         />
 
       </Card>

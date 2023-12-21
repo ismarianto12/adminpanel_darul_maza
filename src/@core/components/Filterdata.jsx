@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import Swal from 'sweetalert2';
 import axios from 'axios'
 import { useRouter } from 'next/router'
-
+import Action from 'src/store/action';
 import {
   GetUnit,
   GetTahunAkademik,
@@ -27,7 +27,8 @@ const Filterdata = (
     setKata,
     payload,
     setPayload,
-    urlparameter
+    urlparameter,
+    fetchTableData
   }
 ) => {
   const route = useRouter()
@@ -59,20 +60,10 @@ const Filterdata = (
       })
     }
 
-    const GetKelas = async props => {
-      await axios.get(`${process.env.APP_API}kelas/list`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-        }
-      }).then((data) => {
-        setKelas(data.data)
-      }).catch((err) => {
-        toast.error('tidak dapat memanggil data');
-      })
-    }
+
     GetUnit()
     GetTahunAkademik()
-    GetKelas()
+    // GetKelas()
   }, [])
 
 
@@ -99,6 +90,18 @@ const Filterdata = (
     });
   }
 
+
+  const searchKelas = async (e) => {
+    setKelas([])
+    handleChange(e)
+    const dataunit_id = e.target.value
+    const restkelas = await Action().callKelas(dataunit_id)
+    // setUnitid(dataunit_id)
+    setKelas(restkelas)
+
+  }
+
+
   return (<>
     <div className="accordion mb-3">
       <div className="accordion-item">
@@ -123,7 +126,10 @@ const Filterdata = (
                   <label className="form-label">
                     Pilih Unit
                   </label>
-                  <select name="unit" id="filter-unit" className="form-select" onChange={handleChange}>
+                  <select name="unit" id="filter-unit" className="form-select" onChange={(e)=>
+                   searchKelas(e)
+
+                    }>
                     <option value={``}></option>
                     {unitdata?.map((data) =>
                     (
@@ -179,7 +185,7 @@ const Filterdata = (
                   <button type="button" id="btn-apply-filter" onClick={handleFilter} className="btn btn-primary">
                     Terapkan Filter
                   </button>
-                  <button type="reset" id="btn-reset-filter" onClick={handleFilter} className="btn btn-default ms-2">
+                  <button type="reset" onClik={()=> fetchTableData()} id="btn-reset-filter" onClick={handleFilter} className="btn btn-default ms-2">
                     Reset Filter
                   </button>
                 </div>

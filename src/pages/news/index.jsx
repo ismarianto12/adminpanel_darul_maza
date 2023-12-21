@@ -272,6 +272,17 @@ const News = () => {
         </Grid>
         <Grid item xs={12} sm={4}>
           <CardStatsHorizontalWithDetails
+            stats={`${total}`}
+            trend='negative'
+            title='Total data'
+            avatarColor='success'
+            icon='tabler:report-analytics'
+          // subtitle=''
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={4}>
+          <CardStatsHorizontalWithDetails
             stats={rows.length}
             trend='negative'
             title='Artikel Perpage'
