@@ -65,6 +65,7 @@ const Index = props => {
   const route = useRouter();
   const [data, setData] = useState([])
   const { open, toggle } = props
+  const [loading, setLoading] = useState(true)
 
   const dispatch = useDispatch()
   const store = useSelector(state => state.user)
@@ -81,6 +82,8 @@ const Index = props => {
     resolver: yupResolver(schema)
   })
   useEffect(() => {
+
+    setLoading(false);
   }, [])
   const onSubmit = async (data) => {
     await axios.post(`${process.env.APP_API}kelas/insert`, data, {
