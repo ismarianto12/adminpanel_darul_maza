@@ -128,6 +128,7 @@ const elearning = () => {
   const [plan, setPlan] = useState('')
   const [value, setValue] = useState('')
   const [status, setStatus] = useState('')
+  const route = useRouter()
 
   const [filjenjang, , setJenjang] = useState('');
   const [filkelas, setFilkelas] = useState('');
@@ -327,28 +328,28 @@ const elearning = () => {
         <title>Master - elearning</title>
       </Head>
       <Grid container spacing={6}>
-        <Grid item xs={6} sm={4} lg={3}>
+        <Grid item xs={6} sm={3} lg={3}>
           <CardStatsVertical
             chipText={rows.length}
             avatarColor='success'
             title='Total elearning'
           />
         </Grid>
-        <Grid item xs={6} sm={4} lg={3}>
+        <Grid item xs={6} sm={3} lg={3}>
           <CardStatsVertical
             avatarColor='success'
             title='Total elearning'
 
           />
         </Grid>
-        <Grid item xs={6} sm={4} lg={3}>
+        <Grid item xs={6} sm={3} lg={3}>
           <CardStatsVertical
             avatarColor='success'
             title='Total elearning'
 
           />
         </Grid>
-        <Grid item xs={6} sm={4} lg={3}>
+        <Grid item xs={6} sm={3} lg={3}>
           <CardStatsVertical
             avatarColor='success'
             title='Total elearning'
@@ -362,7 +363,7 @@ const elearning = () => {
         <CardContent>
           <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
             <Grid container spacing={4} paddingBottom={10}>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={3}>
                 <CustomTextField
                   select
                   fullWidth
@@ -383,7 +384,7 @@ const elearning = () => {
                 </CustomTextField>
               </Grid>
 
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={3}>
                 <CustomTextField
                   select
                   fullWidth
@@ -403,15 +404,30 @@ const elearning = () => {
                 </CustomTextField>
               </Grid>
 
-              <Grid item xs={12} sm={4}>
-                <Comheader addUserOpen={null} setAddUserOpen={null}
-                  handleFilter={handleSearch} setAction={null}
+              <Grid item xs={12} sm={3}>
+                <CustomTextField
+                  value={value}
+                  sx={{ mr: 4 }}
+                  placeholder='Search'
+                  onChange={e => handleFilter(e.target.value)}
                 />
+
+              </Grid>
+              <Grid item xs={12} sm={2}>
+                <Button variant='contained' sx={{ '& svg': { mr: 2 } }}
+                  onClick={() =>
+                    route.push('/elearning/create')
+                  }
+                >
+                  <Icon fontSize='1.125rem' icon='tabler:plus' />
+                  Tambah
+                </Button>
               </Grid>
             </Grid>
 
           </Box>
         </CardContent>
+
         <Divider sx={{ m: '0 !important' }} />
         <DataGrid
           autoHeight

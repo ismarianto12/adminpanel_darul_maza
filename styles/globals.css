@@ -112,14 +112,30 @@ label {
   border: unset;
 }
 
-button:not(:disabled), [type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled) {
+button:not(:disabled),
+[type=button]:not(:disabled),
+[type=reset]:not(:disabled),
+[type=submit]:not(:disabled) {
   cursor: pointer;
   transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   box-shadow: rgba(47, 43, 61, 0.14) 0px 2px 6px 0px;
 }
 
-
 /* transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     box-shadow: rgba(47, 43, 61, 0.14) 0px 2px 6px 0px;
     padding: 0.625rem 1.25rem;
 } */
+
+.form-select:focus,
+.form-control:focus {
+  border-color: initial;
+  border: 0.1px solid #ddd;
+  box-shadow: 0 0px 5px rgba(40, 47, 60, .05), 0 3px 4px rgba(40, 47, 60, .05);
+}
+
+.form-control:hover,
+.form-control:hover {
+  border-color: initial;
+  border: 0.1px solid #ddd;
+  box-shadow: 0 0px 5px rgba(40, 47, 60, .05), 0 3px 4px rgba(40, 47, 60, .05);
+}

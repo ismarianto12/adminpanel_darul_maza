@@ -8,7 +8,6 @@ const navigation = () => {
   // admin super user
   // panitia pdb
   // bagian akademik
-
   if (role === '1') {
 
     return [

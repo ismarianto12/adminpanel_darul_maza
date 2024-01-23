@@ -26,7 +26,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 // ** Actions Imports
 import { addUser } from 'src/store/apps/user'
-import { Card, CardContent } from '@mui/material'
+import { Card, CardContent, Grid } from '@mui/material'
 import Headtitle from 'src/@core/components/Headtitle'
 import axios from 'axios'
 
@@ -48,7 +48,7 @@ const Header = styled(Box)(({ theme }) => ({
 }))
 
 const schema = yup.object().shape({
-  nama_cabang: yup.string().required(),
+  nama_elearning: yup.string().required(),
   alamat1: yup.string().required(),
   alamat2: yup.string().required(),
   no_telp: yup.string().required(),
@@ -58,7 +58,7 @@ const schema = yup.object().shape({
   longitude: yup.string().required(),
 })
 const defaultValues = {
-  nama_cabang: '',
+  nama_elearning: '',
   alamat1: '',
   alamat2: '',
   no_telp: '',
@@ -75,13 +75,15 @@ const Index = props => {
   const store = useSelector(state => state.user)
   const [file, setFile] = useState('')
   const [fileupload, setFileupload] = useState('')
-
+  const [kelas, setKelas] = useState([]);
+  const [jenjang, setJenjang] = useState([])
   const {
     reset,
     control,
     setValue,
     setError,
     handleSubmit,
+    register,
     formState: { errors }
   } = useForm({
     defaultValues,
@@ -104,7 +106,7 @@ const Index = props => {
     console.log(data, 'send')
     const config = {
       method: 'post',
-      url: '/admin/api/cabang/insert',
+      url: '/admin/api/elearning/insert',
       headers: {
         'Content-Type': 'application/json',
         'token': '123'
@@ -113,7 +115,7 @@ const Index = props => {
     }
     axios(config)
       .then((res) => {
-        route.push('/cabang/list');
+        route.push('/elearning/list');
       })
       .catch((err) => {
         console.error(err);
@@ -122,18 +124,18 @@ const Index = props => {
   }
   const handleClose = () => {
     reset()
-    route.push('/cabang/list');
+    route.push('/elearning/list');
   }
 
   return (
     <>
-      <Headtitle title="Tambah data cabang" />
+      <Headtitle title="Tambah data elearning" />
       <Card>
         <CardContent>
           <Header>
-            <Typography variant='h5'>
+            <Typography variant='h4'>
               <Icon icon='tabler:edit' fontSize='1.125rem' />
-              {`Tambah Data Cabang`}</Typography>
+              {`Tambah Data elearning`}</Typography>
             <IconButton
               size='small'
               onClick={handleClose}
@@ -152,179 +154,116 @@ const Index = props => {
           </Header>
           <Box sx={{ p: theme => theme.spacing(0, 6, 6) }}>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <Controller
-                name='nama_cabang'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    value={value}
-                    sx={{ mb: 4 }}
-                    label='Nama Cabang'
-                    onChange={onChange}
-                    placeholder='Nama cabang'
-                    error={Boolean(errors.nama_cabang)}
-                    {...(errors.nama_cabang && { helperText: errors.nama_cabang.message })}
-                  />
-                )}
-              />
-              <Controller
-                name='alamat1'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    multiline
-                    minRows={4}
-                    label='Alamat 1'
-                    value={value}
-                    onChange={onChange}
-                    placeholder='Alamat ...'
-                    sx={{ '& .MuiInputBase-root.MuiFilledInput-root': { alignItems: 'baseline' } }}
-                    error={Boolean(errors.alamat1)}
-                    {...(errors.alamat1 && { helperText: errors.alamat1.message })}
-                  />
-                )}
-              />
-              <Controller
-                name='alamat2'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    multiline
-                    minRows={4}
-                    value={value}
-                    onChange={onChange}
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="row">
+                  <div className="col-md-6">
+                    {/* <Typography variant='h5' sx={{ mb: 0.5 }}> */}
+                    <Typography variant='h3' sx={{ mb: 5 }} color={'green'}>Data Kelas</Typography>
+                    {/* <hr /> */}
 
-                    label='Alamat 2'
-                    placeholder='Alamat ...'
-                    sx={{ '& .MuiInputBase-root.MuiFilledInput-root': { alignItems: 'baseline' } }}
-                    error={Boolean(errors.alamat2)}
-                    {...(errors.alamat2 && { helperText: errors.alamat2.message })}
-                  />
-                )}
-              />
-              <Controller
-                name='no_telp'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    value={value}
-                    sx={{ mb: 4 }}
-                    label='Telepone cabang'
-                    onChange={onChange}
-                    placeholder='Telepon cabang'
-                    error={Boolean(errors.no_telp)}
-                    {...(errors.no_telp && { helperText: errors.no_telp.message })}
-                  />
-                )}
-              />
-              <Controller
-                name='email'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    value={value}
-                    sx={{ mb: 4 }}
-                    label='Email cabang'
-                    onChange={onChange}
-                    placeholder='Email cabang'
-                    error={Boolean(errors.email)}
-                    {...(errors.email && { helperText: errors.email.message })}
-                  />
-                )}
-              />
-              <Controller
-                name='tipe'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    value={value}
-                    sx={{ mb: 4 }}
-                    label='Type'
-                    onChange={onChange}
-                    placeholder='Type'
-                    error={Boolean(errors.tipe)}
-                    {...(errors.tipe && { helperText: errors.tipe.message })}
-                  />
-                )}
-              />
+                    <div className="form-group mb-4">
+                      <label>NIK</label>
+                      <input
+                        type="number"
+                        className={`form-control ${errors.nik ? 'is-invalid' : ''}`}
+                        id="nik"
+                        name="nik"
+                        placeholder="Nomor Induk Kependudukan"
+                        defaultValue=""
+                        {...register('nik', { required: true })}
+                      />
+                      {errors.nik && <div className="invalid-feedback">This field is required.</div>}
 
-              <Controller
-                name='tipe'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    value={value}
-                    sx={{ mb: 4 }}
-                    label='Type'
-                    onChange={onChange}
-                    placeholder='Type'
-                    error={Boolean(errors.tipe)}
-                    {...(errors.tipe && { helperText: errors.tipe.message })}
-                  />
-                )}
-              />
-              <Controller
-                name='latitude'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    value={value}
-                    sx={{ mb: 4 }}
-                    label='Latitude'
-                    onChange={onChange}
-                    placeholder='Latitude'
-                    error={Boolean(errors.latitude)}
-                    {...(errors.latitude && { helperText: errors.latitude.message })}
-                  />
-                )}
-              />
-              <Controller
-                name='longitude'
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <CustomTextField
-                    fullWidth
-                    value={value}
-                    sx={{ mb: 4 }}
-                    label='Longitude'
-                    onChange={onChange}
-                    placeholder='Longitude'
-                    error={Boolean(errors.longitude)}
-                    {...(errors.longitude && { helperText: errors.longitude.message })}
-                  />
-                )}
-              />
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Button type='submit' variant='contained' sx={{
-                  mr: 3,
-                  width: '50%'
+                    </div>
 
-                }}>
-                  Save
-                </Button>
-                <Button variant='tonal' color='secondary' sx={{
-                  width: '50%'
-                }} onClick={handleClose}>
-                  Cancel
-                </Button>
-              </Box>
+                    <div className="form-group mb-4">
+                      <label>Nama</label>
+                      <input
+                        type="text"
+                        className={`form-control ${errors.nis ? 'is-invalid' : ''}`}
+                        id="nama"
+                        name="Nama"
+                        placeholder="Nama"
+                        defaultValue=""
+                        {...register('nama', { required: true })}
+                      />
+                      {errors.nama && <div className="invalid-feedback">This field is required.</div>}
+                    </div>
+
+                    <div className="form-group mb-4">
+                      <label htmlFor="jk" className="col-form-label">Jenis Kelamin:</label>
+                      <select
+                        className={`form-control ${errors.jk ? 'is-invalid' : ''}`}
+                        id="jk"
+                        name="jk"
+                        {...register('jk', { required: true })}
+                      >
+                        <option value="">- Jenis Kelamin -</option>
+                        <option value="L">Laki-Laki</option>
+                        <option value="P">Perempuan</option>
+                      </select>
+                      {errors.jk && <div className="invalid-feedback">Please select a gender.</div>}
+                    </div>
+
+                    <div className="form-group mb-4">
+                      <label>Tempat tanggal lahir</label>
+                      <input
+                        type="text"
+                        className={`form-control ${errors.ttl ? 'is-invalid' : ''}`}
+                        id="ttl"
+                        name="ttl"
+                        placeholder="Tempat tanggal lahir"
+                        defaultValue=""
+                        {...register('ttl', { required: true })}
+                      />
+                      {errors.ttl && <div className="invalid-feedback">Tempat tanggal lahir is required.</div>}
+                    </div>
+
+                    <div className="form-group mb-4">
+                      <label>Email</label>
+                      <input
+                        type="email"
+                        className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                        id="email"
+                        name="email"
+                        placeholder="Email"
+                        defaultValue=""
+                        {...register('email', { required: true })}
+                      />
+                      {errors.email && <div className="invalid-feedback">Email is required.</div>}
+                    </div>
+                    <div className="form-group mb-4">
+                      <label>Alamat</label>
+                      <textarea
+                        className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                        id="alamat"
+                        name="alamat"
+                        defaultValue=""
+                        {...register('alamat', { required: true })}
+                      />
+                      {errors.alamat && <div className="invalid-feedback">Email is required.</div>}
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <Typography variant='h3' sx={{ mb: 5 }} color={'green'}>Data Materi</Typography>
+                    <hr />
+                    <h4>Data Pendidikan</h4>
+
+
+                  </div>
+                </div>
+                <div className="pt-3 form-group mb-4 row" >
+                  <div className="col-md-12 text-center">
+                    <button type="submit" className="btn-block btn btn-success" style={{
+                      'width': '40%', 'marginRight': '15px'
+                    }}>Daftar</button>
+                    <button type="reset" onClick={() => confirmbatal()} className="btn-block btn btn-danger" style={{
+                      'width': '40%'
+                    }}>Batal</button>
+                  </div>
+                </div>
+                {/* <Comodal handleClose={handleClose} show={show} setConfirm={setConfirm} /> */}
+              </form>
             </form>
           </Box>
         </CardContent>
